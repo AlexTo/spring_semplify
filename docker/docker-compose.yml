@@ -1,0 +1,99 @@
+version: '3.1'
+services:
+
+  postgres:
+    build:
+      context: ./Postgres
+      args:
+        - POSTGRES_USER=semplify
+        - POSTGRES_PASSWORD=password
+        - POSTGRES_DB=semplify
+    image: semplify:postgres
+    hostname: postgres
+    container_name: postgres
+    ports:
+      - 5433:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - semplify
+
+  keycloak:
+    image: jboss/keycloak
+    hostname: keycloak
+    container_name: keycloak
+    ports:
+      - 9000:8080
+    environment:
+      KEYCLOAK_USER: semplify
+      KEYCLOAK_PASSWORD: password
+      DB_VENDOR: postgres
+      DB_ADDR: postgres
+      DB_USER: semplify
+      DB_PASSWORD: password
+      DB_DATABASE: semplify
+    networks:
+      - semplify
+    depends_on:
+      - postgres
+
+  virtuoso:
+    image: tenforce/virtuoso
+    hostname: virtuoso
+    container_name: virtuoso
+    environment:
+      SPARQL_UPDATE: "true"
+      VIRT_Parameters_NumberOfBuffers: 2720000
+      VIRT_Parameters_MaxDirtyBuffers: 2000000
+    volumes:
+      - virtuoso:/data
+    ports:
+      - 8890:8890
+      - 1111:1111
+    networks:
+      - semplify
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.4
+    container_name: elasticsearch
+    hostname: elasticsearch
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data
+    networks:
+      - semplify
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.8.4
+    container_name: kibana
+    hostname: kibana
+    ports:
+      - 5601:5601
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - semplify
+
+  spotlight:
+    image: dbpedia/spotlight-english:latest
+    hostname: spotlight
+    container_name: spotlight
+    ports:
+      - 10000:80
+    networks:
+      - semplify
+    command: /bin/sh -c "/bin/spotlight.sh"
+
+volumes:
+  virtuoso:
+  postgres:
+  elasticsearch:
+
+networks:
+  semplify:

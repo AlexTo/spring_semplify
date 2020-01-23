@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/semplify
+    username: semplify
+    password: password
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        ddl-auto: create
+    generate-ddl: true
+
+  codec:
+    max-in-memory-size: "500MB"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+app:
+  security:
+    public-key: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi28T99Kl0tJsm7aSW0McVJCsvf43lWaAgmwYxgcRScQvzA+IjEgbWc9ndiXkcJwxYwUKz87zaWbtbVIoxkxCX16+vXZ7R+IpMCOmYd20GuC8tIi+qn6rdU7p3D2vjPfyTstOANBf8PP9O/fowgID/OzgVHqeyngQpAf5qsnRBPd13nzapSCXakRlqMQUdDQV3pyvT+xgjqx4YjM2eNSetWqWpy5H4m8tsuTvLQnHDbUDTrxYLqb12ZHxDBh5ZwOSYAIqcpZaj4lEtEPrCyc7IdWjqHujcCeiLrbgmdcX/X1CdmJc2A733tqOnhNSZjUTvK0FIBiV4J1v7p/SOT5QewIDAQAB"
+    token-prefix: Bearer
+
+
+poolparty:
+  host: dl0475odhub006.nsw.education
+  port: 80
+  username: poolparty
+  password: password
+  projectId: 1E2601F1-B5C8-0001-164D-C9001170CFD0
+
+spotlight:
+  host: localhost
+  port: 10000
