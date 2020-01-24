@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function SelectSource({onFilesChanged, onSourceTypeChanged}) {
+function SelectSource({onFilesChanged, onSourceTypeChanged, display}) {
 
   const classes = useStyles();
 
@@ -37,7 +37,7 @@ function SelectSource({onFilesChanged, onSourceTypeChanged}) {
   };
 
   return (
-    <Fragment>
+    <div style={{display: display}}>
       <Tabs
         onChange={handleTabsChange}
         scrollButtons="auto"
@@ -55,7 +55,7 @@ function SelectSource({onFilesChanged, onSourceTypeChanged}) {
       <div className={classes.content}>
         {currentTab === 'files' && <FilesDropzone onFilesChanged={handleFilesChanged}/>}
       </div>
-    </Fragment>
+    </div>
   )
 }
 

@@ -148,7 +148,9 @@ function NavBar({
   const classes = useStyles();
   const location = useLocation();
   const {keycloak} = useKeycloak();
-  const session = useSelector((state) => state.session);
+
+  const {idTokenParsed: token} = keycloak;
+
   const [status, setStatus] = useState('online');
 
   const handleStatusToggle = () => {
@@ -183,7 +185,7 @@ function NavBar({
         }))}
       </nav>
       <Divider className={classes.divider}/>
-      <div className={classes.profile}>
+      {token && <div className={classes.profile}>
         <Badge
           overlap="circle"
           anchorOrigin={{
@@ -201,21 +203,25 @@ function NavBar({
             })
           }}
           variant="dot">
-          <Avatar
-            alt="Person"
+          {token.picture && <Avatar
+            alt={token.name}
             onClick={handleStatusToggle}
             className={classes.avatar}
-            src={session.user.avatar}/>
+            src={token.picture}/>}
+          {!token.picture && <Avatar
+            className={classes.avatar}>
+            {`${token.given_name.substring(0, 1)} ${token.family_name.substring(0, 1)}`}
+          </Avatar>}
         </Badge>
         <div className={classes.details}>
-          {keycloak.idToken && <Link
+          <Link
             component={RouterLink}
             to="/profile/1/timeline"
             variant="h5"
             color="textPrimary"
             underline="none">
-            {keycloak.idTokenParsed.name}
-          </Link>}
+            {token.name}
+          </Link>
         </div>
         <IconButton
           className={classes.moreButton}
@@ -223,7 +229,7 @@ function NavBar({
         >
           <MoreIcon/>
         </IconButton>
-      </div>
+      </div>}
     </div>
   );
 
@@ -249,8 +255,7 @@ function NavBar({
             paper: classes.desktopDrawer
           }}
           open
-          variant="persistent"
-        >
+          variant="persistent">
           {content}
         </Drawer>
       </Hidden>

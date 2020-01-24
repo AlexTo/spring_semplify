@@ -17,8 +17,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import SelectSource from "./SelectSource";
 import ItemProgressDialog from "./ItemProgressDialog";
 import {useKeycloak} from "@react-keycloak/web";
-import {nerService} from "../../../../services";
-import AnnotationResults from "./AnnotationResults";
+import {indexService, nerService} from "../../../../services";
+import ReviewTable from "./ReviewTable";
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -50,15 +50,22 @@ function AddDocumentsDialog({open, onClose}) {
 
   const [files, setFiles] = useState([]);
   const [urls, setUrls] = useState([]);
-  const [annotations, setAnnotations] = useState([]);
+
+  const [itemSuggestedAnnotations, setItemSuggestedAnnotations] = useState([]);
+  const [itemSelectedAnnotations, setItemSelectedAnnotations] = useState([]);
+
+
   const [sourceType, setSourceType] = useState('files');
   const [nextButtonEnabled, setNextButtonEnabled] = useState(false);
 
   const steps = [
     {value: 0, label: 'Select source'},
-    {value: 1, label: 'Verify'},
-    {value: 2, label: 'Submit'}
+    {value: 1, label: 'Review'}
   ];
+
+  useEffect(() => {
+    setItemSelectedAnnotations(itemSuggestedAnnotations);
+  }, [itemSuggestedAnnotations]);
 
   useEffect(() => {
     if (sourceType === "files") {
@@ -93,16 +100,23 @@ function AddDocumentsDialog({open, onClose}) {
   };
 
   const handleNext = async () => {
-    if (activeStep === 0) {
-      await analyse();
-    } else if (activeStep === 1) {
-      await verify();
-    }
+    await analyse();
     setActiveStep(activeStep + 1);
+  };
+
+  const handleSubmit = async () => {
+    await submit();
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
+  };
+
+  const handleAnnotationsSelected = (uri, selectedAnnotations) => {
+    const updatingItem = itemSelectedAnnotations.find(i => i.uri === uri);
+    const others = itemSelectedAnnotations.filter(i => i.uri !== uri);
+    const updatedItem = Object.assign({}, updatingItem, {resources: selectedAnnotations});
+    setItemSelectedAnnotations([...others, updatedItem]);
   };
 
   const analyse = async () => {
@@ -120,7 +134,7 @@ function AddDocumentsDialog({open, onClose}) {
         const result = await nerService.annotateFileAsync(file, keycloak.idToken);
 
         results.push({
-          id: file.name,
+          uri: file.name,
           label: file.name,
           resources: result.body.resources
         });
@@ -128,14 +142,39 @@ function AddDocumentsDialog({open, onClose}) {
         processedSize += file.size;
         setCompleted((processedSize / totalSize) * 100);
       }
-      setAnnotations(results);
+      setItemSuggestedAnnotations(results);
     } else {
     }
     setItemProgressDialogOpen(false);
   };
 
-  const verify = async () => {
+  const submit = async () => {
+    setItemProgressDialogOpen(true);
+    if (sourceType === "files") {
+      const totalSize = files
+        .map(f => f.size)
+        .reduce((s1, s2) => s1 + s2, 0);
+      let processedSize = 0.0;
+      setCompleted(0);
+      const results = [];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        setCurrentItem(file.name);
+        const annotations = itemSelectedAnnotations.find(i => i.uri === file.name).resources.map(r => r.uri);
+        const doc = {
+          uri: file.name,
+          label: file.name,
+          annotations: annotations
+        };
+        await indexService.indexFileAsync(file, doc, keycloak.idToken);
+        processedSize += file.size;
+        setCompleted((processedSize / totalSize) * 100);
+      }
+      setItemSuggestedAnnotations(results);
+    } else {
 
+    }
+    setItemProgressDialogOpen(false);
   };
 
   return (
@@ -159,11 +198,14 @@ function AddDocumentsDialog({open, onClose}) {
               </Step>
             ))}
           </Stepper>
-          {activeStep === 0 && <SelectSource onFilesChanged={handleFilesChanged}
-                                             onUrlsChanged={handleUrlsChanged}
-                                             onSourceTypeChanged={handleSourceTypeChanged}/>}
+          <SelectSource display={activeStep === 0 ? "" : "None"}
+                        onFilesChanged={handleFilesChanged}
+                        onUrlsChanged={handleUrlsChanged}
+                        onSourceTypeChanged={handleSourceTypeChanged}/>
 
-          {activeStep === 1 && <AnnotationResults annotations={annotations}/>}
+          <ReviewTable display={activeStep === 1 ? "" : "None"}
+                       suggestedAnnotations={itemSuggestedAnnotations}
+                       onUpdate={handleAnnotationsSelected}/>
         </DialogContent>
         <DialogActions>
           <Button
@@ -172,11 +214,17 @@ function AddDocumentsDialog({open, onClose}) {
             className={classes.backButton}>
             Back
           </Button>
-          {(activeStep === 0 || activeStep === 1) && <Button disabled={!nextButtonEnabled}
-                                                             variant="contained"
-                                                             color="primary"
-                                                             onClick={handleNext}>
+          {activeStep === 0 && <Button disabled={!nextButtonEnabled}
+                                       variant="contained"
+                                       color="primary"
+                                       onClick={handleNext}>
             Next
+          </Button>}
+          {activeStep === 1 && <Button disabled={!nextButtonEnabled}
+                                       variant="contained"
+                                       color="primary"
+                                       onClick={handleSubmit}>
+            Submit
           </Button>}
         </DialogActions>
       </Dialog>

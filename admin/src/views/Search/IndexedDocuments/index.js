@@ -37,7 +37,7 @@ function IndexedDocuments() {
           onSearch={handleSearch}/>
         <Results
           className={classes.results}
-          customers={[]}/>
+          documents={[]}/>
       </Container>
     </Page>
   );

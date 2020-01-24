@@ -12,7 +12,8 @@ import org.mapstruct.Mappings;
 public interface AnnotationResourceMapper {
     @Mappings({
             @Mapping(target = "source", ignore = true),
-            @Mapping(target = "prefLabel", ignore = true)
+            @Mapping(target = "prefLabel", ignore = true),
+            @Mapping(target = "context", ignore = true)
     })
     AnnotationResource fromDBPediaAnnotationResource(DBPediaAnnotationResource dbpediaAnnotationResource);
 }

@@ -43,8 +43,8 @@ services:
     container_name: virtuoso
     environment:
       SPARQL_UPDATE: "true"
-      VIRT_Parameters_NumberOfBuffers: 2720000
-      VIRT_Parameters_MaxDirtyBuffers: 2000000
+      VIRT_Parameters_NumberOfBuffers: 1360000
+      VIRT_Parameters_MaxDirtyBuffers: 1000000
     volumes:
       - virtuoso:/data
     ports:
@@ -62,6 +62,7 @@ services:
       - 9300:9300
     environment:
       - discovery.type=single-node
+      - cluster.name=semplify
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
     networks:

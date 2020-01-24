@@ -12,7 +12,7 @@ function ItemProgressDialog({open, onCancel, currentItem, completed}) {
         maxWidth="md">
         <DialogContent>
           <DialogContentText>
-            {`Analysing ${currentItem}`}
+            ${currentItem}
           </DialogContentText>
           <LinearProgress variant="determinate" value={completed}/>
         </DialogContent>

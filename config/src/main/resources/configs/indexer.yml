@@ -1,0 +1,12 @@
+server:
+  port: 8953
+
+spring:
+  data:
+    elasticsearch:
+      client:
+        reactive:
+          endpoints: localhost:9200
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
