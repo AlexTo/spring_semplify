@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/semplify
+    url: jdbc:postgresql://postgresql:5433/semplify
     username: semplify
     password: password
   jpa:
@@ -28,13 +28,6 @@ app:
     token-prefix: Bearer
 
 
-poolparty:
-  host: dl0475odhub006.nsw.education
-  port: 80
-  username: poolparty
-  password: password
-  projectId: 1E2601F1-B5C8-0001-164D-C9001170CFD0
 
-spotlight:
-  host: localhost
-  port: 10000
+
+

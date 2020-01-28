@@ -10,4 +10,5 @@
       "type": "java.lang.String",
       "description": "Description for app.security.token-prefix."
     }
-  ] }
+  ]
+}

@@ -9,9 +9,8 @@ const useStyles = makeStyles(() => ({
     root: {}
 }));
 
-function Header({className, ...rest}) {
+function Header({className, onAddDocument, ...rest}) {
     const classes = useStyles();
-    const [addDocumentDialogOpen, setAddDocumentDialogOpen] = useState(false);
 
     return (
         <div {...rest} className={clsx(classes.root, className)}>
@@ -34,14 +33,14 @@ function Header({className, ...rest}) {
                     </Typography>
                 </Grid>
                 <Grid item>
-                    <Button onClick={() => setAddDocumentDialogOpen(true)}
+                    <Button onClick={onAddDocument}
                             color="primary"
                             variant="contained">
                         Add documents
                     </Button>
                 </Grid>
             </Grid>
-            <AddDocumentsDialog open={addDocumentDialogOpen} onClose={() => setAddDocumentDialogOpen(false)}/>
+
         </div>
     );
 }

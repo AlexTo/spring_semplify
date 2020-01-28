@@ -10,7 +10,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>graphql</artifactId>
-
+    <properties>
+        <graphql-spring-boot-starter-webflux.version>6.0.1</graphql-spring-boot-starter-webflux.version>
+        <graphql-kickstart-spring-boot-starter-tools.version>6.0.1</graphql-kickstart-spring-boot-starter-tools.version>
+        <graphql-java-tools.version>5.7.1</graphql-java-tools.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -40,5 +44,21 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.graphql-java-kickstart</groupId>
+            <artifactId>graphql-kickstart-spring-boot-starter-tools</artifactId>
+            <version>${graphql-kickstart-spring-boot-starter-tools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.graphql-java-kickstart</groupId>
+            <artifactId>graphql-kickstart-spring-boot-starter-webflux</artifactId>
+            <version>${graphql-spring-boot-starter-webflux.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.graphql-java-kickstart</groupId>
+            <artifactId>graphql-java-tools</artifactId>
+            <version>${graphql-java-tools.version}</version>
+        </dependency>
+
     </dependencies>
 </project>

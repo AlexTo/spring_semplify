@@ -1,4 +1,4 @@
-package ai.semplify.indexer.models;
+package ai.semplify.graphql.models;
 
 import lombok.Data;
 

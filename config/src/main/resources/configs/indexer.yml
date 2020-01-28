@@ -6,7 +6,7 @@ spring:
     elasticsearch:
       client:
         reactive:
-          endpoints: localhost:9200
+          endpoints: elasticsearch:9200
   elasticsearch:
     rest:
-      uris: http://localhost:9200
+      uris: http://elasticsearch:9200

@@ -17,7 +17,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import SelectSource from "./SelectSource";
 import ItemProgressDialog from "./ItemProgressDialog";
 import {useKeycloak} from "@react-keycloak/web";
-import {indexService, nerService} from "../../../../services";
+import {searchService, nerService} from "../../../../services";
 import ReviewTable from "./ReviewTable";
 
 const useStyles = makeStyles(theme => ({
@@ -38,7 +38,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-function AddDocumentsDialog({open, onClose}) {
+function AddDocumentsDialog({open, onClose, onSaved}) {
 
   const classes = useStyles();
   const {keycloak} = useKeycloak();
@@ -62,6 +62,19 @@ function AddDocumentsDialog({open, onClose}) {
     {value: 0, label: 'Select source'},
     {value: 1, label: 'Review'}
   ];
+
+  useEffect(() => {
+    if (!open) {
+      setActiveStep(0);
+      setFiles([]);
+      setUrls([]);
+      setCurrentItem(null);
+      setItemSuggestedAnnotations([]);
+      setItemSelectedAnnotations([]);
+      setSourceType('files');
+      setCompleted(0);
+    }
+  }, [open]);
 
   useEffect(() => {
     setItemSelectedAnnotations(itemSuggestedAnnotations);
@@ -156,7 +169,6 @@ function AddDocumentsDialog({open, onClose}) {
         .reduce((s1, s2) => s1 + s2, 0);
       let processedSize = 0.0;
       setCompleted(0);
-      const results = [];
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         setCurrentItem(file.name);
@@ -166,15 +178,15 @@ function AddDocumentsDialog({open, onClose}) {
           label: file.name,
           annotations: annotations
         };
-        await indexService.indexFileAsync(file, doc, keycloak.idToken);
+        await searchService.indexFileAsync(file, doc, keycloak.idToken);
         processedSize += file.size;
         setCompleted((processedSize / totalSize) * 100);
       }
-      setItemSuggestedAnnotations(results);
     } else {
 
     }
     setItemProgressDialogOpen(false);
+    onSaved();
   };
 
   return (
@@ -199,6 +211,7 @@ function AddDocumentsDialog({open, onClose}) {
             ))}
           </Stepper>
           <SelectSource display={activeStep === 0 ? "" : "None"}
+                        files={files}
                         onFilesChanged={handleFilesChanged}
                         onUrlsChanged={handleUrlsChanged}
                         onSourceTypeChanged={handleSourceTypeChanged}/>

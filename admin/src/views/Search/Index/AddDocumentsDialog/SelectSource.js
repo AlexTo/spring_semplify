@@ -12,13 +12,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function SelectSource({onFilesChanged, onSourceTypeChanged, display}) {
+function SelectSource({files, onFilesChanged, onSourceTypeChanged, display}) {
 
   const classes = useStyles();
 
   const [currentTab, setCurrentTab] = useState('files');
-  const [files, setFiles] = useState([]);
-  const [urls, setUrls] = useState([]);
 
 
   const tabs = [
@@ -29,11 +27,6 @@ function SelectSource({onFilesChanged, onSourceTypeChanged, display}) {
   const handleTabsChange = (event, value) => {
     setCurrentTab(value);
     onSourceTypeChanged(value);
-  };
-
-  const handleFilesChanged = (files) => {
-    setFiles(files);
-    onFilesChanged(files);
   };
 
   return (
@@ -53,7 +46,7 @@ function SelectSource({onFilesChanged, onSourceTypeChanged, display}) {
       </Tabs>
       <Divider className={classes.divider}/>
       <div className={classes.content}>
-        {currentTab === 'files' && <FilesDropzone onFilesChanged={handleFilesChanged}/>}
+        {currentTab === 'files' && <FilesDropzone files={files} onFilesChanged={onFilesChanged}/>}
       </div>
     </div>
   )

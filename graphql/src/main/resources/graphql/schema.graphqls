@@ -1,0 +1,16 @@
+schema {
+    query: Query
+    subscription: Subscription
+}
+
+type Query {
+    search: [Doc!]
+}
+
+type Subscription {
+    search: Int
+}
+
+type Doc {
+    uri: String!
+}

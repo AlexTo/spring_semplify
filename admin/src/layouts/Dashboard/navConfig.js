@@ -40,7 +40,7 @@ export default [
         icon: PageviewIcon,
         items: [
           {
-            title: 'Indexed Documents',
+            title: 'Index',
             href: '/search/index',
           }
         ]

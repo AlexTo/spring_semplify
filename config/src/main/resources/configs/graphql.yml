@@ -1,2 +1,11 @@
 server:
   port: 8954
+
+graphql:
+  servlet:
+    mapping: /
+
+spring:
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false

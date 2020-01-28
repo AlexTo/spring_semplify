@@ -7,7 +7,7 @@ import {Provider as StoreProvider} from 'react-redux';
 import {ThemeProvider} from '@material-ui/styles';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import 'react-perfect-scrollbar/dist/css/styles.css';
-import {theme, themeWithRtl} from './theme';
+import {theme} from './theme';
 import {configureStore} from './store';
 import routes from './routes';
 import GoogleAnalytics from './components/GoogleAnalytics';
@@ -23,8 +23,11 @@ import './assets/scss/main.scss';
 import * as Keycloak from "keycloak-js";
 import {KeycloakProvider} from "@react-keycloak/web";
 
+const keycloakHost = process.env.REACT_APP_KEYCLOAK_HOST;
+const keycloakPort = process.env.REACT_APP_KEYCLOAK_PORT;
+
 const initOptions = {
-  url: 'http://localhost:9000/auth',
+  url: `http://${keycloakHost}:${keycloakPort}/auth`,
   realm: 'semplify',
   clientId: 'semplify-app',
   onLoad: 'login-required'

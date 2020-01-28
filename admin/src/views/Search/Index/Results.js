@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {Link as RouterLink} from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -22,8 +21,6 @@ import {
   TableRow,
   Typography
 } from '@material-ui/core';
-import getInitials from 'src/utils/getInitials';
-import ReviewStars from 'src/components/ReviewStars';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import TableEditBar from 'src/components/TableEditBar';
 
@@ -139,7 +136,7 @@ function Results({className, documents, ...rest}) {
                         onChange={handleSelectAll}
                       />
                     </TableCell>
-                    <TableCell>Name</TableCell>
+                    <TableCell>URI</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

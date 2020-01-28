@@ -67,7 +67,6 @@
             <artifactId>tika-parsers</artifactId>
             <version>${tika.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>

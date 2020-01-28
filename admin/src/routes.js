@@ -5,7 +5,7 @@ import {Redirect} from 'react-router-dom';
 import ErrorLayout from './layouts/Error';
 import DashboardLayout from './layouts/Dashboard';
 import OverviewView from './views/Overview';
-import IndexedDocuments from './views/Search/IndexedDocuments';
+import Index from './views/Search/Index';
 
 export default [
   {
@@ -49,7 +49,7 @@ export default [
       {
         path: '/search/index',
         exact: true,
-        component: IndexedDocuments
+        component: Index
       },
       {
         component: () => <Redirect to="/errors/error-404"/>

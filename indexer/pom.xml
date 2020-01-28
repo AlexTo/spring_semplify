@@ -11,7 +11,6 @@
 
     <artifactId>indexer</artifactId>
     <properties>
-        <spring-data-elasticsearch.version>3.2.4.RELEASE</spring-data-elasticsearch.version>
         <crawler4j.version>4.4.0</crawler4j.version>
         <tika.version>1.23</tika.version>
     </properties>
@@ -62,6 +61,16 @@
             <groupId>edu.uci.ics</groupId>
             <artifactId>crawler4j</artifactId>
             <version>${crawler4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct.version}</version>
         </dependency>
     </dependencies>
 </project>
