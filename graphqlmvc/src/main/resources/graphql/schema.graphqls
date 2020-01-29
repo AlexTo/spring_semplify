@@ -1,0 +1,16 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query {
+    search: [Doc!]
+}
+
+type Mutation {
+}
+
+type Doc {
+    uri: String!
+    label: String
+}

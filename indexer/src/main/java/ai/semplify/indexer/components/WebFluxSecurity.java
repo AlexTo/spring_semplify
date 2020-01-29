@@ -19,9 +19,6 @@ import java.util.Base64;
 @EnableWebFluxSecurity
 public class WebFluxSecurity {
 
-    @Value("${app.security.public-key}")
-    private String publicKey;
-
     @Bean
     SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http.authorizeExchange()
@@ -30,13 +27,5 @@ public class WebFluxSecurity {
                 .oauth2ResourceServer()
                 .jwt();
         return http.build();
-    }
-
-    @Bean
-    public ReactiveJwtDecoder jwtDecoder() throws NoSuchAlgorithmException, InvalidKeySpecException {
-        var kf = KeyFactory.getInstance("RSA");
-        var keySpecX509 = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKey));
-        var pubKey = (RSAPublicKey) kf.generatePublic(keySpecX509);
-        return NimbusReactiveJwtDecoder.withPublicKey(pubKey).build();
     }
 }

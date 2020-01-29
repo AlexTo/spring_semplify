@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/ner")
@@ -21,6 +22,11 @@ public class AnnotationController {
 
     public AnnotationController(NERService nerService) {
         this.nerService = nerService;
+    }
+
+    @GetMapping("/test")
+    public Mono<String> test(Principal principal) {
+        return Mono.just("hello " + principal.getName());
     }
 
     @PostMapping("text")

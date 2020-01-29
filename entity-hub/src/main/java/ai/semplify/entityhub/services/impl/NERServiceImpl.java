@@ -67,7 +67,7 @@ public class NERServiceImpl implements NERService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
         params.add("text", textAnnotationRequest.getText());
-        params.add("confidence", "1.0");
+        params.add("confidence", "0.8");
 
         return spotlightWebClient.post().uri("/rest/annotate")
                 .bodyValue(params)
@@ -85,7 +85,7 @@ public class NERServiceImpl implements NERService {
                                 .distinct()
                                 .peek(resource -> {
                                     var contextStart = Math.max(resource.getOffset() - 50, 0);
-                                    var contextEnd = Math.min(resource.getOffset() + 50, text.length() - 1);
+                                    var contextEnd = Math.min(resource.getOffset() + 50, text.length());
                                     resource.setSource("dbpedia");
                                     resource.setContext(text.substring(contextStart, contextEnd));
                                 })

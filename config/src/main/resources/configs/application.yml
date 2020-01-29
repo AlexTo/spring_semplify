@@ -16,16 +16,17 @@ spring:
   codec:
     max-in-memory-size: "500MB"
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://keycloak:9000/auth/realms/semplify/protocol/openid-connect/certs
+
 management:
   endpoints:
     web:
       exposure:
         include: "*"
-
-app:
-  security:
-    public-key: ${SEMPLIFY_APP_SECURITY_PUBLICKEY}
-    token-prefix: Bearer
 
 
 

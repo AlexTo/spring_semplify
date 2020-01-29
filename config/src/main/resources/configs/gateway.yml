@@ -8,4 +8,3 @@ spring:
         locator:
           enabled: true
           lowerCaseServiceId: true
-
