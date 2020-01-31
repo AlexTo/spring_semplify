@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.TermVector;
 
 import java.util.List;
 
@@ -19,6 +20,6 @@ public class Doc {
 
     private List<String> annotations;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text, termVector = TermVector.with_offsets)
     private String content;
 }

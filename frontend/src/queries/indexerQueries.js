@@ -12,6 +12,10 @@ export const indexerQueries = {
             uri
             label
           }
+          highlightFields {
+            fieldName
+            highlights
+          }
         }
       }
     }

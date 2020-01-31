@@ -2,6 +2,7 @@ package ai.semplify.indexer.models;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,5 +13,5 @@ public class SearchHit {
     private float score;
     private List<Object> sortValues;
     private Doc content;
-    private Map<String, List<String>> highlightFields = new LinkedHashMap();
+    private List<HighlightField> highlightFields = new ArrayList<>();
 }

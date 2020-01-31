@@ -85,8 +85,7 @@ function SearchHitCard({searchHit, className, ...rest}) {
           <Typography
             color="textSecondary"
             variant="subtitle2">
-            We&apos;re looking for experienced Developers and Product Designers to
-            come aboard and help us build succesful businesses through software.
+            {searchHit.highlightFields[0].highlights[0].replace(/<em>/g, "").replace(/<\/em>/g, "")}
           </Typography>
         </div>
         <Divider/>

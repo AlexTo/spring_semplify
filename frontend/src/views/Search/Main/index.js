@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import {makeStyles} from '@material-ui/styles';
-import {Container} from '@material-ui/core';
+import {Container, Grid} from '@material-ui/core';
 import Page from 'src/components/Page';
 import SearchHits from './SearchHits';
 import {useSelector} from "react-redux";
@@ -12,8 +12,12 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3)
   },
+  container: {
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3)
+  },
   results: {
-    marginTop: theme.spacing(6)
+    marginTop: theme.spacing(3)
   }
 }));
 
@@ -38,9 +42,10 @@ function Main() {
     <Page
       className={classes.root}
       title="Search">
-      <Container maxWidth="lg">
-        <SearchHits result={data.search} className={classes.results}/>
-      </Container>
+      <Grid container className={classes.container}>
+        <Grid item xs={3}></Grid>
+        <Grid item xs={9}><SearchHits result={data.search} className={classes.results}/></Grid>
+      </Grid>
     </Page>
   );
 }

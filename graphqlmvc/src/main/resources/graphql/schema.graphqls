@@ -26,6 +26,7 @@ type SearchHit {
     id: String!
     score: Float
     content: Doc!
+    highlightFields: [HighlightField!]
 }
 
 type SearchHits {
@@ -34,4 +35,9 @@ type SearchHits {
     maxScore: Float
     scrollId: String
     searchHits: [SearchHit!]
+}
+
+type HighlightField {
+    fieldName: String!
+    highlights: [String!]
 }
