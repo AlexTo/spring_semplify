@@ -4,13 +4,34 @@ schema {
 }
 
 type Query {
-    search: [Doc!]
+    search(query: CriteriaQuery!): SearchHits!
 }
 
 type Mutation {
 }
 
+input CriteriaQuery {
+    q: String!
+    page: Int
+    size: Int
+}
+
 type Doc {
     uri: String!
-    label: String
+    label: String!
+    annotations: [String!]
+}
+
+type SearchHit {
+    id: String!
+    score: Float
+    content: Doc!
+}
+
+type SearchHits {
+    totalHits: Int
+    totalHitsRelation: String!
+    maxScore: Float
+    scrollId: String
+    searchHits: [SearchHit!]
 }

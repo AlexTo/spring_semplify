@@ -54,7 +54,7 @@ services:
       - semplify
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.4
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
     container_name: elasticsearch
     hostname: elasticsearch
     ports:
@@ -69,7 +69,7 @@ services:
       - semplify
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:6.8.4
+    image: docker.elastic.co/kibana/kibana:7.5.2
     container_name: kibana
     hostname: kibana
     ports:

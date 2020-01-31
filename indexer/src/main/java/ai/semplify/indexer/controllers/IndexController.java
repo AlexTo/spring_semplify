@@ -25,7 +25,7 @@ public class IndexController {
 
     @PostMapping(value = "files/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Doc> indexFile(@RequestPart String doc, @RequestPart("file") FilePart filePart) throws JsonProcessingException {
+    public Mono<String> indexFile(@RequestPart String doc, @RequestPart("file") FilePart filePart) throws JsonProcessingException {
         //TODO: Configure Message Converters to automatically convert string to json
         var docObj = objectMapper.readValue(doc, Doc.class);
         return indexService.indexFile(docObj, filePart);
