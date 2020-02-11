@@ -1,5 +1,5 @@
 server:
-  port: 8951
+  port: 12001
 
 spring:
   batch:
@@ -8,7 +8,7 @@ spring:
 
 spotlight:
   host: spotlight
-  port: 10000
+  port: 8902
 
 poolparty:
   host: poolparty

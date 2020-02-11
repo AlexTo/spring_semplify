@@ -1,5 +1,5 @@
 server:
-  port: 8954
+  port: 12003
 
 graphql:
   servlet:

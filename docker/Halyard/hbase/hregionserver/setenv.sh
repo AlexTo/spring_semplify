@@ -1,0 +1,1 @@
+export CLASSPATH="$CATALINA_HOME/lib/servlet-api.jar:"`hbase classpath`

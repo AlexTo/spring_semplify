@@ -1,0 +1,99 @@
+version: "3"
+
+services:
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    restart: always
+    ports:
+      - 9870:9870
+      - 9000:9000
+    volumes:
+      - hadoop_namenode:/hadoop/dfs/name
+    environment:
+      - CLUSTER_NAME=semplify
+    env_file:
+      - ./hadoop.env
+
+  datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode
+    restart: always
+    volumes:
+      - hadoop_datanode:/hadoop/dfs/data
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870"
+    env_file:
+      - ./hadoop.env
+
+  resourcemanager:
+    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
+    container_name: resourcemanager
+    restart: always
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864"
+    env_file:
+      - ./hadoop.env
+
+  nodemanager1:
+    image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
+    container_name: nodemanager
+    restart: always
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
+    env_file:
+      - ./hadoop.env
+
+  historyserver:
+    image: bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8
+    container_name: historyserver
+    restart: always
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
+    volumes:
+      - hadoop_historyserver:/hadoop/yarn/timeline
+    env_file:
+      - ./hadoop.env
+
+  zoo:
+    image: zookeeper:3.4.14
+    container_name: zoo
+    hostname: zoo
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888
+    ports:
+      - 2181:2181
+
+  hbase-master:
+    build:
+      context: ./hbase/hmaster
+    image: tonhudung/hbase-master:1.0.0-hbase-2.2.3
+    container_name: hbase-master
+    hostname: hbase-master
+    env_file:
+      - ./hbase-distributed-local.env
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870 datanode:9846 zoo:2181"
+    ports:
+      - 16010:16010
+
+  hbase-region:
+    build:
+      context: ./hbase/hregionserver
+    image: tonhudung/hbase-regionserver:1.0.0-hbase-2.2.3
+    container_name: hbase-regionserver
+    hostname: hbase-regionserver
+    env_file:
+      - ./hbase-distributed-local.env
+    environment:
+      HBASE_CONF_hbase_regionserver_hostname: hbase-region
+      SERVICE_PRECONDITION: "namenode:9870 datanode:9846 zoo:2181 hbase-master:16010"
+    ports:
+      - 16030:16030
+      - 11001:8080
+
+volumes:
+  hadoop_namenode:
+  hadoop_datanode:
+  hadoop_historyserver:

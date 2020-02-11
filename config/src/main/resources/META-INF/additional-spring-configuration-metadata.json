@@ -1,14 +1,9 @@
 {
   "properties": [
     {
-      "name": "app.security.public-key",
+      "name": "app.proxy.host",
       "type": "java.lang.String",
-      "description": "Description for app.security.public-key."
-    },
-    {
-      "name": "app.security.token-prefix",
-      "type": "java.lang.String",
-      "description": "Description for app.security.token-prefix."
+      "description": "Description for app.proxy.host."
     }
   ]
 }

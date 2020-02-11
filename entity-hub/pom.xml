@@ -11,8 +11,8 @@
 
     <artifactId>entity-hub</artifactId>
     <properties>
-        <jena-arq.version>3.13.1</jena-arq.version>
         <tika.version>1.23</tika.version>
+        <rdf4j.version>3.0.4</rdf4j.version>
     </properties>
     <dependencies>
         <dependency>
@@ -49,9 +49,9 @@
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.jena</groupId>
-            <artifactId>jena-arq</artifactId>
-            <version>${jena-arq.version}</version>
+            <groupId>org.eclipse.rdf4j</groupId>
+            <artifactId>rdf4j-client</artifactId>
+            <type>pom</type>
         </dependency>
         <dependency>
             <groupId>org.apache.tika</groupId>
@@ -74,4 +74,15 @@
             <version>${mapstruct.version}</version>
         </dependency>
     </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.eclipse.rdf4j</groupId>
+                <artifactId>rdf4j-bom</artifactId>
+                <version>${rdf4j.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

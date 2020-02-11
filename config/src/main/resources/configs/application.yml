@@ -28,6 +28,10 @@ management:
       exposure:
         include: "*"
 
+app:
+  proxy:
+    host: proxy.det.nsw.edu.au
+    port: 80
 
 
 
