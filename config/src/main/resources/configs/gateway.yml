@@ -1,7 +1,8 @@
 server:
-  port: 12000
+  port: 12001
 
 spring:
+
   cloud:
     gateway:
       discovery:

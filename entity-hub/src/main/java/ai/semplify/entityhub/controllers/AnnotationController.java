@@ -3,14 +3,19 @@ package ai.semplify.entityhub.controllers;
 import ai.semplify.entityhub.models.Annotation;
 import ai.semplify.entityhub.models.TextAnnotationRequest;
 import ai.semplify.entityhub.services.NERService;
+import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
 
 @RestController
@@ -24,20 +29,14 @@ public class AnnotationController {
         this.nerService = nerService;
     }
 
-    @GetMapping("/test")
-    public Mono<String> test(Principal principal) {
-        return Mono.just("hello " + principal.getName());
-    }
-
     @PostMapping("text")
-    @ResponseStatus(HttpStatus.OK)
-    public Mono<Annotation> annotateText(@Valid @RequestBody TextAnnotationRequest textAnnotationRequest) {
-        return nerService.annotateText(textAnnotationRequest);
+    public ResponseEntity<Annotation> annotateText(@Valid @RequestBody TextAnnotationRequest textAnnotationRequest) {
+        return ResponseEntity.ok(nerService.annotateText(textAnnotationRequest));
     }
 
     @PostMapping("file")
-    @ResponseStatus(HttpStatus.OK)
-    public Mono<Annotation> annotateFile(@RequestPart("file") FilePart filePart) {
-        return nerService.annotateFile(filePart);
+    public ResponseEntity<Annotation> annotateFile(@RequestParam("file") MultipartFile filePart, Principal principal)
+            throws TikaException, IOException, SAXException {
+        return ResponseEntity.ok(nerService.annotateFile(filePart));
     }
 }

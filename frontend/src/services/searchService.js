@@ -8,13 +8,13 @@ export const searchService = {
   query
 };
 
-async function indexFileAsync(file, doc, token) {
+async function indexFileAsync(file, documentMetadata, token) {
   const url = `${serviceUri}/index/files/`;
   return await request
     .post(url)
     .set('Authorization', `Bearer ${token}`)
     .attach('file', file)
-    .field('doc', JSON.stringify(doc));
+    .field('documentMetadata', JSON.stringify(documentMetadata));
 }
 
 function query(q) {

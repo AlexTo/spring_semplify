@@ -1,7 +1,7 @@
 package ai.semplify.entityhub.mappers;
 
 import ai.semplify.entityhub.models.Annotation;
-import ai.semplify.entityhub.models.spotlight.DBPediaAnnotation;
+import ai.semplify.feignclients.clients.spotlight.models.DBPediaAnnotation;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 

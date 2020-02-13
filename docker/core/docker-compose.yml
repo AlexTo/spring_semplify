@@ -23,7 +23,7 @@ services:
     hostname: keycloak
     container_name: keycloak
     ports:
-      - 11000:8080
+      - 9000:8080
     environment:
       KEYCLOAK_USER: semplify
       KEYCLOAK_PASSWORD: password
@@ -70,7 +70,7 @@ services:
     hostname: spotlight
     container_name: spotlight
     ports:
-      - 8902:80
+      - 11001:80
     networks:
       - semplify
     command: /bin/sh -c "/bin/spotlight.sh"
@@ -90,10 +90,36 @@ services:
   #    - rdf4j_data:/var/rdf4j
   #    - rdf4j_logs:/usr/local/tomcat/logs
 
+  virtuoso:
+    image: tenforce/virtuoso
+    hostname: virtuoso
+    container_name: virtuoso
+    environment:
+      SPARQL_UPDATE: "true"
+      VIRT_Parameters_NumberOfBuffers: 1360000
+      VIRT_Parameters_MaxDirtyBuffers: 1000000
+    volumes:
+      - virtuoso:/data
+    ports:
+      - 8890:8890
+      - 1111:1111
+
+  redis:
+    image: 'bitnami/redis:5.0'
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/bitnami/redis/data
 
 volumes:
   postgres:
   elasticsearch:
+  virtuoso:
+  redis:
 
 networks:
   semplify:

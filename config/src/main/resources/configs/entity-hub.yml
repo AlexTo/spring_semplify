@@ -1,18 +1,7 @@
 server:
-  port: 12001
+  port: 12002
 
 spring:
   batch:
     job:
       enabled: false
-
-spotlight:
-  host: spotlight
-  port: 8902
-
-poolparty:
-  host: poolparty
-  port: 80
-  username: poolparty
-  password: password
-  projectId: 1E14BE74-FD54-0001-663C-F0601ECA1220

@@ -29,7 +29,6 @@
         <module>indexer</module>
         <module>fileserver</module>
         <module>graphql</module>
-        <module>graphqlmvc</module>
         <module>feign-clients</module>
     </modules>
     <properties>

@@ -10,6 +10,7 @@ import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -34,30 +35,19 @@ public class FileServicePostgresImpl implements FileService {
     }
 
     @Override
-    public Mono<File> store(String fileName, String contentType, byte[] content) {
+    public File store(String fileName, String contentType, byte[] content) {
 
         var entity = new ai.semplify.fileserver.entities.File();
         entity.setName(fileName);
         entity.setContentType(contentType);
         entity.setContent(content);
 
-        return Mono.just(mapper.toModel(repo.save(entity)));
+        return mapper.toModel(repo.save(entity));
     }
 
     @Override
-    public Mono<File> store(FilePart filePart) {
-        return DataBufferUtils.join(filePart.content())
-                .flatMap(dataBuffer -> {
-                    try {
-                        var content = StreamUtils.copyToByteArray(dataBuffer.asInputStream());
-                        return store(filePart.filename(),
-                                Objects.requireNonNull(filePart.headers().getContentType()).toString(),
-                                content);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        return Mono.error(new RuntimeException(e));
-                    }
-                });
+    public File store(MultipartFile filePart) throws IOException {
+        return store(filePart.getName(), filePart.getContentType(), filePart.getBytes());
     }
 
     @Override

@@ -3,6 +3,7 @@ package ai.semplify.indexer.models;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class SearchHits {
@@ -11,4 +12,5 @@ public class SearchHits {
     private float maxScore;
     private String scrollId;
     private List<? extends SearchHit> searchHits;
+    private Map<String, Integer> facets;
 }

@@ -1,14 +1,12 @@
 package ai.semplify.fileserver.entities;
 
 import lombok.Data;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @Data
@@ -20,7 +18,7 @@ public class File {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotEmpty
     private String name;
 
     private String module;
@@ -31,10 +29,8 @@ public class File {
     private byte[] content;
 
     @CreatedDate
-    @NotNull
     private Date createdDate;
 
     @LastModifiedDate
-    @NotNull
     private Date lastModifiedDate;
 }

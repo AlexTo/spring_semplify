@@ -1,7 +1,7 @@
 package ai.semplify.graphql;
 
-import ai.semplify.graphql.resolvers.Query;
-import ai.semplify.graphql.resolvers.Subscription;
+import ai.semplify.graphql.resolvers.MutationResolver;
+import ai.semplify.graphql.resolvers.QueryResolver;
 import com.coxautodev.graphql.tools.SchemaParser;
 import graphql.schema.GraphQLSchema;
 import org.springframework.context.annotation.Bean;
@@ -10,20 +10,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class GraphQLProvider {
 
-    private Subscription subscription;
-    private Query query;
+    private final QueryResolver queryResolver;
+    private final MutationResolver mutationResolver;
 
-    public GraphQLProvider(Subscription subscription, Query query) {
-        this.subscription = subscription;
-        this.query = query;
+
+    public GraphQLProvider(QueryResolver queryResolver,
+                           MutationResolver mutationResolver) {
+        this.queryResolver = queryResolver;
+        this.mutationResolver = mutationResolver;
     }
 
     @Bean
     public GraphQLSchema graphQLSchema() {
-
         return SchemaParser.newParser()
                 .file("graphql/schema.graphqls")
-                .resolvers(query, subscription)
+                .resolvers(queryResolver, mutationResolver)
                 .build()
                 .makeExecutableSchema();
     }

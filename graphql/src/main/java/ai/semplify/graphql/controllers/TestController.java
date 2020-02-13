@@ -1,24 +1,18 @@
 package ai.semplify.graphql.controllers;
 
-import ai.semplify.graphql.models.Doc;
-import ai.semplify.graphql.services.IndexService;
+import ai.semplify.feignclients.clients.entityhub.EntityHubFeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Flux;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/")
 public class TestController {
 
-    private IndexService indexService;
+    private EntityHubFeignClient entityHubFeignClient;
 
-    public TestController(IndexService indexService) {
-        this.indexService = indexService;
-    }
-
-    @GetMapping("")
-    public Flux<Doc> test() {
-        return indexService.findAll();
+    public TestController(EntityHubFeignClient entityHubFeignClient) {
+        this.entityHubFeignClient = entityHubFeignClient;
     }
 }

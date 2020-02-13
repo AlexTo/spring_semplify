@@ -1,11 +1,18 @@
 package ai.semplify.indexer.services;
 
-import ai.semplify.indexer.models.Doc;
-import org.springframework.http.codec.multipart.FilePart;
-import reactor.core.publisher.Mono;
+import ai.semplify.indexer.entities.postgresql.Document;
+import ai.semplify.indexer.models.DocumentMetadata;
+import org.apache.tika.exception.TikaException;
+import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
 
 public interface IndexService {
 
-    Mono<String> indexFile(Doc doc, FilePart filePart);
+    void submitFile(DocumentMetadata doc, MultipartFile filePart) throws IOException;
+
+    void indexFile(Document document) throws TikaException, SAXException, IOException;
+
 
 }

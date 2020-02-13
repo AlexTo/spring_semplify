@@ -1,62 +1,36 @@
 package ai.semplify.entityhub.components;
 
 import ai.semplify.entityhub.config.PoolParty;
+import ai.semplify.entityhub.config.SPARQLEndpoint;
 import ai.semplify.entityhub.config.Spotlight;
+import lombok.var;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.sparql.SPARQLRepository;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.oauth2.server.resource.web.reactive.function.client.ServerBearerExchangeFilterFunction;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.ExchangeStrategies;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
 public class Beans {
 
     private final PoolParty poolParty;
     private final Spotlight spotlight;
+    private final SPARQLEndpoint sparqlEndpoint;
 
-    public Beans(PoolParty poolParty, Spotlight spotlight) {
+    public Beans(PoolParty poolParty, Spotlight spotlight, SPARQLEndpoint sparqlEndpoint) {
         this.poolParty = poolParty;
         this.spotlight = spotlight;
+        this.sparqlEndpoint = sparqlEndpoint;
     }
 
     @Bean
-    @LoadBalanced
-    WebClient.Builder loadBalancedWebClientBuilder() {
-        return WebClient.builder();
-    }
-
-    @Bean(name = "loadBalancedWebClient")
-    public WebClient loadBalancedWebClient(@LoadBalanced WebClient.Builder loadBalancedWebClientBuilder) {
-        return loadBalancedWebClientBuilder
-                .filter(new ServerBearerExchangeFilterFunction())
-                .build();
-    }
-
-    @Bean(name = "poolpartyWebClient")
-    public WebClient poolpartyWebClient() {
-        return WebClient.builder()
-                .defaultHeaders(httpHeaders ->
-                        httpHeaders.setBasicAuth(poolParty.getUsername(), poolParty.getPassword()))
-                .baseUrl(String.format("http://%s:%d", poolParty.getHost(), poolParty.getPort()))
-                .build();
-    }
-
-    @Bean(name = "spotlightWebClient")
-    public WebClient spotlightWebClient() {
-        return WebClient.builder()
-                .defaultHeaders(httpHeaders -> {
-                    httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
-                    httpHeaders.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
-                })
-                .baseUrl(String.format("http://%s:%d", spotlight.getHost(), spotlight.getPort()))
-                .exchangeStrategies(ExchangeStrategies.builder()
-                        .codecs(configurer -> configurer
-                                .defaultCodecs()
-                                .maxInMemorySize(16 * 1024 * 1024))
-                        .build())
-                .build();
+    public Repository repository() {
+        var repo = new SPARQLRepository(sparqlEndpoint.getUrl());
+        if (sparqlEndpoint.isAuth()) {
+            repo.setUsernameAndPassword(sparqlEndpoint.getUsername(), sparqlEndpoint.getPassword());
+        }
+        return repo;
     }
 }

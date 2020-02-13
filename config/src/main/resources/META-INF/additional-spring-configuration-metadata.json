@@ -4,6 +4,11 @@
       "name": "app.proxy.host",
       "type": "java.lang.String",
       "description": "Description for app.proxy.host."
+    },
+    {
+      "name": "app.proxy.port",
+      "type": "java.lang.String",
+      "description": "Description for app.proxy.port."
     }
   ]
 }
