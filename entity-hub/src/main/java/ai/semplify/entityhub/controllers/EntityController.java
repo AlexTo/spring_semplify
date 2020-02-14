@@ -21,8 +21,13 @@ public class EntityController {
         this.entityService = entityService;
     }
 
-    @PostMapping("funcs/isSubClassOfTransitive")
-    public ResponseEntity<TypeCheckResponse> isSubClassOfTransitive(@Valid @RequestBody TypeCheckRequest request) {
-        return ResponseEntity.ok(entityService.isSubClassOfTransitive(request));
+    @PostMapping("funcs/isSubClassOf")
+    public ResponseEntity<TypeCheckResponse> isSubClassOf(@Valid @RequestBody TypeCheckRequest request) {
+        return ResponseEntity.ok(entityService.isSubClassOf(request));
+    }
+
+    @PostMapping("funcs/isNarrowerConceptOf")
+    public ResponseEntity<TypeCheckResponse> isNarrowerConceptOf(@Valid @RequestBody TypeCheckRequest request) {
+        return ResponseEntity.ok(entityService.isNarrowerConceptOf(request));
     }
 }

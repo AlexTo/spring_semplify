@@ -5,6 +5,7 @@ import ai.semplify.entityhub.models.TypeCheckResponse;
 import ai.semplify.entityhub.services.EntityService;
 import lombok.var;
 import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.SKOS;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
@@ -22,12 +23,7 @@ public class EntityServiceImpl implements EntityService {
     }
 
     @Override
-    public TypeCheckResponse isOfType(TypeCheckRequest request) {
-        return null;
-    }
-
-    @Override
-    public TypeCheckResponse isSubClassOfTransitive(TypeCheckRequest request) {
+    public TypeCheckResponse isSubClassOf(TypeCheckRequest request) {
         var query = "SELECT * WHERE { " +
                 "  ?entity a ?someType . " +
                 "  ?someType rdfs:subClassOf* ?superClass " +
@@ -44,5 +40,25 @@ public class EntityServiceImpl implements EntityService {
             }
         }
 
+    }
+
+    @Override
+    public TypeCheckResponse isNarrowerConceptOf(TypeCheckRequest request) {
+        var query = "PREFIX skos: <" + SKOS.NAMESPACE + "> \n" +
+                "SELECT * WHERE { " +
+                "  ?entity a  skos:Concept . " +
+                "  ?entity skos:broader* ?someConcept " +
+                "  FILTER (?someConcept = ?type) " +
+                "}";
+        try (RepositoryConnection con = repo.getConnection()) {
+            var tupleQuery = con.prepareTupleQuery(query);
+            tupleQuery.setBinding("entity", valueFactory.createIRI(request.getEntity()));
+            tupleQuery.setBinding("type", valueFactory.createIRI(request.getType()));
+            try (TupleQueryResult result = tupleQuery.evaluate()) {
+                var response = new TypeCheckResponse();
+                response.setAns(result.hasNext());
+                return response;
+            }
+        }
     }
 }

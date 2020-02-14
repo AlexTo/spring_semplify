@@ -17,8 +17,8 @@ public class PoolPartyFeignClientConfiguration {
 
     @Bean
     public BasicAuthRequestInterceptor basicAuthRequestInterceptor(
-            @Value("${poolparty.user}") String user,
+            @Value("${poolparty.username}") String username,
             @Value("${poolparty.password}") String password) {
-        return new BasicAuthRequestInterceptor(user, password);
+        return new BasicAuthRequestInterceptor(username, password);
     }
 }

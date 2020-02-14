@@ -78,6 +78,8 @@ public class IndexServiceImpl implements IndexService {
         facets.put("http://dbpedia.org/ontology/Place", "Place");
         facets.put("http://dbpedia.org/ontology/Person", "Person");
         facets.put("http://dbpedia.org/ontology/Organisation", "Organisation");
+        facets.put("https://localhost/DoENSW/1102", "Numeracy Learning Progression");
+        facets.put("https://localhost/DoENSW/1729", "Literacy Learning Progression");
 
         if (document.getAnnotations() != null) {
             var indexedAnnotations = new HashSet<Annotation>();
@@ -90,7 +92,14 @@ public class IndexServiceImpl implements IndexService {
                     var typeCheckRequest = new TypeCheckRequest();
                     typeCheckRequest.setEntity(uri);
                     typeCheckRequest.setType(facet);
-                    var typeCheck = entityHubFeignClient.isSubClassOfTransitive(typeCheckRequest);
+                    var typeCheck = entityHubFeignClient.isSubClassOf(typeCheckRequest);
+                    if (typeCheck.getAns()) {
+                        var annotationClass = new AnnotationClass();
+                        annotationClass.setUri(facet);
+                        annotationClass.setLabel(facets.get(facet));
+                        annotationClasses.add(annotationClass);
+                    }
+                    typeCheck = entityHubFeignClient.isNarrowerConceptOf(typeCheckRequest);
                     if (typeCheck.getAns()) {
                         var annotationClass = new AnnotationClass();
                         annotationClass.setUri(facet);

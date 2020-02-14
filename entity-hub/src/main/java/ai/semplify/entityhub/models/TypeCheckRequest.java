@@ -11,4 +11,6 @@ public class TypeCheckRequest {
 
     @NotEmpty
     private String type;
+
+    private Boolean transitive;
 }

@@ -12,7 +12,7 @@
     <artifactId>entity-hub</artifactId>
     <properties>
         <tika.version>1.23</tika.version>
-        <rdf4j.version>3.0.4</rdf4j.version>
+        <rdf4j.version>3.1.0</rdf4j.version>
     </properties>
     <dependencies>
         <dependency>

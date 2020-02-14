@@ -6,10 +6,10 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Card,
-  Chip
+  Card
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
+import EntityChip from "../../../../components/Entity/EntityChip";
 
 const useStyles = makeStyles(theme => ({
   chips: {
@@ -43,6 +43,14 @@ function SelectAnnotationsDialog({label, suggestedAnnotations, open, onCancel, o
     setTmpSelectedAnnotations([...tmpSelectedAnnotations, annotation]);
   };
 
+  const handleSelectAllAnnotations = () => {
+    setTmpSelectedAnnotations(suggestedAnnotations);
+  };
+
+  const handleDeselectAllAnnotations = () => {
+    setTmpSelectedAnnotations([]);
+  };
+
   const handleCancel = () => {
     setTmpSelectedAnnotations(selectedAnnotations);
     onCancel();
@@ -70,25 +78,30 @@ function SelectAnnotationsDialog({label, suggestedAnnotations, open, onCancel, o
           <Card>
             <div className={classes.chips}>
               {tmpSelectedAnnotations.map((annotation) => (
-                <Chip
+                <EntityChip
+                  color="primary"
                   className={classes.chip}
                   size="small"
                   key={annotation.uri}
+                  uri={annotation.uri}
                   label={annotation.surfaceForm}
-                  color="primary"
+                  prefLabel={annotation.prefLabel}
                   onDelete={() => handleUnselectAnnotation(annotation)}/>
               ))}
               {suggestedAnnotations.filter(t => !tmpSelectedAnnotations.includes(t)).map((annotation) => (
-                <Chip
+                <EntityChip
                   className={classes.chip}
                   size="small"
                   key={annotation.uri}
+                  uri={annotation.uri}
                   label={annotation.surfaceForm}
+                  prefLabel={annotation.prefLabel}
                   onClick={() => handleSelectAnnotation(annotation)}/>
               ))}
             </div>
-
           </Card>
+          <Button onClick={handleDeselectAllAnnotations}>Deselect all</Button>
+          <Button onClick={handleSelectAllAnnotations}>Select all</Button>
         </DialogContent>
         <DialogActions>
           <Button

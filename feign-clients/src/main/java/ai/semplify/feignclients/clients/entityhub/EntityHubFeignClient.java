@@ -13,6 +13,9 @@ import javax.validation.Valid;
 @FeignClient(value = "entity-hub", configuration = DefaultFeignClientConfiguration.class)
 public interface EntityHubFeignClient {
 
-    @PostMapping("/entity/funcs/isSubClassOfTransitive")
-    TypeCheckResponse isSubClassOfTransitive(@Valid @RequestBody TypeCheckRequest request);
+    @PostMapping("/entity/funcs/isSubClassOf")
+    TypeCheckResponse isSubClassOf(@Valid @RequestBody TypeCheckRequest request);
+
+    @PostMapping("/entity/funcs/isNarrowerConceptOf")
+    TypeCheckResponse isNarrowerConceptOf(@Valid @RequestBody TypeCheckRequest request);
 }

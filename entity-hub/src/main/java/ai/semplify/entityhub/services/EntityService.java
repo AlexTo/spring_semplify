@@ -4,7 +4,7 @@ import ai.semplify.entityhub.models.TypeCheckRequest;
 import ai.semplify.entityhub.models.TypeCheckResponse;
 
 public interface EntityService {
-    TypeCheckResponse isOfType(TypeCheckRequest request);
+    TypeCheckResponse isSubClassOf(TypeCheckRequest request);
 
-    TypeCheckResponse isSubClassOfTransitive(TypeCheckRequest request);
+    TypeCheckResponse isNarrowerConceptOf(TypeCheckRequest request);
 }

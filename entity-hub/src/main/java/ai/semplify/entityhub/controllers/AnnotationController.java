@@ -30,7 +30,8 @@ public class AnnotationController {
     }
 
     @PostMapping("text")
-    public ResponseEntity<Annotation> annotateText(@Valid @RequestBody TextAnnotationRequest textAnnotationRequest) {
+    public ResponseEntity<Annotation> annotateText(@Valid @RequestBody TextAnnotationRequest textAnnotationRequest)
+            throws IOException {
         return ResponseEntity.ok(nerService.annotateText(textAnnotationRequest));
     }
 

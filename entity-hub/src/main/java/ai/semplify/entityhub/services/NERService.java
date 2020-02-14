@@ -9,7 +9,7 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 
 public interface NERService {
-    Annotation annotateText(TextAnnotationRequest textAnnotationRequest);
+    Annotation annotateText(TextAnnotationRequest textAnnotationRequest) throws IOException;
 
     Annotation annotateFile(MultipartFile filePart) throws IOException, TikaException, SAXException;
 }
