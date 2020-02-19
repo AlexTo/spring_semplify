@@ -3,18 +3,11 @@ import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
-import Typography from '@material-ui/core/Typography';
-import MailIcon from '@material-ui/icons/Mail';
-import DeleteIcon from '@material-ui/icons/Delete';
+import {Typography, Button, Checkbox} from '@material-ui/core';
 import Label from '@material-ui/icons/Label';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import InfoIcon from '@material-ui/icons/Info';
-import ForumIcon from '@material-ui/icons/Forum';
-import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import clsx from "clsx";
-import {Checkbox} from "@material-ui/core";
 
 const useTreeItemStyles = makeStyles(theme => ({
   root: {
@@ -61,7 +54,7 @@ const useTreeItemStyles = makeStyles(theme => ({
 
 function StyledTreeItem(props) {
   const classes = useTreeItemStyles();
-  const {onCheckboxChange, checked, parentNodeId, nodeId, labelText, labelIcon: LabelIcon, labelInfo, color, bgColor, ...other} = props;
+  const {onCheckboxChange, checked, indeterminate, nodeId, labelText, labelIcon: LabelIcon, labelInfo, color, bgColor, ...other} = props;
 
   return (
     <TreeItem
@@ -69,9 +62,9 @@ function StyledTreeItem(props) {
       label={
         <div className={classes.labelRoot}>
           <Checkbox
-            defaultChecked={checked}
             checked={checked}
-            onChange={() => onCheckboxChange(nodeId, parentNodeId)}
+            indeterminate={indeterminate}
+            onChange={onCheckboxChange}
             onClick={e => (e.stopPropagation())}/>
           <Typography variant="body2" className={classes.labelText}>
             {labelText}
@@ -106,15 +99,17 @@ StyledTreeItem.propTypes = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    marginTop: theme.spacing(1.5)
-  },
+  root: {},
   header: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     marginBottom: theme.spacing(2)
+  },
+  actions: {
+    display: 'flex',
+    alignItems: 'center'
   },
   title: {
     position: 'relative',
@@ -130,12 +125,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Buckets({buckets}) {
+export default function Buckets({buckets, onBucketCheckboxChange, onSubBucketCheckBoxChange, onApplyFilter}) {
   const classes = useStyles();
-
-  const handleBucketCheckboxChange = (uri) => {
-
-  };
 
   return (
     <div className={clsx(classes.root)}>
@@ -145,6 +136,10 @@ export default function Buckets({buckets}) {
           variant="h5">
           Refine
         </Typography>
+        <div className={classes.actions}>
+          <Button variant="contained"
+                  onClick={onApplyFilter}>Apply Filter</Button>
+        </div>
       </div>
       <TreeView
         className={classes.root}
@@ -160,17 +155,18 @@ export default function Buckets({buckets}) {
             labelInfo={bucket.docCount}
             labelIcon={Label}
             checked={bucket.checked}
-            onCheckboxChange={handleBucketCheckboxChange}>
+            indeterminate={bucket.indeterminate}
+            onCheckboxChange={() => onBucketCheckboxChange(bucket.uri)}>
             {bucket.buckets.map(subBucket =>
               <StyledTreeItem
                 key={subBucket.uri}
                 nodeId={subBucket.uri}
-                parentNodeId={bucket.uri}
                 labelText={subBucket.name}
                 labelInfo={subBucket.docCount}
                 labelIcon={Label}
                 checked={subBucket.checked}
-                onCheckboxChange={handleBucketCheckboxChange}
+                indeterminate={false}
+                onCheckboxChange={() => onSubBucketCheckBoxChange(bucket.uri, subBucket.uri)}
               />)}
           </StyledTreeItem>
         )}

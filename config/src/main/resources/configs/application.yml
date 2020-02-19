@@ -48,7 +48,7 @@ spotlight:
   port: 11001
 
 poolparty:
-  host: dl0475odhub006.nsw.education
+  host: poolparty
   port: 80
   username: poolparty
   password: password
@@ -56,7 +56,7 @@ poolparty:
 
 app:
   sparql:
-    url: http://localhost:8890/sparql/
+    url: http://virtuoso:8890/sparql/
     auth: true
     username: dba
     password: dba
