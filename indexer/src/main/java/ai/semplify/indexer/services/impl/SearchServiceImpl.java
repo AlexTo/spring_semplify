@@ -1,13 +1,13 @@
 package ai.semplify.indexer.services.impl;
 
 import ai.semplify.feignclients.clients.entityhub.EntityHubFeignClient;
-import ai.semplify.feignclients.clients.entityhub.models.TypeCheckRequest;
 import ai.semplify.indexer.entities.elasticsearch.IndexedDocument;
 import ai.semplify.indexer.mappers.SearchHitsMapper;
 import ai.semplify.indexer.models.SearchHits;
 import ai.semplify.indexer.services.SearchService;
 import lombok.var;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +17,6 @@ import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
@@ -48,13 +46,30 @@ public class SearchServiceImpl implements SearchService {
 
         QueryBuilder match = (q == null || Objects.equals(q, "")) ? matchAllQuery() : matchQuery("content", q);
 
+        var aggs = AggregationBuilders
+                .nested("annotations", "annotations")
+                .subAggregation(
+                        AggregationBuilders
+                                .nested("classes", "annotations.classes")
+                                .subAggregation(
+                                        AggregationBuilders
+                                                .terms("class_uris")
+                                                .field("annotations.classes.uri")
+                                                .subAggregation(AggregationBuilders
+                                                        .reverseNested("annotation_uris")
+                                                        .path("annotations")
+                                                        .subAggregation(AggregationBuilders
+                                                                .terms("annotations_per_class")
+                                                                .field("annotations.uri")))));
+
         var query = new NativeSearchQueryBuilder()
                 .withQuery(match)
                 .withHighlightFields(new HighlightBuilder.Field("content"))
+                .addAggregation(aggs)
                 .build();
 
-        var searchHits = elasticsearchOperations.search(query, IndexedDocument.class, indexCoordinates);
-
+        var searchHits = elasticsearchOperations
+                .search(query, IndexedDocument.class, indexCoordinates);
         return searchHitsMapper.toModel(searchHits);
     }
 }

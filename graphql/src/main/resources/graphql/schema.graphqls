@@ -46,6 +46,14 @@ type SearchHits {
     maxScore: Float
     scrollId: String
     searchHits: [SearchHit!]
+    buckets: [Bucket!]
+}
+
+type Bucket {
+    name: String!
+    uri: String!
+    docCount: Int!
+    buckets: [Bucket!]
 }
 
 type HighlightField {

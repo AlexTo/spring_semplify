@@ -1,6 +1,8 @@
 package ai.semplify.feignclients.clients.entityhub;
 
 
+import ai.semplify.feignclients.clients.entityhub.models.PrefLabelRequest;
+import ai.semplify.feignclients.clients.entityhub.models.PrefLabelResponse;
 import ai.semplify.feignclients.clients.entityhub.models.TypeCheckRequest;
 import ai.semplify.feignclients.clients.entityhub.models.TypeCheckResponse;
 import ai.semplify.feignclients.config.DefaultFeignClientConfiguration;
@@ -18,4 +20,7 @@ public interface EntityHubFeignClient {
 
     @PostMapping("/entity/funcs/isNarrowerConceptOf")
     TypeCheckResponse isNarrowerConceptOf(@Valid @RequestBody TypeCheckRequest request);
+
+    @PostMapping("/entity/funcs/getPrefLabel")
+    PrefLabelResponse getPrefLabel(@Valid @RequestBody PrefLabelRequest request);
 }

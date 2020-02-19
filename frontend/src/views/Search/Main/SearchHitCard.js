@@ -122,13 +122,6 @@ function SearchHitCard({searchHit, className, ...rest}) {
                   <ShareIcon/>
                 </IconButton>
               </Tooltip>
-              <Button
-                className={classes.learnMoreButton}
-                component={RouterLink}
-                size="small"
-                to="/projects/1/overview">
-                Learn more
-              </Button>
             </Grid>
           </Grid>
         </div>

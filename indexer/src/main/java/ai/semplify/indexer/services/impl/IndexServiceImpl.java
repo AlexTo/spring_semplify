@@ -1,6 +1,7 @@
 package ai.semplify.indexer.services.impl;
 
 import ai.semplify.feignclients.clients.entityhub.EntityHubFeignClient;
+import ai.semplify.feignclients.clients.entityhub.models.PrefLabelRequest;
 import ai.semplify.feignclients.clients.entityhub.models.TypeCheckRequest;
 import ai.semplify.indexer.entities.elasticsearch.Annotation;
 import ai.semplify.indexer.entities.elasticsearch.AnnotationClass;
@@ -24,9 +25,9 @@ import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class IndexServiceImpl implements IndexService {
@@ -74,21 +75,21 @@ public class IndexServiceImpl implements IndexService {
         indexedDocument.setContent(content);
 
         // Build facets //
-        var facets = new HashMap<String, String>();
-        facets.put("http://dbpedia.org/ontology/Place", "Place");
-        facets.put("http://dbpedia.org/ontology/Person", "Person");
-        facets.put("http://dbpedia.org/ontology/Organisation", "Organisation");
-        facets.put("https://localhost/DoENSW/1102", "Numeracy Learning Progression");
-        facets.put("https://localhost/DoENSW/1729", "Literacy Learning Progression");
+        var facets = new HashSet<String>();
+        facets.add("http://dbpedia.org/ontology/Place");
+        facets.add("http://dbpedia.org/ontology/Person");
+        facets.add("http://dbpedia.org/ontology/Organisation");
+        facets.add("https://localhost/DoENSW/1102");
+        facets.add("https://localhost/DoENSW/1729");
 
         if (document.getAnnotations() != null) {
             var indexedAnnotations = new HashSet<Annotation>();
             for (var uri : document.getAnnotations()) {
                 var annotation = new Annotation();
                 annotation.setUri(uri);
-                annotation.setLabel(getDummyPrefLabel(uri));
+                annotation.setLabel(getPrefLabel(uri));
                 var annotationClasses = new HashSet<AnnotationClass>();
-                for (var facet : facets.keySet()) {
+                for (var facet : facets) {
                     var typeCheckRequest = new TypeCheckRequest();
                     typeCheckRequest.setEntity(uri);
                     typeCheckRequest.setType(facet);
@@ -96,14 +97,14 @@ public class IndexServiceImpl implements IndexService {
                     if (typeCheck.getAns()) {
                         var annotationClass = new AnnotationClass();
                         annotationClass.setUri(facet);
-                        annotationClass.setLabel(facets.get(facet));
+                        annotationClass.setLabel(getPrefLabel(facet));
                         annotationClasses.add(annotationClass);
                     }
                     typeCheck = entityHubFeignClient.isNarrowerConceptOf(typeCheckRequest);
                     if (typeCheck.getAns()) {
                         var annotationClass = new AnnotationClass();
                         annotationClass.setUri(facet);
-                        annotationClass.setLabel(facets.get(facet));
+                        annotationClass.setLabel(getPrefLabel(facet));
                         annotationClasses.add(annotationClass);
                     }
                 }
@@ -119,7 +120,10 @@ public class IndexServiceImpl implements IndexService {
         elasticsearchOperations.index(indexQuery, indexCoordinates);
     }
 
-    private String getDummyPrefLabel(String uri) {
-        return uri.substring(uri.lastIndexOf("/") + 1);
+    private String getPrefLabel(String uri) {
+        var prefLabelRequest = new PrefLabelRequest();
+        prefLabelRequest.setUri(uri);
+        var response = entityHubFeignClient.getPrefLabel(prefLabelRequest);
+        return response.getPrefLabel();
     }
 }

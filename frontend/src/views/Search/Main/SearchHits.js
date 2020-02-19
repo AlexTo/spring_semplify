@@ -3,17 +3,13 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {makeStyles} from '@material-ui/styles';
 import {
-  Button,
   Grid,
-  Menu,
   MenuItem,
   ListItemText,
   Typography
 } from '@material-ui/core';
 import {ToggleButtonGroup, ToggleButton} from '@material-ui/lab';
 import ViewModuleIcon from '@material-ui/icons/ViewModule';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import axios from 'src/utils/axios';
 import Paginate from 'src/components/Paginate';
 import SearchHitCard from './SearchHitCard';
 
@@ -65,10 +61,7 @@ function SearchHits({className, result, ...rest}) {
   };
 
   return (
-    <div
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
+    <div {...rest} className={clsx(classes.root, className)}>
       <div className={classes.header}>
         <Typography
           className={classes.title}
@@ -97,7 +90,7 @@ function SearchHits({className, result, ...rest}) {
             item
             key={searchHit.id}
             md={mode === 'grid' ? 4 : 12}
-            sm={mode === 'grid' ? 6 : 12}v
+            sm={mode === 'grid' ? 6 : 12}
             xs={12}>
             <SearchHitCard searchHit={searchHit}/>
           </Grid>
@@ -112,7 +105,7 @@ function SearchHits({className, result, ...rest}) {
 
 SearchHits.propTypes = {
   className: PropTypes.string,
-  searchHits: PropTypes.object
+  result: PropTypes.object
 };
 
 export default SearchHits;

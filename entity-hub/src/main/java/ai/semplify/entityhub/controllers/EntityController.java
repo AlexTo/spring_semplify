@@ -1,5 +1,7 @@
 package ai.semplify.entityhub.controllers;
 
+import ai.semplify.entityhub.models.PrefLabelRequest;
+import ai.semplify.entityhub.models.PrefLabelResponse;
 import ai.semplify.entityhub.models.TypeCheckRequest;
 import ai.semplify.entityhub.models.TypeCheckResponse;
 import ai.semplify.entityhub.services.EntityService;
@@ -30,4 +32,10 @@ public class EntityController {
     public ResponseEntity<TypeCheckResponse> isNarrowerConceptOf(@Valid @RequestBody TypeCheckRequest request) {
         return ResponseEntity.ok(entityService.isNarrowerConceptOf(request));
     }
+
+    @PostMapping("funcs/getPrefLabel")
+    public ResponseEntity<PrefLabelResponse> getPrefLabel(@Valid @RequestBody PrefLabelRequest request) {
+        return ResponseEntity.ok(entityService.getPrefLabel(request));
+    }
+
 }

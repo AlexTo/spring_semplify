@@ -12,5 +12,5 @@ public class SearchHits {
     private float maxScore;
     private String scrollId;
     private List<? extends SearchHit> searchHits;
-    private Map<String, Integer> facets;
+    private List<Bucket> buckets;
 }

@@ -117,6 +117,9 @@ function TopBar({onOpenNavBarMobile, className, ...rest}) {
   };
 
   const handleSearch = (event) => {
+    if (!event.target.value) {
+      return;
+    }
     if (event.key === 'Enter') {
       dispatch(searchActions.search(event.target.value));
       if (location.pathname !== "/search") {

@@ -17,6 +17,16 @@ export const indexerQueries = {
             highlights
           }
         }
+        buckets {
+          uri
+          name
+          docCount
+          buckets {
+            uri
+            name
+            docCount
+          }
+        }
       }
     }
   `
