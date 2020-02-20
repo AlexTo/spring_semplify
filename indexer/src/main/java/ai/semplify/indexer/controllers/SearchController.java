@@ -26,10 +26,8 @@ public class SearchController {
     @PostMapping("")
     public ResponseEntity<SearchHits> search(@Valid @RequestBody Query query) {
 
-        var page = query.getPage() == null ? 0 : query.getPage();
-        var size = query.getSize() == null ? 100 : query.getSize();
-        var pageRequest = PageRequest.of(page, size);
-        var results = searchService.search(query.getQ(), pageRequest);
+
+        var results = searchService.search(query);
         return ResponseEntity.ok(results);
     }
 }

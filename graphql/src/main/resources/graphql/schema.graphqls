@@ -12,6 +12,7 @@ type Mutation {
 
 input CriteriaQuery {
     q: String!
+    selectedAnnotations: [String!]
     page: Int
     size: Int
 }

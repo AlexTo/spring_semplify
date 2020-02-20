@@ -4,12 +4,14 @@ import lombok.Data;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Data
 public class Query {
-    @NotBlank
     private String q;
+
+    private List<String> selectedAnnotations;
+
     @Min(0)
     private Integer page;
     @Max(100)
