@@ -1,6 +1,6 @@
 import React, {Fragment, useEffect} from 'react';
 import {makeStyles} from '@material-ui/styles';
-import {Grid} from '@material-ui/core';
+import {Grid, CircularProgress} from '@material-ui/core';
 import Page from 'src/components/Page';
 import SearchHits from './SearchHits';
 import {useDispatch, useSelector} from 'react-redux';
@@ -9,6 +9,7 @@ import {indexerQueries} from '../../../queries/indexerQueries';
 import Buckets from './Buckets';
 import {SEARCH_STATE_NEW_SEARCH, searchActions} from '../../../actions';
 import _ from 'lodash';
+import Backdrop from "@material-ui/core/Backdrop";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.common.white,
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3)
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
   },
   container: {
     paddingLeft: theme.spacing(3),
@@ -85,25 +89,31 @@ function Main() {
 
   const handleApplyFilter = () => {
     const selectedAnnotations = buckets.flatMap(b => b.buckets.filter(sb => sb.checked === true).map(sb => sb.uri));
-    dispatch(searchActions.applyFilters(selectedAnnotations));
+    dispatch(searchActions.applyFilters(selectedAnnotations, page, size));
   };
 
-  if (loading) return <Fragment>Loading ... </Fragment>;
+  if (loading) return <Fragment>
+    <Backdrop className={classes.backdrop} open={loading}>
+      <CircularProgress/>
+    </Backdrop>
+  </Fragment>;
+
   if (error) return <Fragment>`Error! ${error.message}`</Fragment>;
 
   return (
-    <Page
-      className={classes.root}
-      title="Search">
+    <Page className={classes.root} title="Search">
       <Grid container className={classes.container} spacing={3}>
         <Grid item xs={3}>
           <Buckets buckets={buckets}
                    onApplyFilter={handleApplyFilter}
                    onBucketCheckboxChange={handleBucketCheckboxChange}
-                   onSubBucketCheckBoxChange={handleSubBucketCheckboxChange}
-          /></Grid>
-        <Grid item xs={9}><SearchHits result={data.search} className={classes.results}/></Grid>
+                   onSubBucketCheckBoxChange={handleSubBucketCheckboxChange}/>
+        </Grid>
+        <Grid item xs={9}>
+          <SearchHits result={data.search} className={classes.results}/>
+        </Grid>
       </Grid>
+
     </Page>
   );
 }

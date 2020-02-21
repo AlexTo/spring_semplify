@@ -4,6 +4,7 @@ import ai.semplify.entityhub.mappers.AnnotationMapper;
 import ai.semplify.entityhub.models.Annotation;
 import ai.semplify.entityhub.models.AnnotationResource;
 import ai.semplify.entityhub.models.TextAnnotationRequest;
+import ai.semplify.entityhub.services.EntityService;
 import ai.semplify.entityhub.services.NERService;
 import ai.semplify.feignclients.clients.poolparty.PoolPartyExtractorFeignClient;
 import ai.semplify.feignclients.clients.spotlight.DBPediaSpotlightFeignClient;
@@ -38,16 +39,18 @@ public class NERServiceImpl implements NERService {
     private AnnotationMapper mapper;
     private DBPediaSpotlightFeignClient spotlightFeignClient;
     private PoolPartyExtractorFeignClient poolPartyExtractorFeignClient;
+    private EntityService entityService;
 
     @Value("${poolparty.projectId}")
     private String projectId;
 
     public NERServiceImpl(DBPediaSpotlightFeignClient spotlightFeignClient,
                           PoolPartyExtractorFeignClient poolPartyExtractorFeignClient,
-                          AnnotationMapper mapper) {
+                          AnnotationMapper mapper, EntityService entityService) {
         this.spotlightFeignClient = spotlightFeignClient;
         this.poolPartyExtractorFeignClient = poolPartyExtractorFeignClient;
         this.mapper = mapper;
+        this.entityService = entityService;
     }
 
 
@@ -98,6 +101,8 @@ public class NERServiceImpl implements NERService {
                         var contextStart = Math.max(resource.getOffset() - 50, 0);
                         var contextEnd = Math.min(resource.getOffset() + 50, text.length());
                         resource.setSource("dbpedia");
+                        var prefLabel = entityService.getPrefLabel(resource.getUri());
+                        resource.setPrefLabel(prefLabel.getPrefLabel());
                         resource.setContext(text.substring(contextStart, contextEnd));
                     })
                     .collect(Collectors.toList());

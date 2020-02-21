@@ -143,7 +143,7 @@ export default function Buckets({buckets, onBucketCheckboxChange, onSubBucketChe
       </div>
       <TreeView
         className={classes.root}
-        defaultExpanded={['3']}
+        defaultExpanded={buckets.filter(b => b.checked || b.indeterminate).map(b => b.uri)}
         defaultCollapseIcon={<ArrowDropDownIcon/>}
         defaultExpandIcon={<ArrowRightIcon/>}
         defaultEndIcon={<div style={{width: 24}}/>}>

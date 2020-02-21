@@ -84,7 +84,7 @@ function SelectAnnotationsDialog({label, suggestedAnnotations, open, onCancel, o
                   size="small"
                   key={annotation.uri}
                   uri={annotation.uri}
-                  label={annotation.surfaceForm}
+                  surfaceForm={annotation.surfaceForm}
                   prefLabel={annotation.prefLabel}
                   onDelete={() => handleUnselectAnnotation(annotation)}/>
               ))}
@@ -94,7 +94,7 @@ function SelectAnnotationsDialog({label, suggestedAnnotations, open, onCancel, o
                   size="small"
                   key={annotation.uri}
                   uri={annotation.uri}
-                  label={annotation.surfaceForm}
+                  surfaceForm={annotation.surfaceForm}
                   prefLabel={annotation.prefLabel}
                   onClick={() => handleSelectAnnotation(annotation)}/>
               ))}

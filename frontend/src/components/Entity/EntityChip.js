@@ -18,7 +18,7 @@ const HtmlTooltip = withStyles(theme => ({
   },
 }))(Tooltip);
 
-function EntityChip({className, size, uri, label, prefLabel, color, onClick, onDelete}) {
+function EntityChip({className, size, uri, surfaceForm, prefLabel, color, onClick, onDelete}) {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -34,7 +34,7 @@ function EntityChip({className, size, uri, label, prefLabel, color, onClick, onD
       title={
         <Fragment>
           <Typography color="inherit">{uri}</Typography>
-          <div>{`surfaceForm: ${label}`}{' '}</div>
+          <div>{`surfaceForm: ${surfaceForm}`}{' '}</div>
           <div>{`prefLabel: ${prefLabel}`}{' '}</div>
 
         </Fragment>
@@ -43,7 +43,7 @@ function EntityChip({className, size, uri, label, prefLabel, color, onClick, onD
       <Chip
         className={className}
         size={size}
-        label={label}
+        label={prefLabel}
         color={color}
         onDelete={onDelete}
         onClick={onClick}/>

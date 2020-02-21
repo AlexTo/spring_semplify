@@ -1,4 +1,4 @@
-package ai.semplify.indexer.components;
+package ai.semplify.entityhub.components;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;

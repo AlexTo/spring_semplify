@@ -23,8 +23,8 @@ function updateBuckets(buckets) {
   }
 }
 
-function applyFilters(selectedAnnotations) {
+function applyFilters(selectedAnnotations, page, size) {
   return dispatch => {
-    dispatch({type: SEARCH_APPLY_FILTER, selectedAnnotations})
+    dispatch({type: SEARCH_APPLY_FILTER, selectedAnnotations, page, size})
   }
 }

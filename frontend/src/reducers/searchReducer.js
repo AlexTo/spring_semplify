@@ -8,7 +8,7 @@ const initialState = {
   buckets: [],
   selectedAnnotations: [],
   page: 0,
-  size: 12
+  size: 9
 };
 
 const searchReducer = (state = initialState, action) => {
@@ -30,9 +30,11 @@ const searchReducer = (state = initialState, action) => {
       }
     }
     case actionTypes.SEARCH_APPLY_FILTER: {
-      const {selectedAnnotations, searchState, ...others} = state;
+      const {selectedAnnotations, searchState, page, size, ...others} = state;
       return {
         selectedAnnotations: action.selectedAnnotations,
+        page: action.page,
+        size: action.size,
         searchState: SEARCH_STATE_FILTERED_SEARCH,
         ...others
       }

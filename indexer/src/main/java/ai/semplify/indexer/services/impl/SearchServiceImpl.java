@@ -48,7 +48,7 @@ public class SearchServiceImpl implements SearchService {
     public SearchHits search(Query query) {
         var queryText = query.getQ();
         var page = query.getPage() == null ? 0 : query.getPage();
-        var size = query.getSize() == null ? 100 : query.getSize();
+        var size = query.getSize() == null ? 9 : query.getSize();
         var pageRequest = PageRequest.of(page, size);
 
         QueryBuilder matchQuery = (queryText == null || Objects.equals(queryText, ""))
@@ -89,6 +89,7 @@ public class SearchServiceImpl implements SearchService {
                 .withQuery(boolQuery)
                 .withHighlightFields(new HighlightBuilder.Field("content"))
                 .addAggregation(aggs)
+                .withPageable(pageRequest)
                 .build();
 
         var searchHits = elasticsearchOperations

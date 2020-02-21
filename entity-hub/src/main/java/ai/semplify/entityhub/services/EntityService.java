@@ -12,5 +12,5 @@ public interface EntityService {
 
     PrefLabelResponse getPrefLabel(PrefLabelRequest request);
 
-
+    PrefLabelResponse getPrefLabel(String uri);
 }
