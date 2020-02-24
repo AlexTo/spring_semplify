@@ -1,9 +1,6 @@
 package ai.semplify.entityhub.controllers;
 
-import ai.semplify.entityhub.models.PrefLabelRequest;
-import ai.semplify.entityhub.models.PrefLabelResponse;
-import ai.semplify.entityhub.models.TypeCheckRequest;
-import ai.semplify.entityhub.models.TypeCheckResponse;
+import ai.semplify.entityhub.models.*;
 import ai.semplify.entityhub.services.EntityService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +33,11 @@ public class EntityController {
     @PostMapping("funcs/getPrefLabel")
     public ResponseEntity<PrefLabelResponse> getPrefLabel(@Valid @RequestBody PrefLabelRequest request) {
         return ResponseEntity.ok(entityService.getPrefLabel(request));
+    }
+
+    @PostMapping("funcs/getDepiction")
+    public ResponseEntity<DepictionResponse> getDepiction(@Valid @RequestBody DepictionRequest request) {
+        return ResponseEntity.ok(entityService.getDepiction(request));
     }
 
 }

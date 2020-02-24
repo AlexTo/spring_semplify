@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/files")
 public class FileServerController {
@@ -19,7 +21,7 @@ public class FileServerController {
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<File> upload(@RequestPart("file") MultipartFile filePart) {
+    public ResponseEntity<File> upload(@RequestPart("file") MultipartFile filePart) throws IOException {
         return ResponseEntity.ok(fileService.store(filePart));
     }
 

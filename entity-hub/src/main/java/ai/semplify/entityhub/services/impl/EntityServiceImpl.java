@@ -1,10 +1,9 @@
 package ai.semplify.entityhub.services.impl;
 
+import ai.semplify.entityhub.mappers.DepictionMapper;
 import ai.semplify.entityhub.mappers.PrefLabelMapper;
-import ai.semplify.entityhub.models.PrefLabelRequest;
-import ai.semplify.entityhub.models.PrefLabelResponse;
-import ai.semplify.entityhub.models.TypeCheckRequest;
-import ai.semplify.entityhub.models.TypeCheckResponse;
+import ai.semplify.entityhub.models.*;
+import ai.semplify.entityhub.repositories.redis.DepictionCache;
 import ai.semplify.entityhub.repositories.redis.PrefLabelCache;
 import ai.semplify.entityhub.services.EntityService;
 import lombok.var;
@@ -28,16 +27,24 @@ public class EntityServiceImpl implements EntityService {
     private Repository sparqlEndpoint;
     private ValueFactory valueFactory;
     private PrefLabelCache prefLabelCache;
+    private DepictionCache depictionCache;
+
     private PrefLabelMapper prefLabelMapper;
+    private DepictionMapper depictionMapper;
+
     private Logger logger = LoggerFactory.getLogger(EntityServiceImpl.class);
 
     public EntityServiceImpl(Repository sparqlEndpoint,
                              PrefLabelCache prefLabelCache,
-                             PrefLabelMapper prefLabelMapper) {
+                             DepictionCache depictionCache,
+                             PrefLabelMapper prefLabelMapper,
+                             DepictionMapper depictionMapper) {
         this.sparqlEndpoint = sparqlEndpoint;
         valueFactory = sparqlEndpoint.getValueFactory();
         this.prefLabelCache = prefLabelCache;
+        this.depictionCache = depictionCache;
         this.prefLabelMapper = prefLabelMapper;
+        this.depictionMapper = depictionMapper;
     }
 
     @Override
@@ -92,11 +99,11 @@ public class EntityServiceImpl implements EntityService {
         var fromCache = prefLabelCache.findById(uri);
         if (fromCache.isPresent()) {
             var cachedPrefLabel = fromCache.get();
-            logger.debug("PrefLabel cache hit: " + uri);
+            logger.info("PrefLabel cache hit: " + uri + " => " + cachedPrefLabel.getPrefLabel());
             return prefLabelMapper.toModel(cachedPrefLabel);
         }
 
-        logger.debug("PrefLabel cache missed: " + uri);
+        logger.info("PrefLabel cache missed: " + uri);
 
         var predicates = new ArrayList<String>();
         predicates.add(RDFS.LABEL.stringValue());
@@ -171,5 +178,61 @@ public class EntityServiceImpl implements EntityService {
         var prefLabelRequest = new PrefLabelRequest();
         prefLabelRequest.setUri(uri);
         return getPrefLabel(prefLabelRequest);
+    }
+
+    @Override
+    public DepictionResponse getDepiction(DepictionRequest request) {
+        var uri = request.getUri();
+        if (uri == null) {
+            return null;
+        }
+
+        var fromCache = depictionCache.findById(uri);
+        if (fromCache.isPresent()) {
+            var cachedDepiction = fromCache.get();
+            logger.info("Depiction cache hit: " + uri + " => " + cachedDepiction.getDepictionUri());
+            return depictionMapper.toModel(cachedDepiction);
+        }
+
+        logger.info("Depiction cache missed: " + uri);
+
+        var predicates = new ArrayList<String>();
+        predicates.add(FOAF.DEPICTION.stringValue());
+
+        StringBuilder query = new StringBuilder("SELECT * WHERE { ");
+
+        var i = 0;
+        for (var predicate : predicates) {
+            query.append("OPTIONAL { ?entity <").append(predicate).append("> ?depiction").append(++i).append(" } . \n");
+        }
+        query.append(" }");
+
+        var depictionResponse = new DepictionResponse();
+
+        try (RepositoryConnection con = sparqlEndpoint.getConnection()) {
+            var tupleQuery = con.prepareTupleQuery(query.toString());
+            tupleQuery.setBinding("entity", valueFactory.createIRI(uri));
+            try (TupleQueryResult result = tupleQuery.evaluate()) {
+                while (result.hasNext()) {
+                    var bindings = result.next();
+                    for (var binding : bindings) {
+                        depictionResponse.setDepictionUri(binding.getValue().stringValue());
+
+                        var toCache = depictionMapper.toEntity(depictionResponse);
+                        toCache.setUri(uri);
+                        depictionCache.save(toCache);
+                        return depictionResponse;
+                    }
+                }
+            }
+        }
+        return depictionResponse;
+    }
+
+    @Override
+    public DepictionResponse getDepiction(String uri) {
+        var request = new DepictionRequest();
+        request.setUri(uri);
+        return getDepiction(request);
     }
 }

@@ -18,7 +18,6 @@ import './mixins/chartjs';
 import './mixins/moment';
 import './mixins/validate';
 import './mixins/prismjs';
-import './mock';
 import './assets/scss/main.scss';
 import * as Keycloak from "keycloak-js";
 import {KeycloakProvider} from "@react-keycloak/web";

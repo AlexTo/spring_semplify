@@ -97,7 +97,18 @@ public class NERServiceImpl implements NERService {
         } else {
             var resourcesWithoutDuplicate = resources.stream()
                     .distinct()
+                    .sorted((r1, r2) -> {
+                        if (r1.getSimilarityScore() == null) {
+                            return 1;
+                        }
+                        if (r2.getSimilarityScore() == null) {
+                            return -1;
+                        }
+                        return r2.getSimilarityScore().compareTo(r1.getSimilarityScore());
+                    })
+                    .limit(10)
                     .peek(resource -> {
+
                         var contextStart = Math.max(resource.getOffset() - 50, 0);
                         var contextEnd = Math.min(resource.getOffset() + 50, text.length());
                         resource.setSource("dbpedia");

@@ -24,7 +24,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import NotificationsPopover from 'src/components/NotificationsPopover';
 import ChatBar from './ChatBar';
 import {useKeycloak} from '@react-keycloak/web';
-import {SEARCH_STATE_NEW_SEARCH, searchActions} from "../../actions";
+import {searchActions} from "../../actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -200,9 +200,6 @@ function TopBar({onOpenNavBarMobile, className, ...rest}) {
         notifications={notifications}
         onClose={handleNotificationsClose}
         open={openNotifications}/>
-      <ChatBar
-        onClose={handleChatBarClose}
-        open={openChatBar}/>
     </AppBar>
   );
 }
