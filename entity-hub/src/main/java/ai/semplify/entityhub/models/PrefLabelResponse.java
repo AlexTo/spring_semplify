@@ -6,4 +6,5 @@ import lombok.Data;
 public class PrefLabelResponse {
     private String prefLabel;
     private String lang;
+    private String predicate;
 }

@@ -14,4 +14,19 @@ public interface EntityService {
     DepictionResponse getDepiction(DepictionRequest request);
 
     DepictionResponse getDepiction(String uri);
+
+    ThumbnailResponse getThumbnail(ThumbnailRequest request);
+
+    ThumbnailResponse getThumbnail(String uri);
+
+    AbstractResponse getAbstract(AbstractRequest request);
+
+    AbstractResponse getAbstract(String uri);
+
+    EntitySummaryResponse getSummary(String uri);
+
+    EntitySummaryResponse getSummary(EntitySummaryRequest request);
+
+    void invalidateCache(String uri);
+
 }

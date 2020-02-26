@@ -135,28 +135,27 @@ function DocumentsTable({className, searchResult, page, pageSize, onPageChange, 
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {
-                    searchResult.searchHits.map(searchHit => {
-                      const {content} = searchHit;
-                      return <TableRow
-                        hover
-                        selected={selectedDocuments.indexOf(searchHit.id) !== -1}
-                        key={searchHit.id}>
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            checked={
-                              selectedDocuments.indexOf(searchHit.id) !== -1
-                            }
-                            color="primary"
-                            onChange={(event) => handleSelectOne(event, searchHit.id)}
-                            value={selectedDocuments.indexOf(searchHit.id) !== -1}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          {content.uri}
-                        </TableCell>
-                      </TableRow>
-                    })
+                  {searchResult.searchHits.map(searchHit => {
+                    const {content} = searchHit;
+                    return <TableRow
+                      hover
+                      selected={selectedDocuments.indexOf(searchHit.id) !== -1}
+                      key={searchHit.id}>
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          checked={
+                            selectedDocuments.indexOf(searchHit.id) !== -1
+                          }
+                          color="primary"
+                          onChange={(event) => handleSelectOne(event, searchHit.id)}
+                          value={selectedDocuments.indexOf(searchHit.id) !== -1}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        {content.uri}
+                      </TableCell>
+                    </TableRow>
+                  })
                   }
                 </TableBody>
               </Table>

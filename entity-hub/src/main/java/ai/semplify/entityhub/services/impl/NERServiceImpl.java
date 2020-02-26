@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,15 +82,16 @@ public class NERServiceImpl implements NERService {
     }
 
     private Annotation annotateTextFromDBPedia(TextAnnotationRequest textAnnotationRequest) {
+        var text = textAnnotationRequest.getText();
+
         Map<String, String> params = new HashMap<>();
 
-        params.put("text", textAnnotationRequest.getText());
+        params.put("text", text);
         params.put("confidence", "0.8");
 
         var dbPediaAnnotation = spotlightFeignClient.annotate(params);
 
         var annotation = mapper.toAnnotation(dbPediaAnnotation);
-        var text = annotation.getText();
 
         var resources = annotation.getResources();
         if (resources == null) {
@@ -109,8 +111,8 @@ public class NERServiceImpl implements NERService {
                     .limit(10)
                     .peek(resource -> {
 
-                        var contextStart = Math.max(resource.getOffset() - 50, 0);
-                        var contextEnd = Math.min(resource.getOffset() + 50, text.length());
+                        var contextStart = Math.max(resource.getOffset() - 100, 0);
+                        var contextEnd = Math.min(resource.getOffset() + 100, text.length());
                         resource.setSource("dbpedia");
                         var prefLabel = entityService.getPrefLabel(resource.getUri());
                         resource.setPrefLabel(prefLabel.getPrefLabel());
@@ -123,8 +125,10 @@ public class NERServiceImpl implements NERService {
     }
 
     private Annotation annotateTextFromPoolParty(TextAnnotationRequest textAnnotationRequest) throws IOException {
+        var text = textAnnotationRequest.getText();
+        var lowerCaseText = text.toLowerCase();
         Map<String, String> params = new HashMap<>();
-        params.put("text", textAnnotationRequest.getText());
+        params.put("text", text);
         params.put("language", "en");
         params.put("documentUri", "http://localhost/file/");
         params.put("projectId", projectId);
@@ -146,6 +150,14 @@ public class NERServiceImpl implements NERService {
 
             resource.setPrefLabel(prefLabel);
             resource.setSurfaceForm(prefLabel);
+
+            var offset = lowerCaseText.indexOf(Objects.requireNonNull(prefLabel).toLowerCase());
+            resource.setOffset(offset);
+
+            var contextStart = Math.max(offset - 100, 0);
+            var contextEnd = Math.min(offset + 100, text.length());
+            resource.setContext(text.substring(contextStart, contextEnd));
+
             resource.setSource("poolparty");
             resources.add(resource);
         }

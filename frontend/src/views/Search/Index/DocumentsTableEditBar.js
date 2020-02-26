@@ -41,7 +41,6 @@ function DocumentsTableEditBar({
     <Drawer
       anchor="bottom"
       open={open}
-      // eslint-disable-next-line react/jsx-sort-props
       PaperProps={{elevation: 1}}
       variant="persistent"
     >

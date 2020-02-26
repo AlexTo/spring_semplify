@@ -152,7 +152,7 @@ export default function Buckets({buckets, onBucketCheckboxChange, onSubBucketChe
             key={bucket.uri}
             nodeId={bucket.uri}
             labelText={bucket.name}
-            labelInfo={bucket.docCount}
+            //labelInfo={bucket.docCount}
             labelIcon={Label}
             checked={bucket.checked}
             indeterminate={bucket.indeterminate}
