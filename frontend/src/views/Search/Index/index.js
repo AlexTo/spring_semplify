@@ -99,8 +99,7 @@ function Index() {
             <CheckCircleIcon className={classes.icon}/>
             Successfully saved changes!
           </span>
-            )}
-            variant="h6"/>
+            )}/>
         </Snackbar>
       </Container>
     </Page>

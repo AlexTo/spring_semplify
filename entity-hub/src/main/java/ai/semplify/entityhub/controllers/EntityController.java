@@ -1,9 +1,6 @@
 package ai.semplify.entityhub.controllers;
 
-import ai.semplify.entityhub.models.PrefLabelRequest;
-import ai.semplify.entityhub.models.PrefLabelResponse;
-import ai.semplify.entityhub.models.TypeCheckRequest;
-import ai.semplify.entityhub.models.TypeCheckResponse;
+import ai.semplify.entityhub.models.*;
 import ai.semplify.entityhub.services.EntityService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,4 +35,23 @@ public class EntityController {
         return ResponseEntity.ok(entityService.getPrefLabel(request));
     }
 
+    @PostMapping("funcs/getDepiction")
+    public ResponseEntity<DepictionResponse> getDepiction(@Valid @RequestBody DepictionRequest request) {
+        return ResponseEntity.ok(entityService.getDepiction(request));
+    }
+
+    @PostMapping("funcs/getThumbnail")
+    public ResponseEntity<ThumbnailResponse> getThumbnail(@Valid @RequestBody ThumbnailRequest request) {
+        return ResponseEntity.ok(entityService.getThumbnail(request));
+    }
+
+    @PostMapping("funcs/getAbstract")
+    public ResponseEntity<AbstractResponse> getAbstract(@Valid @RequestBody AbstractRequest request) {
+        return ResponseEntity.ok(entityService.getAbstract(request));
+    }
+
+    @PostMapping("funcs/getSummary")
+    public ResponseEntity<EntitySummaryResponse> getSummary(@Valid @RequestBody EntitySummaryRequest request) {
+        return ResponseEntity.ok(entityService.getSummary(request));
+    }
 }

@@ -145,7 +145,7 @@ public class Elasticsearch {
     }
 
     @Bean
-    public IndexCoordinates indexCoordinates() {
+    public IndexCoordinates documentsIndex() {
         return IndexCoordinates.of("documents");
     }
 

@@ -12,6 +12,8 @@ import {ToggleButtonGroup, ToggleButton} from '@material-ui/lab';
 import ViewModuleIcon from '@material-ui/icons/ViewModule';
 import Paginate from 'src/components/Paginate';
 import SearchHitCard from './SearchHitCard';
+import {useDispatch, useSelector} from "react-redux";
+import {searchActions} from "../../../actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -52,6 +54,12 @@ const useStyles = makeStyles((theme) => ({
 
 function SearchHits({className, result, ...rest}) {
   const classes = useStyles();
+  const searchReducer = useSelector((state) => state.searchReducer);
+  const {
+    selectedAnnotations, page, size
+  } = searchReducer;
+  const dispatch = useDispatch();
+
   const [mode, setMode] = useState('grid');
 
   const {totalHits, searchHits} = result;
@@ -97,7 +105,9 @@ function SearchHits({className, result, ...rest}) {
         ))}
       </Grid>
       <div className={classes.paginate}>
-        <Paginate pageCount={3}/>
+        <Paginate pageCount={Math.ceil(totalHits / size)}
+                  forcePage={page}
+                  onPageChange={(data) => dispatch(searchActions.applyFilters(selectedAnnotations, data.selected, size))}/>
       </div>
     </div>
   );

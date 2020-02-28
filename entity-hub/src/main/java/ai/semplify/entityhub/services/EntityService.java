@@ -1,9 +1,6 @@
 package ai.semplify.entityhub.services;
 
-import ai.semplify.entityhub.models.PrefLabelRequest;
-import ai.semplify.entityhub.models.PrefLabelResponse;
-import ai.semplify.entityhub.models.TypeCheckRequest;
-import ai.semplify.entityhub.models.TypeCheckResponse;
+import ai.semplify.entityhub.models.*;
 
 public interface EntityService {
     TypeCheckResponse isSubClassOf(TypeCheckRequest request);
@@ -12,5 +9,24 @@ public interface EntityService {
 
     PrefLabelResponse getPrefLabel(PrefLabelRequest request);
 
+    PrefLabelResponse getPrefLabel(String uri);
+
+    DepictionResponse getDepiction(DepictionRequest request);
+
+    DepictionResponse getDepiction(String uri);
+
+    ThumbnailResponse getThumbnail(ThumbnailRequest request);
+
+    ThumbnailResponse getThumbnail(String uri);
+
+    AbstractResponse getAbstract(AbstractRequest request);
+
+    AbstractResponse getAbstract(String uri);
+
+    EntitySummaryResponse getSummary(String uri);
+
+    EntitySummaryResponse getSummary(EntitySummaryRequest request);
+
+    void invalidateCache(String uri);
 
 }

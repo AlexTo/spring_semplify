@@ -18,7 +18,6 @@ import './mixins/chartjs';
 import './mixins/moment';
 import './mixins/validate';
 import './mixins/prismjs';
-import './mock';
 import './assets/scss/main.scss';
 import * as Keycloak from "keycloak-js";
 import {KeycloakProvider} from "@react-keycloak/web";
@@ -54,7 +53,7 @@ const authLink = setContext((_, {headers}) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : "haha",
+      authorization: token ? `Bearer ${token}` : "",
     }
   }
 });

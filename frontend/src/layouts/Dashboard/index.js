@@ -1,10 +1,11 @@
-import React, { Suspense, useState } from 'react';
-import { renderRoutes } from 'react-router-config';
+import React, {Suspense, useState} from 'react';
+import {renderRoutes} from 'react-router-config';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
-import { LinearProgress } from '@material-ui/core';
+import {makeStyles} from '@material-ui/styles';
+import {LinearProgress} from '@material-ui/core';
 import NavBar from './NavBar';
 import TopBar from './TopBar';
+import EntitySummarySnackbar from "../../components/Entity/EntitySummarySnackbar";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -28,24 +29,24 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Dashboard({ route }) {
+function Dashboard({route}) {
   const classes = useStyles();
   const [openNavBarMobile, setOpenNavBarMobile] = useState(false);
 
   return (
     <>
-      <TopBar onOpenNavBarMobile={() => setOpenNavBarMobile(true)} />
+      <TopBar onOpenNavBarMobile={() => setOpenNavBarMobile(true)}/>
       <NavBar
         onMobileClose={() => setOpenNavBarMobile(false)}
-        openMobile={openNavBarMobile}
-      />
+        openMobile={openNavBarMobile}/>
       <div className={classes.container}>
         <div className={classes.content}>
-          <Suspense fallback={<LinearProgress />}>
+          <Suspense fallback={<LinearProgress/>}>
             {renderRoutes(route.routes)}
           </Suspense>
         </div>
       </div>
+      <EntitySummarySnackbar open={false}/>
     </>
   );
 }

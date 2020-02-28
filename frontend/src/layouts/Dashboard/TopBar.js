@@ -21,7 +21,6 @@ import PeopleIcon from '@material-ui/icons/PeopleOutline';
 import InputIcon from '@material-ui/icons/Input';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import axios from 'src/utils/axios';
 import NotificationsPopover from 'src/components/NotificationsPopover';
 import ChatBar from './ChatBar';
 import {useKeycloak} from '@react-keycloak/web';
@@ -128,24 +127,6 @@ function TopBar({onOpenNavBarMobile, className, ...rest}) {
     }
   };
 
-  useEffect(() => {
-    let mounted = true;
-
-    const fetchNotifications = () => {
-      axios.get('/api/account/notifications').then((response) => {
-        if (mounted) {
-          setNotifications(response.data.notifications);
-        }
-      });
-    };
-
-    fetchNotifications();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
   return (
     <AppBar
       {...rest}
@@ -219,9 +200,6 @@ function TopBar({onOpenNavBarMobile, className, ...rest}) {
         notifications={notifications}
         onClose={handleNotificationsClose}
         open={openNotifications}/>
-      <ChatBar
-        onClose={handleChatBarClose}
-        open={openChatBar}/>
     </AppBar>
   );
 }

@@ -5,6 +5,9 @@ schema {
 
 type Query {
     search(query: CriteriaQuery!): SearchHits!
+    depiction(uri: String!): Depiction!
+    thumbnail(uri: String!): Thumbnail!
+    summary(uri: String!): Summary!
 }
 
 type Mutation {
@@ -12,8 +15,31 @@ type Mutation {
 
 input CriteriaQuery {
     q: String!
+    selectedAnnotations: [String!]
     page: Int
     size: Int
+}
+
+type Summary {
+    prefLabel: PrefLabel
+    thumbnail: Thumbnail
+    abstract_: Abstract
+}
+
+type PrefLabel {
+    prefLabel: String
+    lang: String
+}
+type Depiction {
+    depictionUri: String
+}
+
+type Thumbnail {
+    thumbnailUri: String
+}
+
+type Abstract {
+    text: String
 }
 
 type Doc {

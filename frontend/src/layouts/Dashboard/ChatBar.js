@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {Link as RouterLink} from 'react-router-dom';
 import clsx from 'clsx';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
+import {makeStyles} from '@material-ui/styles';
 import {
   Avatar,
   Drawer,
@@ -14,7 +14,6 @@ import {
   ListSubheader,
   Typography,
 } from '@material-ui/core';
-import axios from 'src/utils/axios';
 import StatusBullet from 'src/components/StatusBullet';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,11 +35,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ChatBar({
-  open,
-  onClose,
-  className,
-  ...rest
-}) {
+                   open,
+                   onClose,
+                   className,
+                   ...rest
+                 }) {
   const classes = useStyles();
   const [data, setData] = useState(null);
 
@@ -48,11 +47,6 @@ function ChatBar({
     let mounted = true;
 
     const fetchData = () => {
-      axios.get('/api/chat/activity').then((response) => {
-        if (mounted) {
-          setData(response.data);
-        }
-      });
     };
 
     fetchData();
@@ -69,7 +63,7 @@ function ChatBar({
   return (
     <Drawer
       anchor="right"
-      classes={{ paper: classes.drawer }}
+      classes={{paper: classes.drawer}}
       elevation={1}
       onClose={onClose}
       open={open}

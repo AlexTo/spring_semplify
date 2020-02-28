@@ -1,12 +1,10 @@
 package ai.semplify.feignclients.clients.entityhub;
 
 
-import ai.semplify.feignclients.clients.entityhub.models.PrefLabelRequest;
-import ai.semplify.feignclients.clients.entityhub.models.PrefLabelResponse;
-import ai.semplify.feignclients.clients.entityhub.models.TypeCheckRequest;
-import ai.semplify.feignclients.clients.entityhub.models.TypeCheckResponse;
+import ai.semplify.feignclients.clients.entityhub.models.*;
 import ai.semplify.feignclients.config.DefaultFeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -23,4 +21,17 @@ public interface EntityHubFeignClient {
 
     @PostMapping("/entity/funcs/getPrefLabel")
     PrefLabelResponse getPrefLabel(@Valid @RequestBody PrefLabelRequest request);
+
+    @PostMapping("/entity/funcs/getDepiction")
+    DepictionResponse getDepiction(@Valid @RequestBody DepictionRequest request);
+
+    @PostMapping("/entity/funcs/getThumbnail")
+    ThumbnailResponse getThumbnail(@Valid @RequestBody ThumbnailRequest request);
+
+    @PostMapping("/entity/funcs/getSummary")
+    EntitySummaryResponse getSummary(@Valid @RequestBody EntitySummaryRequest request);
+
+    @PostMapping("/entity/funcs/getAbstract")
+    AbstractResponse getAbstract(@Valid @RequestBody AbstractRequest request);
+
 }

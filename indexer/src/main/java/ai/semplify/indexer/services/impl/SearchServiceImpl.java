@@ -3,15 +3,18 @@ package ai.semplify.indexer.services.impl;
 import ai.semplify.feignclients.clients.entityhub.EntityHubFeignClient;
 import ai.semplify.indexer.entities.elasticsearch.IndexedDocument;
 import ai.semplify.indexer.mappers.SearchHitsMapper;
+import ai.semplify.indexer.models.Query;
 import ai.semplify.indexer.models.SearchHits;
 import ai.semplify.indexer.services.SearchService;
 import lombok.var;
+import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -42,9 +45,24 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public SearchHits search(String q, Pageable page) {
+    public SearchHits search(Query query) {
+        var queryText = query.getQ();
+        var page = query.getPage() == null ? 0 : query.getPage();
+        var size = query.getSize() == null ? 9 : query.getSize();
+        var pageRequest = PageRequest.of(page, size);
 
-        QueryBuilder match = (q == null || Objects.equals(q, "")) ? matchAllQuery() : matchQuery("content", q);
+        QueryBuilder matchQuery = (queryText == null || Objects.equals(queryText, ""))
+                ? matchAllQuery() : matchQuery("content", queryText);
+
+        QueryBuilder selectedAnnotationsQuery = null;
+
+        var selectedAnnotations = query.getSelectedAnnotations();
+
+        if (selectedAnnotations != null && selectedAnnotations.size() > 0) {
+            selectedAnnotationsQuery = QueryBuilders.nestedQuery(
+                    "annotations",
+                    QueryBuilders.termsQuery("annotations.uri", selectedAnnotations), ScoreMode.Avg);
+        }
 
         var aggs = AggregationBuilders
                 .nested("annotations", "annotations")
@@ -62,14 +80,22 @@ public class SearchServiceImpl implements SearchService {
                                                                 .terms("annotations_per_class")
                                                                 .field("annotations.uri")))));
 
-        var query = new NativeSearchQueryBuilder()
-                .withQuery(match)
+        var boolQuery = QueryBuilders.boolQuery();
+        boolQuery.must().add(matchQuery);
+        if (selectedAnnotationsQuery != null)
+            boolQuery.must().add(selectedAnnotationsQuery);
+
+        var request = new NativeSearchQueryBuilder()
+                .withQuery(boolQuery)
                 .withHighlightFields(new HighlightBuilder.Field("content"))
                 .addAggregation(aggs)
+                .withPageable(pageRequest)
                 .build();
 
         var searchHits = elasticsearchOperations
-                .search(query, IndexedDocument.class, indexCoordinates);
+                .search(request, IndexedDocument.class, indexCoordinates);
+
         return searchHitsMapper.toModel(searchHits);
+
     }
 }
