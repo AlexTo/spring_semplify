@@ -9,13 +9,21 @@ import ai.semplify.indexer.entities.postgresql.Document;
 import ai.semplify.indexer.entities.postgresql.DocumentType;
 import ai.semplify.indexer.mappers.DocumentMapper;
 import ai.semplify.indexer.models.DocumentMetadata;
-import ai.semplify.indexer.repositories.postgresql.DocumentRepository;
+import ai.semplify.indexer.repositories.postgresql.DocumentJpaRepository;
 import ai.semplify.indexer.services.IndexService;
 import lombok.var;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.sax.BodyContentHandler;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
@@ -25,29 +33,34 @@ import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
 @Service
 public class IndexServiceImpl implements IndexService {
 
     private ElasticsearchOperations elasticsearchOperations;
-    private final IndexCoordinates indexCoordinates;
-    private DocumentRepository documentRepository;
+    private IndexCoordinates documentsIndex;
+    private DocumentJpaRepository documentJpaRepository;
     private EntityHubFeignClient entityHubFeignClient;
 
+    private JobLauncher jobLauncher;
+    private Job subjectIndexJob;
     private DocumentMapper mapper;
 
+
     public IndexServiceImpl(ElasticsearchOperations elasticsearchOperations,
-                            IndexCoordinates indexCoordinates,
-                            DocumentRepository documentRepository,
+                            @Qualifier("documents_index") IndexCoordinates documentsIndex,
+                            DocumentJpaRepository documentJpaRepository,
                             EntityHubFeignClient entityHubFeignClient,
+                            JobLauncher jobLauncher,
+                            @Qualifier("subjectIndexJob") Job subjectIndexJob,
                             DocumentMapper mapper) {
         this.elasticsearchOperations = elasticsearchOperations;
-        this.indexCoordinates = indexCoordinates;
-        this.documentRepository = documentRepository;
+        this.documentsIndex = documentsIndex;
+        this.documentJpaRepository = documentJpaRepository;
         this.entityHubFeignClient = entityHubFeignClient;
+        this.jobLauncher = jobLauncher;
+        this.subjectIndexJob = subjectIndexJob;
         this.mapper = mapper;
 
     }
@@ -58,7 +71,7 @@ public class IndexServiceImpl implements IndexService {
         document.setContent(filePart.getBytes());
         document.setContentType(filePart.getContentType());
         document.setType(DocumentType.FILE.getValue());
-        documentRepository.save(document);
+        documentJpaRepository.save(document);
     }
 
     @Override
@@ -115,9 +128,21 @@ public class IndexServiceImpl implements IndexService {
         }
 
         var indexQuery = new IndexQueryBuilder()
-                .withId(indexedDocument.getUri()).withObject(indexedDocument)
+                .withId(indexedDocument.getUri())
+                .withObject(indexedDocument)
                 .build();
-        elasticsearchOperations.index(indexQuery, indexCoordinates);
+
+        elasticsearchOperations.index(indexQuery, documentsIndex);
+    }
+
+    @Override
+    public void startFullSubjectIndex() throws JobParametersInvalidException,
+            JobExecutionAlreadyRunningException,
+            JobRestartException, JobInstanceAlreadyCompleteException {
+        var jobParameters = new JobParametersBuilder()
+                .addLong("time", System.currentTimeMillis())
+                .toJobParameters();
+        jobLauncher.run(subjectIndexJob, jobParameters);
     }
 
     private String getPrefLabel(String uri) {

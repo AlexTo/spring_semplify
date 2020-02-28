@@ -1,8 +1,7 @@
 package ai.semplify.indexer.mappers;
 
-import ai.semplify.indexer.entities.postgresql.Document;
 import ai.semplify.indexer.models.DocumentMetadata;
-import ai.semplify.indexer.models.IndexedDocument;
+import ai.semplify.indexer.models.Document;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,13 +12,13 @@ import org.mapstruct.Mappings;
         uses = {AnnotationMapper.class})
 public interface DocumentMapper {
 
-    IndexedDocument toModel(ai.semplify.indexer.entities.elasticsearch.IndexedDocument entity);
+    Document toModel(ai.semplify.indexer.entities.elasticsearch.Document entity);
 
     @Mappings({
             @Mapping(target = "content", ignore = true),
             @Mapping(target = "annotations", ignore = true)
     })
-    ai.semplify.indexer.entities.elasticsearch.IndexedDocument toEntity(Document document);
+    ai.semplify.indexer.entities.elasticsearch.Document toEntity(ai.semplify.indexer.entities.postgresql.Document document);
 
     @Mappings({
             @Mapping(target = "content", ignore = true),
@@ -33,6 +32,6 @@ public interface DocumentMapper {
             @Mapping(target = "status", ignore = true),
             @Mapping(target = "type", ignore = true)
     })
-    Document toEntity(DocumentMetadata documentMetadata);
+    ai.semplify.indexer.entities.postgresql.Document toEntity(DocumentMetadata documentMetadata);
 
 }

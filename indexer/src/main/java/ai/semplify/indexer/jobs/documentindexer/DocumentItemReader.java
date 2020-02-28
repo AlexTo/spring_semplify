@@ -1,7 +1,7 @@
-package ai.semplify.indexer.jobs;
+package ai.semplify.indexer.jobs.documentindexer;
 
 import ai.semplify.indexer.entities.postgresql.Document;
-import ai.semplify.indexer.repositories.postgresql.DocumentRepository;
+import ai.semplify.indexer.repositories.postgresql.DocumentJpaRepository;
 import lombok.var;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,17 +12,17 @@ import java.util.List;
 
 public class DocumentItemReader implements ItemReader<List<Document>> {
 
-    private DocumentRepository documentRepository;
+    private DocumentJpaRepository documentJpaRepository;
     private Logger logger = LoggerFactory.getLogger(DocumentItemReader.class);
 
-    public DocumentItemReader(DocumentRepository documentRepository) {
-        this.documentRepository = documentRepository;
+    public DocumentItemReader(DocumentJpaRepository documentJpaRepository) {
+        this.documentJpaRepository = documentJpaRepository;
     }
 
 
     @Override
     public List<Document> read() {
-        var documents = documentRepository
+        var documents = documentJpaRepository
                 .findAllByStatusIsNullOrderByLastModifiedDateAsc(PageRequest.of(0, 10));
 
         if (documents.isEmpty()) {

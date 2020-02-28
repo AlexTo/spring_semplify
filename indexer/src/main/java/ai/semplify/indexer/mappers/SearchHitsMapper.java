@@ -2,7 +2,7 @@ package ai.semplify.indexer.mappers;
 
 import ai.semplify.feignclients.clients.entityhub.EntityHubFeignClient;
 import ai.semplify.feignclients.clients.entityhub.models.PrefLabelRequest;
-import ai.semplify.indexer.entities.elasticsearch.IndexedDocument;
+import ai.semplify.indexer.entities.elasticsearch.Document;
 import ai.semplify.indexer.models.Bucket;
 import ai.semplify.indexer.models.SearchHit;
 import ai.semplify.indexer.models.SearchHits;
@@ -36,7 +36,7 @@ public abstract class SearchHitsMapper {
         this.searchHitMapper = searchHitMapper;
     }
 
-    public SearchHits toModel(org.springframework.data.elasticsearch.core.SearchHits<IndexedDocument> entity) {
+    public SearchHits toModel(org.springframework.data.elasticsearch.core.SearchHits<Document> entity) {
         var obj = new SearchHits();
         obj.setMaxScore(entity.getMaxScore());
         obj.setScrollId(entity.getScrollId());

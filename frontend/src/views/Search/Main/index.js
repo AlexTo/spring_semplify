@@ -102,14 +102,14 @@ function Main() {
 
   return (
     <Page className={classes.root} title="Search">
-      <Grid container className={classes.container} spacing={3}>
-        <Grid item xs={3}>
+      <Grid container className={classes.container} spacing={2}>
+        <Grid item xs={2}>
           <Buckets buckets={buckets}
                    onApplyFilter={handleApplyFilter}
                    onBucketCheckboxChange={handleBucketCheckboxChange}
                    onSubBucketCheckBoxChange={handleSubBucketCheckboxChange}/>
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={10}>
           <SearchHits result={data.search} className={classes.results}/>
         </Grid>
       </Grid>

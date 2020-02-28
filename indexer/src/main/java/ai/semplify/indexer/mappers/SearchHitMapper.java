@@ -1,12 +1,11 @@
 package ai.semplify.indexer.mappers;
 
-import ai.semplify.indexer.entities.elasticsearch.IndexedDocument;
+import ai.semplify.indexer.entities.elasticsearch.Document;
 import ai.semplify.indexer.models.HighlightField;
 import ai.semplify.indexer.models.SearchHit;
 import lombok.var;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.stream.Collectors;
@@ -22,7 +21,7 @@ public abstract class SearchHitMapper {
         this.docMapper = docMapper;
     }
 
-    public SearchHit toModel(org.springframework.data.elasticsearch.core.SearchHit<IndexedDocument> entity) {
+    public SearchHit toModel(org.springframework.data.elasticsearch.core.SearchHit<Document> entity) {
 
         var searchHit = new SearchHit();
         searchHit.setId(entity.getId());

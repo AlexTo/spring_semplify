@@ -10,6 +10,6 @@ public class SearchHit {
     private String id;
     private float score;
     private List<Object> sortValues;
-    private IndexedDocument content;
+    private Document content;
     private List<HighlightField> highlightFields = new ArrayList<>();
 }

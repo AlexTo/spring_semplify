@@ -1,8 +1,8 @@
-package ai.semplify.indexer.jobs;
+package ai.semplify.indexer.jobs.documentindexer;
 
 import ai.semplify.indexer.entities.postgresql.Document;
 import ai.semplify.indexer.entities.postgresql.DocumentStatus;
-import ai.semplify.indexer.repositories.postgresql.DocumentRepository;
+import ai.semplify.indexer.repositories.postgresql.DocumentJpaRepository;
 import ai.semplify.indexer.services.IndexService;
 import lombok.var;
 import org.springframework.batch.item.ItemWriter;
@@ -12,12 +12,12 @@ import java.util.List;
 public class DocumentItemWriter implements ItemWriter<List<Document>> {
 
     private IndexService indexService;
-    private DocumentRepository documentRepository;
+    private DocumentJpaRepository documentJpaRepository;
 
     public DocumentItemWriter(IndexService indexService,
-                              DocumentRepository documentRepository) {
+                              DocumentJpaRepository documentJpaRepository) {
         this.indexService = indexService;
-        this.documentRepository = documentRepository;
+        this.documentJpaRepository = documentJpaRepository;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class DocumentItemWriter implements ItemWriter<List<Document>> {
                 }
                 document.setStatus(DocumentStatus.DONE.getValue());
             }
-            documentRepository.saveAll(documents);
+            documentJpaRepository.saveAll(documents);
         }
     }
 }

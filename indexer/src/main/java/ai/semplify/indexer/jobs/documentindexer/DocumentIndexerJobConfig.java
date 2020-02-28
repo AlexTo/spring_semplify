@@ -1,7 +1,7 @@
-package ai.semplify.indexer.jobs;
+package ai.semplify.indexer.jobs.documentindexer;
 
 import ai.semplify.indexer.entities.postgresql.Document;
-import ai.semplify.indexer.repositories.postgresql.DocumentRepository;
+import ai.semplify.indexer.repositories.postgresql.DocumentJpaRepository;
 import ai.semplify.indexer.services.IndexService;
 import lombok.var;
 import org.springframework.batch.core.Job;
@@ -23,22 +23,22 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.util.List;
 
 @Configuration
-public class DocumentIndexJobConfig {
+public class DocumentIndexerJobConfig {
 
     private JobBuilderFactory jobBuilderFactory;
     private StepBuilderFactory stepBuilderFactory;
-    private DocumentRepository documentRepository;
+    private DocumentJpaRepository documentJpaRepository;
     private JobLauncher jobLauncher;
     private IndexService indexService;
 
-    public DocumentIndexJobConfig(JobBuilderFactory jobBuilderFactory,
-                                  StepBuilderFactory stepBuilderFactory,
-                                  DocumentRepository documentRepository,
-                                  JobLauncher jobLauncher,
-                                  IndexService indexService) {
+    public DocumentIndexerJobConfig(JobBuilderFactory jobBuilderFactory,
+                                    StepBuilderFactory stepBuilderFactory,
+                                    DocumentJpaRepository documentJpaRepository,
+                                    JobLauncher jobLauncher,
+                                    IndexService indexService) {
         this.jobBuilderFactory = jobBuilderFactory;
         this.stepBuilderFactory = stepBuilderFactory;
-        this.documentRepository = documentRepository;
+        this.documentJpaRepository = documentJpaRepository;
         this.jobLauncher = jobLauncher;
         this.indexService = indexService;
     }
@@ -56,19 +56,19 @@ public class DocumentIndexJobConfig {
     @Bean
     @StepScope
     public DocumentItemReader documentItemReader() {
-        return new DocumentItemReader(documentRepository);
+        return new DocumentItemReader(documentJpaRepository);
     }
 
     @Bean
     @StepScope
     public DocumentItemProcessor documentItemProcessor() {
-        return new DocumentItemProcessor(documentRepository);
+        return new DocumentItemProcessor(documentJpaRepository);
     }
 
     @Bean
     @StepScope
     public DocumentItemWriter documentItemWriter() {
-        return new DocumentItemWriter(indexService, documentRepository);
+        return new DocumentItemWriter(indexService, documentJpaRepository);
     }
 
     @Bean

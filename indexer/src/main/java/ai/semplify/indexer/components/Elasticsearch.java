@@ -1,5 +1,7 @@
 package ai.semplify.indexer.components;
 
+import ai.semplify.indexer.entities.elasticsearch.Subject;
+import ai.semplify.indexer.models.Document;
 import lombok.var;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
@@ -14,6 +16,7 @@ import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.data.convert.CustomConversions;
 import org.springframework.data.convert.Jsr310Converters;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.convert.ElasticsearchCustomConversions;
 import org.springframework.data.elasticsearch.core.convert.MappingElasticsearchConverter;
@@ -22,6 +25,7 @@ import org.springframework.data.elasticsearch.core.mapping.ElasticsearchPersiste
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.mapping.SimpleElasticsearchMappingContext;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+
 import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.util.ClassTypeInformation;
 import org.springframework.data.util.TypeInformation;
@@ -144,10 +148,16 @@ public class Elasticsearch {
 
     }
 
-    @Bean
+    @Bean(name = "documents_index")
     public IndexCoordinates documentsIndex() {
         return IndexCoordinates.of("documents");
     }
+
+    @Bean(name = "subjects_index")
+    public IndexCoordinates subjectsIndex() {
+        return IndexCoordinates.of("subjects");
+    }
+
 
     @Primary
     @Bean

@@ -4,6 +4,7 @@ import ai.semplify.indexer.models.Query;
 import ai.semplify.indexer.models.SearchHits;
 import ai.semplify.indexer.services.SearchService;
 import lombok.var;
+import org.elasticsearch.action.search.SearchResponse;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,8 +26,6 @@ public class SearchController {
 
     @PostMapping("")
     public ResponseEntity<SearchHits> search(@Valid @RequestBody Query query) {
-
-
         var results = searchService.search(query);
         return ResponseEntity.ok(results);
     }

@@ -4,14 +4,17 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
-  Card, CardContent, TableHead, TableRow, TableCell, TableBody, Table, TablePagination, CardActions, Checkbox
+  DialogTitle, TextField,
+  Card, CardContent, TableHead, TableRow, TableCell, TableBody,
+  Table, TablePagination, CardActions, Checkbox, CardHeader
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 import Highlighter from "react-highlight-words";
 import Link from "@material-ui/core/Link";
 import {useDispatch} from "react-redux";
 import {entityActions} from "../../../../actions";
+import {Autocomplete} from "@material-ui/lab";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -25,6 +28,14 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end'
   }
 }));
+
+const films = [
+  {title: 'The Shawshank Redemption', year: 1994},
+  {title: 'The Godfather', year: 1972},
+  {title: 'The Godfather: Part II', year: 1974},
+  {title: 'The Dark Knight', year: 2008},
+  {title: '12 Angry Men', year: 1957}
+];
 
 function SelectAnnotationsDialog({label, suggestedAnnotations, open, onCancel, onUpdate}) {
   const classes = useStyles();
@@ -84,69 +95,81 @@ function SelectAnnotationsDialog({label, suggestedAnnotations, open, onCancel, o
         aria-describedby="alert-dialog-description">
         <DialogTitle>{label}</DialogTitle>
         <DialogContent>
-          <Card>
-            <CardContent className={classes.content}>
-              <div className={classes.inner}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={tmpSelectedAnnotations.length === suggestedAnnotations.length}
-                          color="primary"
-                          indeterminate={
-                            tmpSelectedAnnotations.length > 0
-                            && tmpSelectedAnnotations.length < suggestedAnnotations.length
-                          }
-                          onChange={handleSelectAllAnnotations}/>
-                      </TableCell>
-                      <TableCell>Entity</TableCell>
-                      <TableCell>Context</TableCell>
-                      <TableCell>Source</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {suggestedAnnotations.slice(page * size, Math.min((page + 1) * size, suggestedAnnotations.length))
-                      .map(annotation =>
-                        <TableRow key={annotation.uri}>
+          <Grid container spacing={2}>
+            <Grid item md={12}>
+              <Autocomplete options={films}
+                            getOptionLabel={option => option.title}
+                            renderInput={params => <TextField {...params} label="Add tags"
+                                                              variant="outlined"/>}/>
+            </Grid>
+            <Grid item md={12}>
+              <Card>
+                <CardContent className={classes.content}>
+                  <div className={classes.inner}>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
                           <TableCell padding="checkbox">
-                            <Checkbox checked={tmpSelectedAnnotations.includes(annotation)}
-                                      onChange={(event) => handSelectOneAnnotation(event, annotation)}/>
+                            <Checkbox
+                              checked={tmpSelectedAnnotations.length === suggestedAnnotations.length}
+                              color="primary"
+                              indeterminate={
+                                tmpSelectedAnnotations.length > 0
+                                && tmpSelectedAnnotations.length < suggestedAnnotations.length
+                              }
+                              onChange={handleSelectAllAnnotations}/>
                           </TableCell>
-                          <TableCell>
-                            <Link href={annotation.uri}
-                                  target="_blank"
-                                  rel="noopener"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    dispatch(entityActions.showPopupSummary(annotation.uri))
-                                  }}>
-                              {annotation.prefLabel}
-                            </Link>
-                          </TableCell>
-                          <TableCell>
-                            {annotation.context && <Highlighter
-                              searchWords={[annotation.surfaceForm]}
-                              textToHighlight={annotation.context}/>}
-                          </TableCell>
-                          <TableCell>{annotation.source}</TableCell>
+                          <TableCell>Entity</TableCell>
+                          <TableCell>Context</TableCell>
+                          <TableCell>Source</TableCell>
                         </TableRow>
-                      )}
-                  </TableBody>
-                </Table>
-              </div>
-            </CardContent>
-            <CardActions className={classes.actions}>
-              <TablePagination
-                component="div"
-                count={suggestedAnnotations.length}
-                onChangePage={handleChangePage}
-                page={page}
-                rowsPerPage={size}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-                rowsPerPageOptions={[5, 10]}/>
-            </CardActions>
-          </Card>
+                      </TableHead>
+                      <TableBody>
+                        {suggestedAnnotations.slice(page * size, Math.min((page + 1) * size, suggestedAnnotations.length))
+                          .map(annotation =>
+                            <TableRow key={annotation.uri}>
+                              <TableCell padding="checkbox">
+                                <Checkbox checked={tmpSelectedAnnotations.includes(annotation)}
+                                          onChange={(event) => handSelectOneAnnotation(event, annotation)}/>
+                              </TableCell>
+                              <TableCell>
+                                <Link href={annotation.uri}
+                                      target="_blank"
+                                      rel="noopener"
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        dispatch(entityActions.showPopupSummary(annotation.uri))
+                                      }}>
+                                  {annotation.prefLabel}
+                                </Link>
+                              </TableCell>
+                              <TableCell>
+                                {annotation.context && <Highlighter
+                                  searchWords={[annotation.surfaceForm]}
+                                  textToHighlight={annotation.context}/>}
+                              </TableCell>
+                              <TableCell>{annotation.source}</TableCell>
+                            </TableRow>
+                          )}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+                <CardActions className={classes.actions}>
+
+                  <TablePagination
+                    component="div"
+                    count={suggestedAnnotations.length}
+                    onChangePage={handleChangePage}
+                    page={page}
+                    rowsPerPage={size}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    rowsPerPageOptions={[5, 10]}/>
+                </CardActions>
+              </Card>
+            </Grid>
+          </Grid>
+
         </DialogContent>
         <DialogActions>
           <Button

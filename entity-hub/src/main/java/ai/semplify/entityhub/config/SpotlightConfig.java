@@ -6,11 +6,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "poolparty")
-public class PoolParty {
+@ConfigurationProperties(prefix = "spotlight")
+public class SpotlightConfig {
     private String host;
     private Integer port;
-    private String username;
-    private String password;
-    private String projectId;
 }

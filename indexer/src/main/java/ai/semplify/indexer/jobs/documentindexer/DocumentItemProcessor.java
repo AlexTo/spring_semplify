@@ -1,8 +1,8 @@
-package ai.semplify.indexer.jobs;
+package ai.semplify.indexer.jobs.documentindexer;
 
 import ai.semplify.indexer.entities.postgresql.Document;
 import ai.semplify.indexer.entities.postgresql.DocumentStatus;
-import ai.semplify.indexer.repositories.postgresql.DocumentRepository;
+import ai.semplify.indexer.repositories.postgresql.DocumentJpaRepository;
 import lombok.var;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -10,10 +10,10 @@ import java.util.List;
 
 public class DocumentItemProcessor implements ItemProcessor<List<Document>, List<Document>> {
 
-    private DocumentRepository documentRepository;
+    private DocumentJpaRepository documentJpaRepository;
 
-    public DocumentItemProcessor(DocumentRepository documentRepository) {
-        this.documentRepository = documentRepository;
+    public DocumentItemProcessor(DocumentJpaRepository documentJpaRepository) {
+        this.documentJpaRepository = documentJpaRepository;
     }
 
     @Override
@@ -23,6 +23,6 @@ public class DocumentItemProcessor implements ItemProcessor<List<Document>, List
             document.setError(null);
             document.setStatus(DocumentStatus.PROCESSING.getValue());
         }
-        return documentRepository.saveAll(documents);
+        return documentJpaRepository.saveAll(documents);
     }
 }

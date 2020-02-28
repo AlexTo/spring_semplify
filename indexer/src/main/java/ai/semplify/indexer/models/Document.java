@@ -1,11 +1,11 @@
-package ai.semplify.feignclients.clients.indexer.models;
+package ai.semplify.indexer.models;
 
 import lombok.Data;
 
 import java.util.Set;
 
 @Data
-public class IndexedDocument {
+public class Document {
     private String uri;
     private String label;
     private Set<Annotation> annotations;

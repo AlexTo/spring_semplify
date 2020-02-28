@@ -1,5 +1,3 @@
-/* eslint-disable react/no-multi-comp */
-/* eslint-disable react/display-name */
 import React from 'react';
 import DashboardIcon from '@material-ui/icons/DashboardOutlined';
 import HomeIcon from '@material-ui/icons/HomeOutlined';

@@ -146,7 +146,9 @@ export default function Buckets({buckets, onBucketCheckboxChange, onSubBucketChe
         defaultExpanded={buckets.filter(b => b.checked || b.indeterminate).map(b => b.uri)}
         defaultCollapseIcon={<ArrowDropDownIcon/>}
         defaultExpandIcon={<ArrowRightIcon/>}
-        defaultEndIcon={<div style={{width: 24}}/>}>
+        defaultEndIcon={<div style={{width: 24}}/>}
+        onChange={() => {
+        }}>
         {buckets.map(bucket =>
           <StyledTreeItem
             key={bucket.uri}

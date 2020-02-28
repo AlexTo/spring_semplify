@@ -1,19 +1,23 @@
 package ai.semplify.indexer.services.impl;
 
-import ai.semplify.feignclients.clients.entityhub.EntityHubFeignClient;
-import ai.semplify.indexer.entities.elasticsearch.IndexedDocument;
+import ai.semplify.indexer.entities.elasticsearch.Document;
 import ai.semplify.indexer.mappers.SearchHitsMapper;
 import ai.semplify.indexer.models.Query;
 import ai.semplify.indexer.models.SearchHits;
 import ai.semplify.indexer.services.SearchService;
 import lombok.var;
 import org.apache.lucene.search.join.ScoreMode;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.suggest.SuggestBuilder;
+import org.elasticsearch.search.suggest.SuggestBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
@@ -28,20 +32,19 @@ import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 @Service
 public class SearchServiceImpl implements SearchService {
 
-    private IndexCoordinates indexCoordinates;
+    private IndexCoordinates documentsIndex;
     private ElasticsearchOperations elasticsearchOperations;
     private SearchHitsMapper searchHitsMapper;
-    private EntityHubFeignClient entityHubFeignClient;
+
+
     private Logger logger = LoggerFactory.getLogger(SearchServiceImpl.class);
 
-    public SearchServiceImpl(IndexCoordinates indexCoordinates,
+    public SearchServiceImpl(@Qualifier("documents_index") IndexCoordinates documentsIndex,
                              ElasticsearchOperations elasticsearchOperations,
-                             SearchHitsMapper searchHitsMapper,
-                             EntityHubFeignClient entityHubFeignClient) {
-        this.indexCoordinates = indexCoordinates;
+                             SearchHitsMapper searchHitsMapper) {
+        this.documentsIndex = documentsIndex;
         this.elasticsearchOperations = elasticsearchOperations;
         this.searchHitsMapper = searchHitsMapper;
-        this.entityHubFeignClient = entityHubFeignClient;
     }
 
     @Override
@@ -93,9 +96,11 @@ public class SearchServiceImpl implements SearchService {
                 .build();
 
         var searchHits = elasticsearchOperations
-                .search(request, IndexedDocument.class, indexCoordinates);
+                .search(request, Document.class, documentsIndex);
 
         return searchHitsMapper.toModel(searchHits);
 
     }
+
+
 }

@@ -6,8 +6,10 @@ import org.springframework.context.annotation.Configuration;
 
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "spotlight")
-public class Spotlight {
-    private String host;
-    private Integer port;
+@ConfigurationProperties(prefix = "app.sparql")
+public class SPARQLEndpointConfig {
+    private String url;
+    private boolean auth;
+    private String username;
+    private String password;
 }
