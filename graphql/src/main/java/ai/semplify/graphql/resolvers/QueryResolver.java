@@ -5,6 +5,8 @@ import ai.semplify.feignclients.clients.entityhub.models.*;
 import ai.semplify.feignclients.clients.indexer.IndexerFeignClient;
 import ai.semplify.feignclients.clients.indexer.models.Query;
 import ai.semplify.feignclients.clients.indexer.models.SearchHits;
+import ai.semplify.feignclients.clients.indexer.models.SuggestionRequest;
+import ai.semplify.feignclients.clients.indexer.models.Suggestions;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import lombok.var;
 import org.springframework.stereotype.Component;
@@ -40,5 +42,9 @@ public class QueryResolver implements GraphQLQueryResolver {
         var request = new EntitySummaryRequest();
         request.setUri(uri);
         return entityHubFeignClient.getSummary(request);
+    }
+
+    public Suggestions suggest(SuggestionRequest request) {
+        return indexerFeignClient.suggest(request);
     }
 }

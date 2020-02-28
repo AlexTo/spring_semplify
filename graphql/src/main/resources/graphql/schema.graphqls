@@ -4,20 +4,35 @@ schema {
 }
 
 type Query {
-    search(query: CriteriaQuery!): SearchHits!
+    search(query: QueryInput!): SearchHits!
     depiction(uri: String!): Depiction!
     thumbnail(uri: String!): Thumbnail!
     summary(uri: String!): Summary!
+    suggest(query: SuggestInput!): Suggestions!
 }
 
 type Mutation {
 }
 
-input CriteriaQuery {
+input QueryInput {
     q: String!
     selectedAnnotations: [String!]
     page: Int
     size: Int
+}
+
+input SuggestInput {
+    text: String!
+    type: String!
+}
+
+type Suggestion {
+    uri: String!
+    text: String!
+}
+
+type Suggestions {
+    suggestions: [Suggestion!]
 }
 
 type Summary {

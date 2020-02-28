@@ -1,4 +1,4 @@
-package ai.semplify.indexer.models;
+package ai.semplify.feignclients.clients.indexer.models;
 
 import lombok.Data;
 

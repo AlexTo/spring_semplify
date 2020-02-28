@@ -34,4 +34,6 @@ public interface EntityHubFeignClient {
     @PostMapping("/entity/funcs/getAbstract")
     AbstractResponse getAbstract(@Valid @RequestBody AbstractRequest request);
 
+
+
 }

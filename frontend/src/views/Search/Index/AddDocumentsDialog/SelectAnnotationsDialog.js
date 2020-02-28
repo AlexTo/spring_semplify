@@ -15,6 +15,7 @@ import {useDispatch} from "react-redux";
 import {entityActions} from "../../../../actions";
 import {Autocomplete} from "@material-ui/lab";
 import Grid from "@material-ui/core/Grid";
+import SubjectSuggestion from "../../../../components/Entity/SubjectSuggestion";
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -28,14 +29,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end'
   }
 }));
-
-const films = [
-  {title: 'The Shawshank Redemption', year: 1994},
-  {title: 'The Godfather', year: 1972},
-  {title: 'The Godfather: Part II', year: 1974},
-  {title: 'The Dark Knight', year: 2008},
-  {title: '12 Angry Men', year: 1957}
-];
 
 function SelectAnnotationsDialog({label, suggestedAnnotations, open, onCancel, onUpdate}) {
   const classes = useStyles();
@@ -97,10 +90,7 @@ function SelectAnnotationsDialog({label, suggestedAnnotations, open, onCancel, o
         <DialogContent>
           <Grid container spacing={2}>
             <Grid item md={12}>
-              <Autocomplete options={films}
-                            getOptionLabel={option => option.title}
-                            renderInput={params => <TextField {...params} label="Add tags"
-                                                              variant="outlined"/>}/>
+              <SubjectSuggestion/>
             </Grid>
             <Grid item md={12}>
               <Card>

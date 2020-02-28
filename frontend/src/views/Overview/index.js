@@ -2,6 +2,7 @@ import React from 'react';
 import {makeStyles} from '@material-ui/styles';
 import {Container} from '@material-ui/core';
 import Page from 'src/components/Page';
+import SubjectSuggestion from "../../components/Entity/SubjectSuggestion";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,10 +17,9 @@ function Overview() {
   return (
     <Page
       className={classes.root}
-      title="Overview"
-    >
+      title="Overview">
       <Container maxWidth="lg">
-        Overview
+        <SubjectSuggestion/>
       </Container>
     </Page>
   );

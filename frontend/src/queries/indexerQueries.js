@@ -2,8 +2,19 @@ import gql from "graphql-tag";
 
 export const indexerQueries = {
 
+  suggest: gql`
+    query suggest($query: SuggestInput!) {
+      suggest(query: $query) {
+        suggestions {
+          uri
+          text
+        }
+      }
+    }
+  `,
+
   search: gql`
-    query search($query: CriteriaQuery!) {
+    query search($query: QueryInput!) {
       search(query: $query) {
         totalHits
         searchHits {

@@ -37,14 +37,14 @@ public abstract class SearchHitsMapper {
     }
 
     public SearchHits toModel(org.springframework.data.elasticsearch.core.SearchHits<Document> entity) {
-        var obj = new SearchHits();
-        obj.setMaxScore(entity.getMaxScore());
-        obj.setScrollId(entity.getScrollId());
-        obj.setTotalHits(entity.getTotalHits());
-        obj.setTotalHitsRelation(entity.getTotalHitsRelation());
+        var model = new SearchHits();
+        model.setMaxScore(entity.getMaxScore());
+        model.setScrollId(entity.getScrollId());
+        model.setTotalHits(entity.getTotalHits());
+        model.setTotalHitsRelation(entity.getTotalHitsRelation());
         var searchHits = entity.getSearchHits();
         List<SearchHit> searchHitsModel = searchHits.stream().map(searchHitMapper::toModel).collect(Collectors.toList());
-        obj.setSearchHits(searchHitsModel);
+        model.setSearchHits(searchHitsModel);
 
         var buckets = new ArrayList<Bucket>();
         var classLabelsBuckets = (ParsedStringTerms) ((ParsedNested) ((ParsedNested)
@@ -74,8 +74,8 @@ public abstract class SearchHitsMapper {
             buckets.add(bucket);
         }
 
-        obj.setBuckets(buckets);
-        return obj;
+        model.setBuckets(buckets);
+        return model;
     }
 
     private String getPrefLabel(String uri) {

@@ -1,8 +1,8 @@
 package ai.semplify.indexer.services;
 
 import ai.semplify.indexer.models.SuggestionRequest;
-import org.elasticsearch.action.search.SearchResponse;
+import ai.semplify.indexer.models.Suggestions;
 
 public interface SuggestionService {
-    SearchResponse suggestSubject(SuggestionRequest request);
+    Suggestions suggestSubject(SuggestionRequest request);
 }
