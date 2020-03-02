@@ -29,6 +29,8 @@ input SuggestInput {
 type Suggestion {
     uri: String!
     text: String!
+    prefLabel: String!
+    thumbnailUri: String
 }
 
 type Suggestions {

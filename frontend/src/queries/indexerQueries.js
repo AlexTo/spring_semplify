@@ -8,6 +8,8 @@ export const indexerQueries = {
         suggestions {
           uri
           text
+          prefLabel
+          thumbnailUri
         }
       }
     }

@@ -1,12 +1,24 @@
 import {TextField} from "@material-ui/core";
 import {Autocomplete} from "@material-ui/lab";
 import React, {Fragment, useEffect, useState} from "react";
-import {CircularProgress} from "@material-ui/core";
+import {CircularProgress, Typography, Grid, Avatar} from "@material-ui/core";
 import {useLazyQuery} from "@apollo/react-hooks";
 import {indexerQueries} from "../../queries/indexerQueries";
 import {useDebounce} from "../../hooks";
 
-function SubjectSuggestion({label}) {
+const renderOption = (option) => <Grid container spacing={1}>
+  <Grid item>
+    {option.thumbnailUri && <Avatar alt={option.prefLabel} src={option.thumbnailUri}/>}
+  </Grid>
+  <Grid item xs>
+    {option.uri}
+    <Typography variant="body2" color="textSecondary">
+      {option.prefLabel}
+    </Typography>
+  </Grid>
+</Grid>;
+
+function SubjectSuggestion({label, onOptionSelected}) {
 
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
@@ -14,6 +26,7 @@ function SubjectSuggestion({label}) {
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const [load, {called, loading, data}] = useLazyQuery(indexerQueries.suggest);
+
 
   useEffect(() => {
     if (debouncedSearchTerm) {
@@ -32,7 +45,6 @@ function SubjectSuggestion({label}) {
   }, [debouncedSearchTerm]);
 
   useEffect(() => {
-    console.log(open);
     if (!open) {
       setOptions([]);
       return;
@@ -51,11 +63,11 @@ function SubjectSuggestion({label}) {
       onClose={() => {
         setOpen(false);
       }}
-
-      getOptionSelected={(option, value) => option.uri === value.uri}
-      getOptionLabel={option => option.uri}
+      onChange={(event, value) => onOptionSelected(value)}
+      getOptionLabel={() => ""}
       options={options}
       loading={called && loading}
+      renderOption={renderOption}
       renderInput={params => (
         <TextField
           {...params}
@@ -70,6 +82,7 @@ function SubjectSuggestion({label}) {
                 {params.InputProps.endAdornment}
               </Fragment>
             ),
+            autoComplete: 'new-password',
           }}
         />)}/>
   )

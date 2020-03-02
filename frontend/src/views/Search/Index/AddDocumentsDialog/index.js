@@ -49,8 +49,8 @@ function AddDocumentsDialog({open, onClose, onSaved}) {
   const [completed, setCompleted] = useState(0);
 
   const [files, setFiles] = useState([]);
-  const [urls, setUrls] = useState([]);
-
+  const [url, setUrl] = useState(null);
+  const [depth, setDepth] = useState(3);
   const [itemSuggestedAnnotations, setItemSuggestedAnnotations] = useState([]);
   const [itemSelectedAnnotations, setItemSelectedAnnotations] = useState([]);
 
@@ -67,7 +67,7 @@ function AddDocumentsDialog({open, onClose, onSaved}) {
     if (!open) {
       setActiveStep(0);
       setFiles([]);
-      setUrls([]);
+      setUrl(null);
       setCurrentItem(null);
       setItemSuggestedAnnotations([]);
       setItemSelectedAnnotations([]);
@@ -81,27 +81,24 @@ function AddDocumentsDialog({open, onClose, onSaved}) {
   }, [itemSuggestedAnnotations]);
 
   useEffect(() => {
-    if (sourceType === "files") {
-      if (files.length === 0) {
-        setNextButtonEnabled(false);
-      } else {
-        setNextButtonEnabled(true);
-      }
-    } else if (sourceType === "urls") {
-      if (urls.length === 0) {
-        setNextButtonEnabled(false);
-      } else {
-        setNextButtonEnabled(true);
-      }
-    }
-  }, [sourceType, files, urls]);
+
+    const valid = (sourceType === "files" && files.length !== 0)
+      || (sourceType === "urls" && url !== null && url !== "");
+
+    setNextButtonEnabled(valid);
+
+  }, [sourceType, files, url]);
 
   const handleFilesChanged = (files) => {
     setFiles(files);
   };
 
-  const handleUrlsChanged = (urls) => {
-    setUrls(urls);
+  const handleUrlChanged = (url) => {
+    setUrl(url);
+  };
+
+  const handleDepthChanged = (depth) => {
+    setDepth(depth);
   };
 
   const handleSourceTypeChanged = (type) => {
@@ -132,6 +129,13 @@ function AddDocumentsDialog({open, onClose, onSaved}) {
     setItemSelectedAnnotations([...others, updatedItem]);
   };
 
+  const handleAnnotationAdded = (uri, addedAnnotation) => {
+    const updatingItem = itemSuggestedAnnotations.find(i => i.uri === uri);
+    const others = itemSelectedAnnotations.filter(i => i.uri !== uri);
+    const updatedItem = Object.assign({}, updatingItem, {resources: [addedAnnotation, ...updatingItem.resources]});
+    setItemSuggestedAnnotations([updatedItem, ...others]);
+  };
+
   const analyse = async () => {
     setItemProgressDialogOpen(true);
     if (sourceType === "files") {
@@ -157,6 +161,7 @@ function AddDocumentsDialog({open, onClose, onSaved}) {
       }
       setItemSuggestedAnnotations(results);
     } else {
+
     }
     setItemProgressDialogOpen(false);
   };
@@ -191,7 +196,7 @@ function AddDocumentsDialog({open, onClose, onSaved}) {
 
   return (
     <div>
-      <Dialog fullScreen open={open} TransitionComponent={Transition}>
+      <Dialog open={open} TransitionComponent={Transition} maxWidth="lg" fullWidth>
         <AppBar className={classes.appBar}>
           <Toolbar>
             <IconButton edge="start" color="inherit" onClick={onClose} aria-label="close">
@@ -213,12 +218,14 @@ function AddDocumentsDialog({open, onClose, onSaved}) {
           <SelectSource display={activeStep === 0 ? "" : "None"}
                         files={files}
                         onFilesChanged={handleFilesChanged}
-                        onUrlsChanged={handleUrlsChanged}
+                        onUrlChanged={handleUrlChanged}
+                        onDepthChanged={handleDepthChanged}
                         onSourceTypeChanged={handleSourceTypeChanged}/>
 
           <ReviewTable display={activeStep === 1 ? "" : "None"}
                        suggestedAnnotations={itemSuggestedAnnotations}
-                       onUpdate={handleAnnotationsSelected}/>
+                       onAnnotationsSelected={handleAnnotationsSelected}
+                       onAnnotationAdded={handleAnnotationAdded}/>
         </DialogContent>
         <DialogActions>
           <Button

@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import SelectAnnotations from "./SelectAnnotations";
 
-function ReviewTable({suggestedAnnotations, onUpdate, display}) {
+function ReviewTable({suggestedAnnotations, display, onAnnotationsSelected, onAnnotationAdded}) {
 
   return (
     <div style={{display: display}}>
@@ -29,8 +29,10 @@ function ReviewTable({suggestedAnnotations, onUpdate, display}) {
               </TableCell>
               <TableCell></TableCell>
               <TableCell>
-                <SelectAnnotations label={a.label} suggestedAnnotations={a.resources}
-                                   onUpdate={(selectedAnnotations) => onUpdate(a.uri, selectedAnnotations)}/>
+                <SelectAnnotations label={a.label}
+                                   suggestedAnnotations={a.resources}
+                                   onAnnotationsSelected={(selectedAnnotations) => onAnnotationsSelected(a.uri, selectedAnnotations)}
+                                   onAnnotationAdded={annotation => onAnnotationAdded(a.uri, annotation)}/>
               </TableCell>
             </TableRow>
           ))}

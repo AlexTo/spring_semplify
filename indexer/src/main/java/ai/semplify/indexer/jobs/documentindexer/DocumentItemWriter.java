@@ -2,6 +2,7 @@ package ai.semplify.indexer.jobs.documentindexer;
 
 import ai.semplify.indexer.entities.postgresql.Document;
 import ai.semplify.indexer.entities.postgresql.DocumentStatus;
+import ai.semplify.indexer.entities.postgresql.DocumentType;
 import ai.semplify.indexer.repositories.postgresql.DocumentJpaRepository;
 import ai.semplify.indexer.services.IndexService;
 import lombok.var;
@@ -25,7 +26,8 @@ public class DocumentItemWriter implements ItemWriter<List<Document>> {
         for (var documents : list) {
             for (var document : documents) {
                 try {
-                    indexService.indexFile(document);
+                    if (document.getType().equalsIgnoreCase(DocumentType.FILE.getValue()))
+                        indexService.indexFile(document);
                 } catch (Exception e) {
                     e.printStackTrace();
                     if (e.getMessage() != null) {

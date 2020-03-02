@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Overview() {
+function Graph() {
   const classes = useStyles();
 
   return (
@@ -23,4 +23,4 @@ function Overview() {
   );
 }
 
-export default Overview;
+export default Graph;

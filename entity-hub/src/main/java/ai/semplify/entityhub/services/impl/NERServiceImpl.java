@@ -113,7 +113,7 @@ public class NERServiceImpl implements NERService {
 
                         var contextStart = Math.max(resource.getOffset() - 100, 0);
                         var contextEnd = Math.min(resource.getOffset() + 100, text.length());
-                        resource.setSource("dbpedia");
+                        resource.setSource("DBPedia");
                         var prefLabel = entityService.getPrefLabel(resource.getUri());
                         resource.setPrefLabel(prefLabel.getPrefLabel());
                         resource.setContext(text.substring(contextStart, contextEnd));
@@ -158,7 +158,7 @@ public class NERServiceImpl implements NERService {
             var contextEnd = Math.min(offset + 100, text.length());
             resource.setContext(text.substring(contextStart, contextEnd));
 
-            resource.setSource("poolparty");
+            resource.setSource("PoolParty");
             resources.add(resource);
         }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import DashboardIcon from '@material-ui/icons/DashboardOutlined';
 import HomeIcon from '@material-ui/icons/HomeOutlined';
 import PageviewIcon from '@material-ui/icons/PageviewOutlined';
+import FilterVintageOutlinedIcon from '@material-ui/icons/FilterVintageOutlined';
 
 export default [
   {
@@ -11,6 +12,16 @@ export default [
         title: 'Overview',
         href: '/overview',
         icon: HomeIcon
+      }
+    ]
+  },
+  {
+    subheader: 'Explore',
+    items: [
+      {
+        title: 'Graph',
+        href: '/graph',
+        icon: FilterVintageOutlinedIcon
       }
     ]
   },

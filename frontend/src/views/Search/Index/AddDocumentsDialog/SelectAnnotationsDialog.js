@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function SelectAnnotationsDialog({label, suggestedAnnotations, open, onCancel, onUpdate}) {
+function SelectAnnotationsDialog({label, suggestedAnnotations, open, onCancel, onAnnotationsSelected, onAnnotationAdded}) {
   const classes = useStyles();
 
   const [page, setPage] = useState(0);
@@ -59,6 +59,12 @@ function SelectAnnotationsDialog({label, suggestedAnnotations, open, onCancel, o
     }
   };
 
+  const handleAnnotationAdded = (annotation) => {
+    annotation.source = 'Manually added';
+    setTmpSelectedAnnotations([annotation, ...tmpSelectedAnnotations]);
+    onAnnotationAdded(annotation);
+  };
+
   const handleCancel = () => {
     setTmpSelectedAnnotations(selectedAnnotations);
     onCancel();
@@ -66,7 +72,7 @@ function SelectAnnotationsDialog({label, suggestedAnnotations, open, onCancel, o
 
   const handleSave = () => {
     setSelectedAnnotations(tmpSelectedAnnotations);
-    onUpdate(tmpSelectedAnnotations);
+    onAnnotationsSelected(tmpSelectedAnnotations);
     onCancel();
   };
 
@@ -90,7 +96,7 @@ function SelectAnnotationsDialog({label, suggestedAnnotations, open, onCancel, o
         <DialogContent>
           <Grid container spacing={2}>
             <Grid item md={12}>
-              <SubjectSuggestion/>
+              <SubjectSuggestion label={"Add annotations"} onOptionSelected={handleAnnotationAdded}/>
             </Grid>
             <Grid item md={12}>
               <Card>

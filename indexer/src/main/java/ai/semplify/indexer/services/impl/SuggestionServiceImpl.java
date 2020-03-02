@@ -1,5 +1,8 @@
 package ai.semplify.indexer.services.impl;
 
+import ai.semplify.feignclients.clients.entityhub.EntityHubFeignClient;
+import ai.semplify.feignclients.clients.entityhub.models.PrefLabelRequest;
+import ai.semplify.feignclients.clients.entityhub.models.ThumbnailRequest;
 import ai.semplify.indexer.mappers.SuggestionsMapper;
 import ai.semplify.indexer.models.SuggestionRequest;
 import ai.semplify.indexer.models.Suggestions;
@@ -18,13 +21,16 @@ public class SuggestionServiceImpl implements SuggestionService {
     private SuggestionsMapper suggestionsMapper;
     private ElasticsearchOperations elasticsearchOperations;
     private IndexCoordinates subjectsIndex;
+    private EntityHubFeignClient entityHubFeignClient;
 
     public SuggestionServiceImpl(SuggestionsMapper suggestionsMapper,
                                  ElasticsearchOperations elasticsearchOperations,
-                                 @Qualifier("subjects_index") IndexCoordinates subjectsIndex) {
+                                 @Qualifier("subjects_index") IndexCoordinates subjectsIndex,
+                                 EntityHubFeignClient entityHubFeignClient) {
         this.suggestionsMapper = suggestionsMapper;
         this.elasticsearchOperations = elasticsearchOperations;
         this.subjectsIndex = subjectsIndex;
+        this.entityHubFeignClient = entityHubFeignClient;
     }
 
     @Override
@@ -37,7 +43,19 @@ public class SuggestionServiceImpl implements SuggestionService {
         var searchResponse = elasticsearchOperations
                 .suggest(new SuggestBuilder()
                         .addSuggestion("suggestion", suggestionBuilder), subjectsIndex);
-        return suggestionsMapper.toModel(searchResponse);
+
+        var suggestions = suggestionsMapper.toModel(searchResponse);
+        for (var suggestion : suggestions.getSuggestions()) {
+            var prefLabelRequest = new PrefLabelRequest();
+            prefLabelRequest.setUri(suggestion.getUri());
+            var prefLabel = entityHubFeignClient.getPrefLabel(prefLabelRequest);
+            suggestion.setPrefLabel(prefLabel.getPrefLabel());
+            var thumbnailRequest = new ThumbnailRequest();
+            thumbnailRequest.setUri(suggestion.getUri());
+            var thumbnail = entityHubFeignClient.getThumbnail(thumbnailRequest);
+            suggestion.setThumbnailUri(thumbnail.getThumbnailUri());
+        }
+        return suggestions;
 
     }
 }

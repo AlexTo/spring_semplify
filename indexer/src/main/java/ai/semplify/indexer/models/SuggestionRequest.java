@@ -12,4 +12,5 @@ public class SuggestionRequest {
 
     @NotEmpty
     private String type;
+
 }

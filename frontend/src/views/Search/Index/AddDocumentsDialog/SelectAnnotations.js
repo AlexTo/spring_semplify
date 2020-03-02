@@ -4,14 +4,14 @@ import {
 } from "@material-ui/core";
 import SelectAnnotationsDialog from "./SelectAnnotationsDialog";
 
-function SelectAnnotations({label, suggestedAnnotations, onUpdate}) {
+function SelectAnnotations({label, suggestedAnnotations, onAnnotationsSelected, onAnnotationAdded}) {
 
   const [selectAnnotationsDialogOpen, setSelectAnnotationsDialogOpen] = useState(false);
   const [selectedAnnotations, setSelectedAnnotations] = useState(suggestedAnnotations);
 
-  const handleUpdate = (selectedAnnotations) => {
+  const handleAnnotationsSelected = (selectedAnnotations) => {
     setSelectedAnnotations(selectedAnnotations);
-    onUpdate(selectedAnnotations);
+    onAnnotationsSelected(selectedAnnotations);
   };
 
   return (
@@ -26,8 +26,9 @@ function SelectAnnotations({label, suggestedAnnotations, onUpdate}) {
       <SelectAnnotationsDialog label={label}
                                suggestedAnnotations={suggestedAnnotations}
                                open={selectAnnotationsDialogOpen}
-                               onUpdate={handleUpdate}
-                               onCancel={() => setSelectAnnotationsDialogOpen(false)}/>
+                               onAnnotationsSelected={handleAnnotationsSelected}
+                               onCancel={() => setSelectAnnotationsDialogOpen(false)}
+                               onAnnotationAdded={onAnnotationAdded}/>
     </Fragment>)
 }
 

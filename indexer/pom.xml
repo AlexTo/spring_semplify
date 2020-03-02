@@ -11,7 +11,7 @@
 
     <artifactId>indexer</artifactId>
     <properties>
-        <crawler4j.version>4.4.0</crawler4j.version>
+
         <tika.version>1.23</tika.version>
         <rdf4j.version>3.1.0</rdf4j.version>
     </properties>
@@ -116,11 +116,7 @@
             <artifactId>tika-parsers</artifactId>
             <version>${tika.version}</version>
         </dependency>
-        <dependency>
-            <groupId>edu.uci.ics</groupId>
-            <artifactId>crawler4j</artifactId>
-            <version>${crawler4j.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>

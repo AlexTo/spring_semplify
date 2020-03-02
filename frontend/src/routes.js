@@ -1,5 +1,3 @@
-/* eslint-disable react/no-multi-comp */
-/* eslint-disable react/display-name */
 import React, {lazy} from 'react';
 import {Redirect} from 'react-router-dom';
 import ErrorLayout from './layouts/Error';
@@ -7,7 +5,6 @@ import DashboardLayout from './layouts/Dashboard';
 import SearchLayout from './layouts/Search';
 import Overview from './views/Overview';
 import Index from './views/Search/Index';
-import Main from './views/Search/Main';
 
 export default [
   {
