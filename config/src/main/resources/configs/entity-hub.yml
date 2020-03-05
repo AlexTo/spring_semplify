@@ -1,6 +1,3 @@
-server:
-  port: 12002
-
 spring:
   batch:
     job:

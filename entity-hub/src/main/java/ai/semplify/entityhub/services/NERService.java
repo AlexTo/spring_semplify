@@ -12,4 +12,6 @@ public interface NERService {
     Annotation annotateText(TextAnnotationRequest textAnnotationRequest) throws IOException;
 
     Annotation annotateFile(MultipartFile filePart) throws IOException, TikaException, SAXException;
+
+    Annotation annotateServerFile(Long fileId) throws IOException, TikaException, SAXException;
 }

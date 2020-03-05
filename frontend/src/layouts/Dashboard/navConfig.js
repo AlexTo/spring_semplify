@@ -3,7 +3,7 @@ import DashboardIcon from '@material-ui/icons/DashboardOutlined';
 import HomeIcon from '@material-ui/icons/HomeOutlined';
 import PageviewIcon from '@material-ui/icons/PageviewOutlined';
 import FilterVintageOutlinedIcon from '@material-ui/icons/FilterVintageOutlined';
-
+import StorageIcon from '@material-ui/icons/Storage';
 export default [
   {
     subheader: 'General',
@@ -28,6 +28,11 @@ export default [
   {
     subheader: 'Data Hub',
     items: [
+      {
+        title: 'Data Integrator',
+        href: '/data-integrator',
+        icon: StorageIcon
+      },
       {
         title: 'Entity Hub',
         href: '/entity-hub',

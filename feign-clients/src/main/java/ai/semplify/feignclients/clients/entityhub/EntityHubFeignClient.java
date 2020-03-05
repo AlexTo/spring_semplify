@@ -34,6 +34,7 @@ public interface EntityHubFeignClient {
     @PostMapping("/entity/funcs/getAbstract")
     AbstractResponse getAbstract(@Valid @RequestBody AbstractRequest request);
 
-
+    @PostMapping("ner/serverFile")
+    Annotation annotateServerFile(@RequestBody Long fileId);
 
 }

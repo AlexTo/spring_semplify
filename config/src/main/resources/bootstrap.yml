@@ -8,8 +8,6 @@ spring:
           search-locations: classpath:/configs
   application:
     name: configserver
-server:
-  port: 12000
 
 eureka:
   instance:

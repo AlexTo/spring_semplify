@@ -5,6 +5,7 @@ import DashboardLayout from './layouts/Dashboard';
 import SearchLayout from './layouts/Search';
 import Overview from './views/Overview';
 import Index from './views/Search/Index';
+import DataIntegrator from "./views/DataHub/DataIntegrator";
 
 export default [
   {
@@ -55,6 +56,11 @@ export default [
         path: '/overview',
         exact: true,
         component: Overview
+      },
+      {
+        path: '/data-integrator',
+        exact: true,
+        component: DataIntegrator
       },
       {
         path: '/indexed-documents',

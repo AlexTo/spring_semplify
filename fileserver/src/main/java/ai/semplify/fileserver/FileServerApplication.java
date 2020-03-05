@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @EnableEurekaClient
-@EnableJpaAuditing
 @EnableConfigurationProperties
 public class FileServerApplication {
     public static void main(String[] args) {

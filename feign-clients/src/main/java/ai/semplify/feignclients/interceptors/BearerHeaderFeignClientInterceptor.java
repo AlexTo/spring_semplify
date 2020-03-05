@@ -16,7 +16,7 @@ public class BearerHeaderFeignClientInterceptor implements RequestInterceptor {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
 
-        if (authentication != null) {
+        if (authentication instanceof JwtAuthenticationToken) {
             template.header(AUTHORIZATION_HEADER, String.format("%s %s", BEARER_TOKEN_TYPE, ((JwtAuthenticationToken) authentication).getToken().getTokenValue()));
         }
     }

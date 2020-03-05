@@ -47,7 +47,9 @@ public class FileServicePostgresImpl implements FileService {
 
     @Override
     public File store(MultipartFile filePart) throws IOException {
-        return store(filePart.getName(), filePart.getContentType(), filePart.getBytes());
+        return store(filePart.getOriginalFilename(),
+                filePart.getContentType(),
+                filePart.getBytes());
     }
 
     @Override

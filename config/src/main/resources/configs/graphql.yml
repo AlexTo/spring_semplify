@@ -1,6 +1,3 @@
-server:
-  port: 12003
-
 graphql:
   servlet:
     mapping: /

@@ -18,6 +18,7 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;
@@ -47,6 +48,14 @@ public class DocumentIndexerJobConfig {
     public void jobScheduler() throws
             JobParametersInvalidException, JobExecutionAlreadyRunningException,
             JobRestartException, JobInstanceAlreadyCompleteException {
+
+        var documents = documentJpaRepository
+                .findAllByStatusIsNullOrderByLastModifiedDateAsc(PageRequest.of(0, 1));
+
+        if (documents.isEmpty()) {
+            return;
+        }
+
         var jobParameters = new JobParametersBuilder()
                 .addLong("time", System.currentTimeMillis())
                 .toJobParameters();

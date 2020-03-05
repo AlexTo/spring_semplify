@@ -1,10 +1,20 @@
-server:
-  port: 12001
-
 spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://keycloak:9000/auth/realms/semplify
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: semplify-app
+            scope: email,profile,roles,web-origins
 
   cloud:
     gateway:
+      default-filters:
+        - TokenRelay
       discovery:
         locator:
           enabled: true

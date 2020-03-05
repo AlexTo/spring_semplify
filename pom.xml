@@ -30,6 +30,7 @@
         <module>fileserver</module>
         <module>graphql</module>
         <module>feign-clients</module>
+        <module>tasker</module>
     </modules>
     <properties>
         <mapstruct.version>1.3.1.Final</mapstruct.version>

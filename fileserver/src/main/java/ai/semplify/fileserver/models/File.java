@@ -3,6 +3,8 @@ package ai.semplify.fileserver.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 
 import java.util.Date;
 
@@ -29,4 +31,10 @@ public class File {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date lastModifiedDate;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String createdBy;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String lastModifiedBy;
 }

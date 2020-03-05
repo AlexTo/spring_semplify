@@ -36,8 +36,16 @@ public class AnnotationController {
     }
 
     @PostMapping("file")
-    public ResponseEntity<Annotation> annotateFile(@RequestParam("file") MultipartFile filePart, Principal principal)
+    public ResponseEntity<Annotation> annotateFile(@RequestParam("file") MultipartFile filePart)
             throws TikaException, IOException, SAXException {
         return ResponseEntity.ok(nerService.annotateFile(filePart));
     }
+
+    @PostMapping("serverFile")
+    public ResponseEntity<Annotation> annotateServerFile(@RequestBody Long fileId)
+            throws TikaException, IOException, SAXException {
+        return ResponseEntity.ok(nerService.annotateServerFile(fileId));
+    }
+
+
 }

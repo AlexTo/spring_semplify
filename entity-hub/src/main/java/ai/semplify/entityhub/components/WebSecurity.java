@@ -11,7 +11,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .anyRequest().permitAll();
+                .antMatchers("/anon**").permitAll()
+                .anyRequest().authenticated().and()
+                .oauth2ResourceServer().jwt();
     }
 }

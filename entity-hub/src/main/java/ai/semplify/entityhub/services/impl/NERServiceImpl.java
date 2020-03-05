@@ -6,6 +6,7 @@ import ai.semplify.entityhub.models.AnnotationResource;
 import ai.semplify.entityhub.models.TextAnnotationRequest;
 import ai.semplify.entityhub.services.EntityService;
 import ai.semplify.entityhub.services.NERService;
+import ai.semplify.feignclients.clients.fileserver.FileServerFeignClient;
 import ai.semplify.feignclients.clients.poolparty.PoolPartyExtractorFeignClient;
 import ai.semplify.feignclients.clients.spotlight.DBPediaSpotlightFeignClient;
 import lombok.var;
@@ -40,17 +41,21 @@ public class NERServiceImpl implements NERService {
     private AnnotationMapper mapper;
     private DBPediaSpotlightFeignClient spotlightFeignClient;
     private PoolPartyExtractorFeignClient poolPartyExtractorFeignClient;
+    private FileServerFeignClient fileServerFeignClient;
+
     private EntityService entityService;
+
 
     @Value("${poolparty.projectId}")
     private String projectId;
 
     public NERServiceImpl(DBPediaSpotlightFeignClient spotlightFeignClient,
                           PoolPartyExtractorFeignClient poolPartyExtractorFeignClient,
-                          AnnotationMapper mapper, EntityService entityService) {
+                          AnnotationMapper mapper, FileServerFeignClient fileServerFeignClient, EntityService entityService) {
         this.spotlightFeignClient = spotlightFeignClient;
         this.poolPartyExtractorFeignClient = poolPartyExtractorFeignClient;
         this.mapper = mapper;
+        this.fileServerFeignClient = fileServerFeignClient;
         this.entityService = entityService;
     }
 
@@ -79,6 +84,12 @@ public class NERServiceImpl implements NERService {
         request.setText(handler.toString());
         return annotateText(request);
 
+    }
+
+    @Override
+    public Annotation annotateServerFile(Long fileId) throws IOException, TikaException, SAXException {
+        var file = fileServerFeignClient.download(fileId);
+        return annotateFile(file);
     }
 
     private Annotation annotateTextFromDBPedia(TextAnnotationRequest textAnnotationRequest) {
