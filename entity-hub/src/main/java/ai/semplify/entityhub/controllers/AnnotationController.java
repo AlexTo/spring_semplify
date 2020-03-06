@@ -1,7 +1,7 @@
 package ai.semplify.entityhub.controllers;
 
-import ai.semplify.entityhub.models.Annotation;
-import ai.semplify.entityhub.models.TextAnnotationRequest;
+import ai.semplify.commons.models.entityhub.Annotation;
+import ai.semplify.commons.models.entityhub.TextAnnotationRequest;
 import ai.semplify.entityhub.services.NERService;
 import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
@@ -13,7 +13,6 @@ import org.xml.sax.SAXException;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/ner")
@@ -42,12 +41,6 @@ public class AnnotationController {
     public ResponseEntity<Annotation> annotateServerFile(@RequestBody Long fileId)
             throws TikaException, IOException, SAXException {
         return ResponseEntity.ok(nerService.annotateServerFile(fileId));
-    }
-
-    @GetMapping("")
-    public ResponseEntity<Void> test(Principal principal) {
-        logger.error(principal.getName());
-        return ResponseEntity.ok().build();
     }
 
 }

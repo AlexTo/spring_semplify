@@ -1,6 +1,6 @@
 package ai.semplify.fileserver.mappers;
 
-import ai.semplify.fileserver.models.File;
+import ai.semplify.commons.models.fileserver.File;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

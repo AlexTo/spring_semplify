@@ -1,21 +1,16 @@
 package ai.semplify.fileserver.services.impl;
 
 import ai.semplify.fileserver.mappers.FileMapper;
-import ai.semplify.fileserver.models.File;
+import ai.semplify.commons.models.fileserver.File;
 import ai.semplify.fileserver.repos.FileRepository;
 import ai.semplify.fileserver.services.FileService;
 import ai.semplify.fileserver.services.URLResolver;
 import lombok.var;
-import org.springframework.core.io.buffer.DataBufferUtils;
-import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 

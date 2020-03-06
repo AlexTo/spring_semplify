@@ -1,6 +1,6 @@
 package ai.semplify.fileserver.services;
 
-import ai.semplify.fileserver.models.File;
+import ai.semplify.commons.models.fileserver.File;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

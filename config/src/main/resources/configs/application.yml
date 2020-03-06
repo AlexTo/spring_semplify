@@ -31,7 +31,7 @@ spring:
           jwk-set-uri: http://keycloak:9000/auth/realms/semplify/protocol/openid-connect/certs
       client:
         registration:
-          semplify-service:
+          service-client:
             provider: keycloak
             client-id: semplify-service
             client-secret: d4149516-2a1c-4def-80e8-3cb3b2ef9c3b

@@ -1,6 +1,6 @@
 package ai.semplify.indexer.mappers;
 
-import ai.semplify.indexer.models.Suggestions;
+import ai.semplify.commons.models.indexer.Suggestions;
 import lombok.var;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestion;

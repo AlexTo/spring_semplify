@@ -1,6 +1,6 @@
 package ai.semplify.indexer.mappers;
 
-import ai.semplify.indexer.models.Suggestion;
+import ai.semplify.commons.models.indexer.Suggestion;
 import lombok.var;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.mapstruct.InjectionStrategy;

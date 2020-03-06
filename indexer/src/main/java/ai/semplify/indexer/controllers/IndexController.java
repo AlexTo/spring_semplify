@@ -1,18 +1,15 @@
 package ai.semplify.indexer.controllers;
 
-import ai.semplify.indexer.models.DocumentMetadata;
+import ai.semplify.commons.models.indexer.DocumentMetadata;
 import ai.semplify.indexer.services.IndexService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.var;
-import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

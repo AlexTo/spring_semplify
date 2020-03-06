@@ -1,7 +1,7 @@
 package ai.semplify.indexer.mappers;
 
-import ai.semplify.indexer.models.DocumentMetadata;
-import ai.semplify.indexer.models.Document;
+import ai.semplify.commons.models.indexer.DocumentMetadata;
+import ai.semplify.commons.models.indexer.Document;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

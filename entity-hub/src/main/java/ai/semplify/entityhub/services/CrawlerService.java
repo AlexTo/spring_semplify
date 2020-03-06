@@ -1,7 +1,7 @@
 package ai.semplify.entityhub.services;
 
-import ai.semplify.entityhub.models.CrawlRequest;
-import ai.semplify.entityhub.models.CrawlResponse;
+import ai.semplify.commons.models.entityhub.CrawlRequest;
+import ai.semplify.commons.models.entityhub.CrawlResponse;
 
 public interface CrawlerService {
 

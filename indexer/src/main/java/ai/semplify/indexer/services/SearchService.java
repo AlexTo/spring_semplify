@@ -1,8 +1,7 @@
 package ai.semplify.indexer.services;
 
-import ai.semplify.indexer.models.Query;
-import ai.semplify.indexer.models.SearchHits;
-import org.elasticsearch.action.search.SearchResponse;
+import ai.semplify.commons.models.indexer.Query;
+import ai.semplify.commons.models.indexer.SearchHits;
 
 public interface SearchService {
 

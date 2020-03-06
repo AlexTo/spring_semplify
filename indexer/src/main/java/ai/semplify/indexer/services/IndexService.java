@@ -1,7 +1,7 @@
 package ai.semplify.indexer.services;
 
 import ai.semplify.indexer.entities.postgresql.Document;
-import ai.semplify.indexer.models.DocumentMetadata;
+import ai.semplify.commons.models.indexer.DocumentMetadata;
 import org.apache.tika.exception.TikaException;
 import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;

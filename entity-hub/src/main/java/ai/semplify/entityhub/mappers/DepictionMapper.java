@@ -1,7 +1,7 @@
 package ai.semplify.entityhub.mappers;
 
 import ai.semplify.entityhub.entities.redis.Depiction;
-import ai.semplify.entityhub.models.DepictionResponse;
+import ai.semplify.commons.models.entityhub.DepictionResponse;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mappings;

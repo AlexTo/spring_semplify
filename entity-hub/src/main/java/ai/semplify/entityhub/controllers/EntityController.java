@@ -1,6 +1,6 @@
 package ai.semplify.entityhub.controllers;
 
-import ai.semplify.entityhub.models.*;
+import ai.semplify.commons.models.entityhub.*;
 import ai.semplify.entityhub.services.EntityService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

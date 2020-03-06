@@ -8,7 +8,7 @@ import ai.semplify.indexer.entities.elasticsearch.AnnotationClass;
 import ai.semplify.indexer.entities.postgresql.Document;
 import ai.semplify.indexer.entities.postgresql.DocumentType;
 import ai.semplify.indexer.mappers.DocumentMapper;
-import ai.semplify.indexer.models.DocumentMetadata;
+import ai.semplify.commons.models.indexer.DocumentMetadata;
 import ai.semplify.indexer.repositories.postgresql.DocumentJpaRepository;
 import ai.semplify.indexer.services.IndexService;
 import lombok.var;

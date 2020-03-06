@@ -1,7 +1,7 @@
 package ai.semplify.entityhub.mappers;
 
 import ai.semplify.entityhub.entities.redis.Thumbnail;
-import ai.semplify.entityhub.models.ThumbnailResponse;
+import ai.semplify.commons.models.entityhub.ThumbnailResponse;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mappings;

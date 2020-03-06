@@ -1,8 +1,8 @@
 package ai.semplify.indexer.mappers;
 
 import ai.semplify.indexer.entities.elasticsearch.Document;
-import ai.semplify.indexer.models.HighlightField;
-import ai.semplify.indexer.models.SearchHit;
+import ai.semplify.commons.models.indexer.HighlightField;
+import ai.semplify.commons.models.indexer.SearchHit;
 import lombok.var;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

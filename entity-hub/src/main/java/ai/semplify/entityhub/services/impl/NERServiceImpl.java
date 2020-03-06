@@ -1,14 +1,12 @@
 package ai.semplify.entityhub.services.impl;
 
+import ai.semplify.commons.serviceurls.fileserver.FileServerServiceUris;
 import ai.semplify.entityhub.mappers.AnnotationMapper;
-import ai.semplify.entityhub.models.Annotation;
-import ai.semplify.entityhub.models.AnnotationResource;
-import ai.semplify.entityhub.models.TextAnnotationRequest;
+import ai.semplify.commons.models.entityhub.Annotation;
+import ai.semplify.commons.models.entityhub.AnnotationResource;
+import ai.semplify.commons.models.entityhub.TextAnnotationRequest;
 import ai.semplify.entityhub.services.EntityService;
 import ai.semplify.entityhub.services.NERService;
-import ai.semplify.feignclients.clients.fileserver.FileServerFeignClient;
-import ai.semplify.feignclients.clients.poolparty.PoolPartyExtractorFeignClient;
-import ai.semplify.feignclients.clients.spotlight.DBPediaSpotlightFeignClient;
 import lombok.var;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -22,9 +20,13 @@ import org.eclipse.rdf4j.model.vocabulary.SKOS;
 import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.Rio;
 import org.eclipse.rdf4j.rio.helpers.StatementCollector;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
@@ -35,28 +37,25 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.clientRegistrationId;
+
 @Service
 public class NERServiceImpl implements NERService {
 
     private AnnotationMapper mapper;
-    private DBPediaSpotlightFeignClient spotlightFeignClient;
-    private PoolPartyExtractorFeignClient poolPartyExtractorFeignClient;
-    private FileServerFeignClient fileServerFeignClient;
 
     private EntityService entityService;
 
+    private WebClient loadBalancedWebClient;
 
     @Value("${poolparty.projectId}")
     private String projectId;
 
-    public NERServiceImpl(DBPediaSpotlightFeignClient spotlightFeignClient,
-                          PoolPartyExtractorFeignClient poolPartyExtractorFeignClient,
-                          AnnotationMapper mapper, FileServerFeignClient fileServerFeignClient, EntityService entityService) {
-        this.spotlightFeignClient = spotlightFeignClient;
-        this.poolPartyExtractorFeignClient = poolPartyExtractorFeignClient;
+    public NERServiceImpl(AnnotationMapper mapper, EntityService entityService,
+                          @Qualifier("loadBalancedWebClient") WebClient loadBalancedWebClient) {
         this.mapper = mapper;
-        this.fileServerFeignClient = fileServerFeignClient;
         this.entityService = entityService;
+        this.loadBalancedWebClient = loadBalancedWebClient;
     }
 
 
@@ -88,7 +87,17 @@ public class NERServiceImpl implements NERService {
 
     @Override
     public Annotation annotateServerFile(Long fileId) throws IOException, TikaException, SAXException {
-        var file = fileServerFeignClient.download(fileId);
+        var url = String.format(FileServerServiceUris.FILES_DOWNLOAD, fileId);
+        var file = loadBalancedWebClient
+                .get().uri(url)
+                .attributes(clientRegistrationId("service-client"))
+                .exchange().flatMap(response ->
+                        response.bodyToMono(ByteArrayResource.class)
+                )
+                .map(archiveContentBytes ->
+                        archiveContentBytes.getInputStream();
+
+
         return annotateFile(file);
     }
 

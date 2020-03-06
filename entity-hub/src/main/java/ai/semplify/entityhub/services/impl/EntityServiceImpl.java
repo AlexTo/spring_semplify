@@ -1,10 +1,10 @@
 package ai.semplify.entityhub.services.impl;
 
+import ai.semplify.commons.models.entityhub.*;
 import ai.semplify.entityhub.mappers.AbstractMapper;
 import ai.semplify.entityhub.mappers.DepictionMapper;
 import ai.semplify.entityhub.mappers.PrefLabelMapper;
 import ai.semplify.entityhub.mappers.ThumbnailMapper;
-import ai.semplify.entityhub.models.*;
 import ai.semplify.entityhub.repositories.redis.AbstractCache;
 import ai.semplify.entityhub.repositories.redis.DepictionCache;
 import ai.semplify.entityhub.repositories.redis.PrefLabelCache;

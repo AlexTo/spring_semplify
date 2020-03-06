@@ -1,7 +1,5 @@
 package ai.semplify.indexer.components;
 
-import ai.semplify.indexer.entities.elasticsearch.Subject;
-import ai.semplify.indexer.models.Document;
 import lombok.var;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
@@ -16,7 +14,6 @@ import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.data.convert.CustomConversions;
 import org.springframework.data.convert.Jsr310Converters;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.convert.ElasticsearchCustomConversions;
 import org.springframework.data.elasticsearch.core.convert.MappingElasticsearchConverter;

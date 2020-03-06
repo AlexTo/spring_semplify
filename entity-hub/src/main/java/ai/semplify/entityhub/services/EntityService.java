@@ -1,6 +1,6 @@
 package ai.semplify.entityhub.services;
 
-import ai.semplify.entityhub.models.*;
+import ai.semplify.commons.models.entityhub.*;
 
 public interface EntityService {
     TypeCheckResponse isSubClassOf(TypeCheckRequest request);

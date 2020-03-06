@@ -2,7 +2,7 @@ package ai.semplify.entityhub.mappers;
 
 
 import ai.semplify.entityhub.entities.redis.PrefLabel;
-import ai.semplify.entityhub.models.PrefLabelResponse;
+import ai.semplify.commons.models.entityhub.PrefLabelResponse;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mappings;

@@ -1,6 +1,6 @@
 package ai.semplify.indexer.mappers;
 
-import ai.semplify.indexer.models.AnnotationClass;
+import ai.semplify.commons.models.indexer.AnnotationClass;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 

@@ -1,7 +1,7 @@
 package ai.semplify.indexer.controllers;
 
-import ai.semplify.indexer.models.SuggestionRequest;
-import ai.semplify.indexer.models.Suggestions;
+import ai.semplify.commons.models.indexer.SuggestionRequest;
+import ai.semplify.commons.models.indexer.Suggestions;
 import ai.semplify.indexer.services.SuggestionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

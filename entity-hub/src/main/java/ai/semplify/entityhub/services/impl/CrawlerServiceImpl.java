@@ -1,8 +1,8 @@
 package ai.semplify.entityhub.services.impl;
 
 import ai.semplify.entityhub.config.CrawlerConfig;
-import ai.semplify.entityhub.models.CrawlRequest;
-import ai.semplify.entityhub.models.CrawlResponse;
+import ai.semplify.commons.models.entityhub.CrawlRequest;
+import ai.semplify.commons.models.entityhub.CrawlResponse;
 import ai.semplify.entityhub.services.CrawlerService;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;

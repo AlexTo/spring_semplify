@@ -1,10 +1,9 @@
 package ai.semplify.fileserver.controllers;
 
 import ai.semplify.fileserver.exceptions.FileNotFoundException;
-import ai.semplify.fileserver.models.File;
+import ai.semplify.commons.models.fileserver.File;
 import ai.semplify.fileserver.services.FileService;
 import lombok.var;
-import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
