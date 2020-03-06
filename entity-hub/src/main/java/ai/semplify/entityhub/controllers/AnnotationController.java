@@ -6,13 +6,10 @@ import ai.semplify.entityhub.services.NERService;
 import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
-import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -47,5 +44,10 @@ public class AnnotationController {
         return ResponseEntity.ok(nerService.annotateServerFile(fileId));
     }
 
+    @GetMapping("")
+    public ResponseEntity<Void> test(Principal principal) {
+        logger.error(principal.getName());
+        return ResponseEntity.ok().build();
+    }
 
 }

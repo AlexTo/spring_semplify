@@ -30,11 +30,13 @@ import {ApolloProvider} from '@apollo/react-hooks';
 
 const keycloakHost = process.env.REACT_APP_KEYCLOAK_HOST;
 const keycloakPort = process.env.REACT_APP_KEYCLOAK_PORT;
+const realm = process.env.REACT_APP_REALM;
+const client_id = process.env.REACT_APP_CLIENT_ID;
 
 const initOptions = {
   url: `http://${keycloakHost}:${keycloakPort}/auth`,
-  realm: 'semplify',
-  clientId: 'semplify-app',
+  realm: realm,
+  clientId: client_id,
   onLoad: 'login-required'
 };
 
