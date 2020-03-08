@@ -25,11 +25,11 @@
         <module>eureka</module>
         <module>config</module>
         <module>gateway</module>
-        <module>entity-hub</module>
+        <module>entityhub</module>
         <module>indexer</module>
         <module>fileserver</module>
         <module>graphql</module>
-        <module>feign-clients</module>
+        <module>feignclients</module>
         <module>tasker</module>
         <module>commons</module>
     </modules>
