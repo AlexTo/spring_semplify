@@ -1,6 +1,6 @@
 package ai.semplify.tasker.mappers;
 
-import ai.semplify.tasker.models.TaskParameter;
+import ai.semplify.commons.models.tasker.TaskParameter;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mappings;

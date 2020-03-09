@@ -1,8 +1,7 @@
 package ai.semplify.indexer.jobs.subjectindexer;
 
-import ai.semplify.feignclients.clients.entityhub.EntityHubFeignClient;
+import ai.semplify.commons.feignclients.entityhub.EntityHubFeignClient;
 import ai.semplify.indexer.entities.elasticsearch.Subject;
-import ai.semplify.indexer.entities.postgresql.Document;
 import org.eclipse.rdf4j.repository.Repository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;

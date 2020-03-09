@@ -1,8 +1,8 @@
 package ai.semplify.indexer.services.impl;
 
-import ai.semplify.feignclients.clients.entityhub.EntityHubFeignClient;
-import ai.semplify.feignclients.clients.entityhub.models.PrefLabelRequest;
-import ai.semplify.feignclients.clients.entityhub.models.ThumbnailRequest;
+import ai.semplify.commons.feignclients.entityhub.EntityHubFeignClient;
+import ai.semplify.commons.models.entityhub.PrefLabelRequest;
+import ai.semplify.commons.models.entityhub.ThumbnailRequest;
 import ai.semplify.indexer.mappers.SuggestionsMapper;
 import ai.semplify.commons.models.indexer.SuggestionRequest;
 import ai.semplify.commons.models.indexer.Suggestions;

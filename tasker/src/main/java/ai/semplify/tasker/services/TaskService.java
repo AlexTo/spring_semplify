@@ -1,6 +1,6 @@
 package ai.semplify.tasker.services;
 
-import ai.semplify.tasker.models.Task;
+import ai.semplify.commons.models.tasker.Task;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

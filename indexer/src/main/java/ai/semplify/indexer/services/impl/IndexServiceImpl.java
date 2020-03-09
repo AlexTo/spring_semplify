@@ -1,8 +1,8 @@
 package ai.semplify.indexer.services.impl;
 
-import ai.semplify.feignclients.clients.entityhub.EntityHubFeignClient;
-import ai.semplify.feignclients.clients.entityhub.models.PrefLabelRequest;
-import ai.semplify.feignclients.clients.entityhub.models.TypeCheckRequest;
+import ai.semplify.commons.feignclients.entityhub.EntityHubFeignClient;
+import ai.semplify.commons.models.entityhub.PrefLabelRequest;
+import ai.semplify.commons.models.entityhub.TypeCheckRequest;
 import ai.semplify.indexer.entities.elasticsearch.Annotation;
 import ai.semplify.indexer.entities.elasticsearch.AnnotationClass;
 import ai.semplify.indexer.entities.postgresql.Document;

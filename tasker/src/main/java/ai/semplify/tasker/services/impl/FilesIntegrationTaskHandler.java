@@ -2,8 +2,8 @@ package ai.semplify.tasker.services.impl;
 
 import ai.semplify.tasker.entities.postgresql.Task;
 import ai.semplify.tasker.entities.postgresql.TaskParameter;
-import ai.semplify.tasker.models.TaskStatus;
-import ai.semplify.tasker.models.TaskType;
+import ai.semplify.commons.models.tasker.TaskStatus;
+import ai.semplify.commons.models.tasker.TaskType;
 import ai.semplify.tasker.repositories.TaskRepository;
 import ai.semplify.tasker.services.TaskHandler;
 import lombok.var;

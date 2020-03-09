@@ -11,11 +11,11 @@ import java.util.List;
         uses = {TaskParameterMapper.class})
 public interface TaskMapper {
 
-    Task toEntity(ai.semplify.tasker.models.Task model);
+    Task toEntity(ai.semplify.commons.models.tasker.Task model);
 
-    ai.semplify.tasker.entities.redis.Task toRedis(ai.semplify.tasker.models.Task task);
+    ai.semplify.tasker.entities.redis.Task toRedis(ai.semplify.commons.models.tasker.Task task);
 
-    ai.semplify.tasker.models.Task toModel(Task entity);
+    ai.semplify.commons.models.tasker.Task toModel(Task entity);
 
-    List<ai.semplify.tasker.models.Task> toModels(List<Task> entities);
+    List<ai.semplify.commons.models.tasker.Task> toModels(List<Task> entities);
 }

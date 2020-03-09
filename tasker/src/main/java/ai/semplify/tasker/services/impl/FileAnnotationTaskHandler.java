@@ -1,7 +1,7 @@
 package ai.semplify.tasker.services.impl;
 
-import ai.semplify.commons.webclients.EntityHubWebClient;
-import ai.semplify.tasker.models.TaskStatus;
+import ai.semplify.commons.feignclients.entityhub.EntityHubFeignClient;
+import ai.semplify.commons.models.tasker.TaskStatus;
 import ai.semplify.tasker.repositories.TaskRepository;
 import ai.semplify.tasker.services.TaskHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,14 +18,14 @@ public class FileAnnotationTaskHandler implements TaskHandler {
     private TaskRepository taskRepository;
     private Logger logger = LoggerFactory.getLogger(FileAnnotationTaskHandler.class);
     private ObjectMapper objectMapper;
-    private EntityHubWebClient entityHubWebClient;
+    private EntityHubFeignClient entityHubFeignClient;
 
     public FileAnnotationTaskHandler(TaskRepository taskRepository,
                                      ObjectMapper objectMapper,
-                                     EntityHubWebClient entityHubWebClient) {
+                                     EntityHubFeignClient entityHubFeignClient) {
         this.taskRepository = taskRepository;
         this.objectMapper = objectMapper;
-        this.entityHubWebClient = entityHubWebClient;
+        this.entityHubFeignClient = entityHubFeignClient;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class FileAnnotationTaskHandler implements TaskHandler {
                         logger.info("Processing task " + taskId + " | " + t.getType());
                         var fileId = Long.valueOf(t.getParameters().get(0).getValue());
 
-                        var annotation = entityHubWebClient.nerAnnotateServerFile(fileId);
+                        var annotation = entityHubFeignClient.annotateServerFile(fileId);
 
                         var result = objectMapper.writeValueAsString(annotation);
                         t.setResults(result);

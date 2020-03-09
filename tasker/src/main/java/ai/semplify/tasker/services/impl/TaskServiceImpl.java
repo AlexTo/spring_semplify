@@ -1,13 +1,12 @@
 package ai.semplify.tasker.services.impl;
 
 import ai.semplify.tasker.mappers.TaskMapper;
-import ai.semplify.tasker.models.Task;
+import ai.semplify.commons.models.tasker.Task;
 import ai.semplify.tasker.repositories.TaskRepository;
 import ai.semplify.tasker.services.TaskService;
 import lombok.var;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;

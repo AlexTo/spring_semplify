@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication(exclude = {ElasticsearchAutoConfiguration.class, ElasticsearchDataAutoConfiguration.class})
 @EnableEurekaClient
 @EnableConfigurationProperties
-@EnableFeignClients(basePackages = "ai.semplify.feignclients")
+@EnableFeignClients(basePackages = "ai.semplify.commons.feignclients.*")
 @EnableBatchProcessing
 @EnableScheduling
 public class IndexerApplication {

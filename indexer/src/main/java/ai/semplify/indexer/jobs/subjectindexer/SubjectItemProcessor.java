@@ -1,7 +1,7 @@
 package ai.semplify.indexer.jobs.subjectindexer;
 
-import ai.semplify.feignclients.clients.entityhub.EntityHubFeignClient;
-import ai.semplify.feignclients.clients.entityhub.models.PrefLabelRequest;
+import ai.semplify.commons.feignclients.entityhub.EntityHubFeignClient;
+import ai.semplify.commons.models.entityhub.PrefLabelRequest;
 import ai.semplify.indexer.entities.elasticsearch.Subject;
 import lombok.var;
 import org.springframework.batch.item.ItemProcessor;

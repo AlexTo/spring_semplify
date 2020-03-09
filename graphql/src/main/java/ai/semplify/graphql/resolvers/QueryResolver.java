@@ -1,12 +1,12 @@
 package ai.semplify.graphql.resolvers;
 
-import ai.semplify.feignclients.clients.entityhub.EntityHubFeignClient;
-import ai.semplify.feignclients.clients.entityhub.models.*;
-import ai.semplify.feignclients.clients.indexer.IndexerFeignClient;
-import ai.semplify.feignclients.clients.indexer.models.Query;
-import ai.semplify.feignclients.clients.indexer.models.SearchHits;
-import ai.semplify.feignclients.clients.indexer.models.SuggestionRequest;
-import ai.semplify.feignclients.clients.indexer.models.Suggestions;
+import ai.semplify.commons.feignclients.entityhub.EntityHubFeignClient;
+import ai.semplify.commons.feignclients.indexer.IndexerFeignClient;
+import ai.semplify.commons.models.entityhub.*;
+import ai.semplify.commons.models.indexer.Query;
+import ai.semplify.commons.models.indexer.SearchHits;
+import ai.semplify.commons.models.indexer.SuggestionRequest;
+import ai.semplify.commons.models.indexer.Suggestions;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import lombok.var;
 import org.springframework.stereotype.Component;

@@ -45,8 +45,10 @@ public class Task {
     private Integer numberOfSubTasks;
     private Integer numberOfFinishedSubTasks;
 
+    @Lob
     private String results;
 
+    @Lob
     private String error;
 
     @NotNull

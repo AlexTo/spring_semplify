@@ -12,7 +12,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.4.RELEASE</version>
+        <version>2.2.5.RELEASE</version>
     </parent>
     <developers>
         <developer>
@@ -29,14 +29,11 @@
         <module>indexer</module>
         <module>fileserver</module>
         <module>graphql</module>
-        <module>feignclients</module>
         <module>tasker</module>
         <module>commons</module>
     </modules>
     <properties>
-
-        <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
-
+        <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
         <commons-io.version>2.6</commons-io.version>
     </properties>
 
