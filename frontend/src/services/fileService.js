@@ -3,19 +3,14 @@ import request from 'superagent';
 const serviceUri = '/file-server';
 
 export const fileService = {
-  uploadAsync
+  upload
 };
 
-async function uploadAsync(file, token) {
+function upload(file, token) {
   const url = `${serviceUri}/files/`;
-  try {
-    return await request
-      .post(url)
-      .set('Authorization', `Bearer ${token}`)
-      .attach('file', file);
-
-  } catch (err) {
-    return err
-  }
-
+  return request
+    .post(url)
+    .set('Authorization', `Bearer ${token}`)
+    .attach('file', file)
+    .then(res => res.body);
 }

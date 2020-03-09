@@ -106,5 +106,5 @@
     "prettier": "^1.19.1",
     "typescript": "^3.7.2"
   },
-  "proxy": "http://gateway:12001"
+  "proxy": "http://gateway:12901"
 }

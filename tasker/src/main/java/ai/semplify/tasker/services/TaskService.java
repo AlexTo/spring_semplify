@@ -15,4 +15,6 @@ public interface TaskService {
     Optional<Task> findPendingTaskById(Long id);
 
     List<Task> findPendingTasks(Pageable pageable);
+
+    void updateParentTask(ai.semplify.tasker.entities.postgresql.Task task);
 }

@@ -1,7 +1,7 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import uuid from 'uuid/v1';
+import {v1 as uuid} from 'uuid';
 import {useDropzone} from 'react-dropzone';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {makeStyles} from '@material-ui/styles';

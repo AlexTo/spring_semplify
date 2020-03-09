@@ -2,14 +2,13 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {makeStyles} from '@material-ui/styles';
-import {Grid, Typography, Button} from '@material-ui/core';
-import AddDocumentsDialog from './AddDocumentsDialog';
+import {Grid, Typography, ButtonGroup, Button} from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-function Header({className, onAddDocument, ...rest}) {
+function Header({className, onSubmitFiles, onSubmitURLs, ...rest}) {
   const classes = useStyles();
 
   return (
@@ -24,20 +23,20 @@ function Header({className, onAddDocument, ...rest}) {
             component="h2"
             gutterBottom
             variant="overline">
-            Search
+            Data Hub
           </Typography>
           <Typography
             component="h1"
             variant="h3">
-            Indexed Documents
+            Data Integrator
           </Typography>
         </Grid>
         <Grid item>
-          <Button onClick={onAddDocument}
-                  color="primary"
-                  variant="contained">
-            Add documents
-          </Button>
+          <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
+            <Button onClick={onSubmitFiles}>FILES</Button>
+            <Button>URLS</Button>
+            <Button>SQL</Button>
+          </ButtonGroup>
         </Grid>
       </Grid>
     </div>

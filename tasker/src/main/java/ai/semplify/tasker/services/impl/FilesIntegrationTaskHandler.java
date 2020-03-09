@@ -6,6 +6,7 @@ import ai.semplify.commons.models.tasker.TaskStatus;
 import ai.semplify.commons.models.tasker.TaskType;
 import ai.semplify.tasker.repositories.TaskRepository;
 import ai.semplify.tasker.services.TaskHandler;
+import ai.semplify.tasker.services.TaskService;
 import lombok.var;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.stream.Collectors;
@@ -24,10 +26,12 @@ public class FilesIntegrationTaskHandler implements TaskHandler {
     private final String PARAM_FILE_ID = "file_id";
     private TaskRepository taskRepository;
     private Logger logger = LoggerFactory.getLogger(FilesIntegrationTaskHandler.class);
+    private TaskService taskService;
 
     public FilesIntegrationTaskHandler(TaskRepository taskRepository,
-                                       EntityManager entityManager) {
+                                       TaskService taskService) {
         this.taskRepository = taskRepository;
+        this.taskService = taskService;
     }
 
     @Override
@@ -38,6 +42,7 @@ public class FilesIntegrationTaskHandler implements TaskHandler {
                     var params = t.getParameters();
                     var fileIds = params.stream().filter(p -> p.getName().equals(PARAM_FILE_ID))
                             .collect(Collectors.toList());
+
                     fileIds.forEach(f -> {
                         spawnSubtasks(t, Long.valueOf(f.getValue()));
                     });

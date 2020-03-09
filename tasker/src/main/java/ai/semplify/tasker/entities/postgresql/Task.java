@@ -43,6 +43,7 @@ public class Task {
     private String taskStatus;
 
     private Integer numberOfSubTasks;
+
     private Integer numberOfFinishedSubTasks;
 
     @Lob

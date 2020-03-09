@@ -17,7 +17,7 @@ import javax.transaction.Transactional;
 public class Scheduler {
 
     private int page = 0;
-    private int size = 1;
+    private int size = 10;
 
     private RedisTemplate<String, Task> taskRedisTemplate;
     private TaskMapper taskMapper;

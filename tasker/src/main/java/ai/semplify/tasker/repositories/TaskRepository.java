@@ -12,6 +12,9 @@ import java.util.Optional;
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    Optional<Task> findById(Long id);
+
     List<Task> findAllByTaskStatusIsNull(Pageable pageable);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)

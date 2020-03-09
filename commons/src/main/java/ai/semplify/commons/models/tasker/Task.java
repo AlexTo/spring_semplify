@@ -18,6 +18,7 @@ public class Task {
     private String type;
 
     private Integer numberOfSubTasks;
+    private Integer numberOfFinishedSubTasks;
 
     private String results;
 
