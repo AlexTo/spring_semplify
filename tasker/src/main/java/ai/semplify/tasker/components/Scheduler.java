@@ -1,53 +1,46 @@
 package ai.semplify.tasker.components;
 
-import ai.semplify.tasker.entities.redis.Task;
-import ai.semplify.tasker.mappers.TaskMapper;
+import ai.semplify.tasker.services.TaskHandler;
 import ai.semplify.tasker.services.TaskService;
 import lombok.var;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import javax.transaction.Transactional;
+import java.util.Random;
 
 @Configuration
 public class Scheduler {
 
-    private int page = 0;
-    private int size = 10;
-
-    private RedisTemplate<String, Task> taskRedisTemplate;
-    private TaskMapper taskMapper;
-
-    private ChannelTopic pendingTasksChannel;
+    Random rand = new Random();
+    private Logger logger = LoggerFactory.getLogger(Scheduler.class);
 
     private TaskService taskService;
+    private ApplicationContextHolder context;
 
-    public Scheduler(RedisTemplate<String, Task> taskRedisTemplate,
-                     TaskMapper taskMapper, @Qualifier("pendingTasksTopic") ChannelTopic pendingTasksChannel,
-                     TaskService taskService) {
-        this.taskRedisTemplate = taskRedisTemplate;
-        this.taskMapper = taskMapper;
-        this.pendingTasksChannel = pendingTasksChannel;
+    public Scheduler(TaskService taskService, ApplicationContextHolder context) {
         this.taskService = taskService;
+        this.context = context;
     }
 
 
     @Scheduled(fixedRate = 5000)
     public void broadcastPendingTasks() {
-        var pageable = PageRequest.of(page, size);
+        var pageable = PageRequest.of(rand.nextInt(2), 1);
         var pendingTasks = taskService.findPendingTasks(pageable);
-        if (pendingTasks.isEmpty()) {
-            page = 0;
-        } else {
-            for (var task : pendingTasks) {
-                var redisTask = taskMapper.toRedis(task);
-                taskRedisTemplate.convertAndSend(pendingTasksChannel.getTopic(), redisTask);
+        for (var task : pendingTasks) {
+            try {
+                var handler = context.getBean(task.getType() + "TaskHandler", TaskHandler.class);
+                handler.process(task.getId());
+            } catch (NoSuchBeanDefinitionException e) {
+                logger.error("Handler for task " + task.getType() + " not found");
+            } catch (ObjectOptimisticLockingFailureException e) {
+                logger.warn("ObjectOptimisticLockingFailureException occurred for task " + task.getId() + ", safely ignored");
             }
-            page++;
         }
     }
 

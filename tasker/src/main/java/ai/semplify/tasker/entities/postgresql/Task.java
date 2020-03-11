@@ -1,5 +1,6 @@
 package ai.semplify.tasker.entities.postgresql;
 
+import ai.semplify.tasker.listeners.RootAware;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -20,7 +21,7 @@ import java.util.List;
                 @Index(name = "idx_semplify_tasks_task_status", columnList = "taskStatus"),
         })
 @EntityListeners(AuditingEntityListener.class)
-public class Task {
+public class Task implements RootAware<Task> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,12 +34,21 @@ public class Task {
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true,
-            mappedBy = "task"
+            mappedBy = "task",
+            fetch = FetchType.LAZY
     )
     private List<TaskParameter> parameters;
 
-    @OneToOne
+    @ManyToOne
     private Task parentTask;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = "parentTask",
+            fetch = FetchType.LAZY
+    )
+    private List<Task> subTasks;
 
     private String taskStatus;
 
@@ -46,10 +56,15 @@ public class Task {
 
     private Integer numberOfFinishedSubTasks;
 
-    @Lob
-    private String results;
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = "task",
+            fetch = FetchType.LAZY
+    )
+    private List<TaskResult> results;
 
-    @Lob
+    @Column(length = 65535)
     private String error;
 
     @NotNull
@@ -68,4 +83,12 @@ public class Task {
 
     @LastModifiedBy
     private String lastModifiedBy;
+
+    @Version
+    private int version;
+
+    @Override
+    public Task root() {
+        return parentTask;
+    }
 }

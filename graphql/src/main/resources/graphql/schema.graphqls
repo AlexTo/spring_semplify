@@ -12,6 +12,31 @@ type Query {
 }
 
 type Mutation {
+    createTask(task: TaskInput!): Task
+}
+
+input TaskInput {
+    type: String!
+    description: String
+    parameters: [TaskParameterInput!]
+}
+
+input TaskParameterInput {
+    name: String!
+    value: String!
+}
+
+type Task {
+    id: ID
+    type: String!
+    description: String
+    parameters: [TaskParameter!]
+}
+
+type TaskParameter {
+    id: ID
+    name: String!
+    value: String!
 }
 
 input QueryInput {

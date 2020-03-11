@@ -1,4 +1,4 @@
-package ai.semplify.entityhub.config;
+package ai.semplify.indexer.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

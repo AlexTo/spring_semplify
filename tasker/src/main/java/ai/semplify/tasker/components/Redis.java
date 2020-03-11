@@ -1,22 +1,12 @@
 package ai.semplify.tasker.components;
 
-import ai.semplify.tasker.entities.redis.Task;
-import ai.semplify.tasker.listeners.TaskMessageListener;
-import lombok.var;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
-import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 
 @Configuration
 @EnableRedisRepositories
 public class Redis {
-
+    /*
     private RedisConnectionFactory redisConnectionFactory;
     private TaskMessageListener taskMessageListener;
 
@@ -53,6 +43,6 @@ public class Redis {
         template.setConnectionFactory(redisConnectionFactory);
         template.setValueSerializer(new Jackson2JsonRedisSerializer<Task>(Task.class));
         return template;
-    }
+    }*/
 
 }

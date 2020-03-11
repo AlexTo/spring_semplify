@@ -1,9 +1,10 @@
-package ai.semplify.entityhub.services.impl;
+package ai.semplify.indexer.services.impl;
 
-import ai.semplify.entityhub.config.CrawlerConfig;
+
 import ai.semplify.commons.models.entityhub.CrawlRequest;
 import ai.semplify.commons.models.entityhub.CrawlResponse;
-import ai.semplify.entityhub.services.CrawlerService;
+import ai.semplify.indexer.config.CrawlerConfig;
+import ai.semplify.indexer.services.CrawlerService;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.Page;

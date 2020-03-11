@@ -1,8 +1,8 @@
-package ai.semplify.entityhub.controllers;
+package ai.semplify.indexer.controllers;
 
 import ai.semplify.commons.models.entityhub.CrawlRequest;
 import ai.semplify.commons.models.entityhub.CrawlResponse;
-import ai.semplify.entityhub.services.CrawlerService;
+import ai.semplify.indexer.services.CrawlerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

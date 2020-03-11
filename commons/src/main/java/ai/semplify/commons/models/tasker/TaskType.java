@@ -3,7 +3,8 @@ package ai.semplify.commons.models.tasker;
 public enum TaskType {
 
     FilesIntegration("FilesIntegration"),
-    FileAnnotation("FileAnnotation");
+    FileAnnotation("FileAnnotation"),
+    UrlCrawler("UrlCrawler");
 
     private String value;
 

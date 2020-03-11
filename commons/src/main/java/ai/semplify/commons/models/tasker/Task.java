@@ -11,16 +11,16 @@ public class Task {
 
     private Long id;
 
-    @NotBlank
     private String description;
 
     @NotBlank
     private String type;
 
     private Integer numberOfSubTasks;
+
     private Integer numberOfFinishedSubTasks;
 
-    private String results;
+    private List<TaskResult> results;
 
     private String error;
 

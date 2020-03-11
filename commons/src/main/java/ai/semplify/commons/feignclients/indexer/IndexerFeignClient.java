@@ -1,6 +1,8 @@
 package ai.semplify.commons.feignclients.indexer;
 
 import ai.semplify.commons.feignclients.DefaultFeignClientConfiguration;
+import ai.semplify.commons.models.entityhub.CrawlRequest;
+import ai.semplify.commons.models.entityhub.CrawlResponse;
 import ai.semplify.commons.models.indexer.Query;
 import ai.semplify.commons.models.indexer.SearchHits;
 import ai.semplify.commons.models.indexer.SuggestionRequest;
@@ -19,4 +21,7 @@ public interface IndexerFeignClient {
 
     @PostMapping("/suggest")
     Suggestions suggest(@Valid @RequestBody SuggestionRequest request);
+
+    @PostMapping("/crawler")
+    CrawlResponse crawl(@Valid @RequestBody CrawlRequest request);
 }

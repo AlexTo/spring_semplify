@@ -1,4 +1,4 @@
-package ai.semplify.entityhub.services;
+package ai.semplify.indexer.services;
 
 import ai.semplify.commons.models.entityhub.CrawlRequest;
 import ai.semplify.commons.models.entityhub.CrawlResponse;

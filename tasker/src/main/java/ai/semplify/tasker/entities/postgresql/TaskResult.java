@@ -3,12 +3,11 @@ package ai.semplify.tasker.entities.postgresql;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
-@Entity(name = "semplify_tasks_parameters")
-public class TaskParameter {
+@Entity(name = "semplify_tasks_results")
+public class TaskResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,9 +16,8 @@ public class TaskParameter {
     @ManyToOne
     private Task task;
 
-    @NotBlank
+    @NotNull
     private String name;
 
-    @NotBlank
-    private String value;
+    private byte[] value;
 }

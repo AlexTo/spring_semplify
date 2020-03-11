@@ -3,15 +3,18 @@ package ai.semplify.tasker.mappers;
 import ai.semplify.tasker.entities.postgresql.Task;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mappings;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-        uses = {TaskParameterMapper.class})
+        uses = {TaskParameterMapper.class, TaskResultMapper.class})
 public interface TaskMapper {
 
-
+    @Mappings({
+            @org.mapstruct.Mapping(target = "version", ignore = true)
+    })
     Task toEntity(ai.semplify.commons.models.tasker.Task model);
 
     ai.semplify.tasker.entities.redis.Task toRedis(ai.semplify.commons.models.tasker.Task task);

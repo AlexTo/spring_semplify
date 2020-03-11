@@ -17,6 +17,11 @@ function DataIntegrator() {
 
   const [submitFilesDialogOpen, setSubmitFilesDialogOpen] = useState(false);
 
+  const handleFilesSubmit = (files) => {
+    console.log(files);
+    setSubmitFilesDialogOpen(false);
+  };
+
   return (
     <Page
       className={classes.root}
@@ -27,9 +32,7 @@ function DataIntegrator() {
       <SubmitFilesDialog open={submitFilesDialogOpen}
                          onClose={() => setSubmitFilesDialogOpen(false)}
                          onCancel={() => setSubmitFilesDialogOpen(false)}
-                         onSubmit={(files) => {
-                           setSubmitFilesDialogOpen(false);
-                         }}/>
+                         onSubmit={handleFilesSubmit}/>
     </Page>
   );
 }
