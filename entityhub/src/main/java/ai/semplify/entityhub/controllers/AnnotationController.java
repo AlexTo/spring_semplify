@@ -2,6 +2,7 @@ package ai.semplify.entityhub.controllers;
 
 import ai.semplify.commons.models.entityhub.Annotation;
 import ai.semplify.commons.models.entityhub.TextAnnotationRequest;
+import ai.semplify.commons.models.entityhub.UrlAnnotationRequest;
 import ai.semplify.entityhub.services.NERService;
 import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
@@ -29,6 +30,12 @@ public class AnnotationController {
     public ResponseEntity<Annotation> annotateText(@Valid @RequestBody TextAnnotationRequest textAnnotationRequest)
             throws IOException {
         return ResponseEntity.ok(nerService.annotateText(textAnnotationRequest));
+    }
+
+    @PostMapping("url")
+    public ResponseEntity<Annotation> annotateUrl(@Valid @RequestBody UrlAnnotationRequest urlAnnotationRequest)
+            throws IOException, TikaException, SAXException {
+        return ResponseEntity.ok(nerService.annotateWebPage(urlAnnotationRequest));
     }
 
     @PostMapping("file")

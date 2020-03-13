@@ -4,7 +4,6 @@ package ai.semplify.commons.feignclients.entityhub;
 import ai.semplify.commons.feignclients.DefaultFeignClientConfiguration;
 import ai.semplify.commons.models.entityhub.*;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -37,5 +36,7 @@ public interface EntityHubFeignClient {
     @PostMapping("ner/serverFile")
     Annotation annotateServerFile(@RequestBody Long fileId);
 
+    @PostMapping("ner/url")
+    Annotation annotateUrl(@RequestBody UrlAnnotationRequest urlAnnotationRequest);
 
 }

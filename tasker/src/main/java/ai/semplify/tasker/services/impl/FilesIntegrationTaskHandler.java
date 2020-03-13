@@ -7,9 +7,8 @@ import ai.semplify.tasker.entities.postgresql.TaskParameter;
 import ai.semplify.tasker.repositories.TaskRepository;
 import ai.semplify.tasker.services.Params;
 import ai.semplify.tasker.services.TaskHandler;
+import ai.semplify.tasker.utils.Utils;
 import lombok.var;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,9 +30,8 @@ public class FilesIntegrationTaskHandler implements TaskHandler {
     public void process(Long taskId) {
         taskRepository.findByIdAndTaskStatusIsNull(taskId)
                 .ifPresent(t -> {
-                    var params = t.getParameters();
-                    var fileIds = params.stream().filter(p -> p.getName().equals(Params.fileId))
-                            .collect(Collectors.toList());
+
+                    var fileIds = Utils.getParams(t, Params.FILE_ID);
 
                     var subTasks = t.getSubTasks();
                     fileIds.forEach(f -> {
@@ -44,7 +42,7 @@ public class FilesIntegrationTaskHandler implements TaskHandler {
 
                     t.setNumberOfSubTasks(fileIds.size());
                     t.setNumberOfFinishedSubTasks(0);
-                    t.setTaskStatus(TaskStatus.SUBTASKS_SPAWNED.getValue());
+                    t.setTaskStatus(TaskStatus.SUBTASKS_SPAWNED);
                 });
     }
 
@@ -52,11 +50,11 @@ public class FilesIntegrationTaskHandler implements TaskHandler {
         var task = new Task();
         task.setParentTask(parentTask);
         task.setScheduled(new Date());
-        task.setType(TaskType.FileAnnotation.getValue());
+        task.setType(TaskType.FILE_ANNOTATION);
 
         var param = new TaskParameter();
         param.setTask(task);
-        param.setName(Params.fileId);
+        param.setName(Params.FILE_ID);
         param.setValue(fileId.toString());
 
         task.setParameters(Collections.singletonList(param));

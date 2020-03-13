@@ -3,6 +3,8 @@ package ai.semplify.entityhub.services.impl;
 import ai.semplify.commons.feignclients.fileserver.FileServerFeignClient;
 import ai.semplify.commons.feignclients.poolparty.PoolPartyExtractorFeignClient;
 import ai.semplify.commons.feignclients.spotlight.DBPediaSpotlightFeignClient;
+import ai.semplify.commons.models.entityhub.UrlAnnotationRequest;
+import ai.semplify.entityhub.config.ProxyConfig;
 import ai.semplify.entityhub.mappers.AnnotationMapper;
 import ai.semplify.commons.models.entityhub.Annotation;
 import ai.semplify.commons.models.entityhub.AnnotationResource;
@@ -27,8 +29,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +44,7 @@ import java.util.stream.Collectors;
 public class NERServiceImpl implements NERService {
 
     private AnnotationMapper mapper;
-
+    private ProxyConfig proxyConfig;
     private EntityService entityService;
     private FileServerFeignClient fileServerFeignClient;
     private DBPediaSpotlightFeignClient spotlightFeignClient;
@@ -48,17 +53,41 @@ public class NERServiceImpl implements NERService {
     @Value("${poolparty.projectId}")
     private String projectId;
 
-    public NERServiceImpl(AnnotationMapper mapper, EntityService entityService,
+    @Value("${app.userAgent}")
+    private String userAgent;
+
+    public NERServiceImpl(AnnotationMapper mapper, ProxyConfig proxyConfig,
+                          EntityService entityService,
                           FileServerFeignClient fileServerFeignClient,
                           DBPediaSpotlightFeignClient spotlightFeignClient,
                           PoolPartyExtractorFeignClient poolPartyExtractorFeignClient) {
         this.mapper = mapper;
+        this.proxyConfig = proxyConfig;
         this.entityService = entityService;
         this.fileServerFeignClient = fileServerFeignClient;
         this.spotlightFeignClient = spotlightFeignClient;
         this.poolPartyExtractorFeignClient = poolPartyExtractorFeignClient;
     }
 
+
+    @Override
+    public Annotation annotateInputStream(InputStream inputStream) throws TikaException, SAXException, IOException {
+        var handler = new BodyContentHandler(-1);
+        var metadata = new Metadata();
+        var parser = new AutoDetectParser();
+        parser.parse(inputStream, handler, metadata);
+        inputStream.close();
+        var request = new TextAnnotationRequest();
+        var text = handler.toString();
+        text = text.replaceAll("\t", " ")
+                .replaceAll(" +", " ")
+                .replaceAll("\r\n", ".")
+                .replaceAll("\n", ".")
+                .replaceAll("\\. \\.", ".")
+                .replaceAll("\\.\\.+", ".");
+        request.setText(text);
+        return annotateText(request);
+    }
 
     @Override
     public Annotation annotateText(TextAnnotationRequest textAnnotationRequest) throws IOException {
@@ -73,23 +102,35 @@ public class NERServiceImpl implements NERService {
 
     @Override
     public Annotation annotateFile(MultipartFile filePart) throws IOException, TikaException, SAXException {
-
         var inputStream = filePart.getInputStream();
-        var handler = new BodyContentHandler(-1);
-        var metadata = new Metadata();
-        var parser = new AutoDetectParser();
-        parser.parse(inputStream, handler, metadata);
-        inputStream.close();
-        var request = new TextAnnotationRequest();
-        request.setText(handler.toString());
-        return annotateText(request);
-
+        return annotateInputStream(inputStream);
     }
 
     @Override
     public Annotation annotateServerFile(Long fileId) throws IOException, TikaException, SAXException {
         var file = fileServerFeignClient.download(fileId);
         return annotateFile(file);
+    }
+
+    @Override
+    public Annotation annotateWebPage(UrlAnnotationRequest urlAnnotationRequest) throws IOException, TikaException, SAXException {
+
+        var url = urlAnnotationRequest.getUrl();
+        var proxy = proxyConfig.getHost() != null ? new Proxy(Proxy.Type.HTTP,
+                new InetSocketAddress(proxyConfig.getHost(), proxyConfig.getPort())) : null;
+
+        HttpURLConnection con = null;
+        try {
+            con = proxy == null ? (HttpURLConnection) (new URL(url)).openConnection()
+                    : (HttpURLConnection) (new URL(url)).openConnection(proxy);
+            con.setRequestMethod("GET");
+            con.setRequestProperty("User-Agent", userAgent);
+            return annotateInputStream(con.getInputStream());
+        } finally {
+            if (con != null)
+                con.disconnect();
+        }
+
     }
 
     private Annotation annotateTextFromDBPedia(TextAnnotationRequest textAnnotationRequest) {

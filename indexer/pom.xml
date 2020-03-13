@@ -33,11 +33,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
-        <!-- SNAPSHOT build of Spring Elasticsearch 4.0 -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-elasticsearch</artifactId>
-            <version>4.0.0.BUILD-SNAPSHOT</version>
+            <version>4.0.0.M4</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.elasticsearch</groupId>

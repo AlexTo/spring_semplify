@@ -12,3 +12,8 @@ spring:
   elasticsearch:
     rest:
       uris: http://elasticsearch:9200
+
+app:
+  crawler:
+    numberOfCrawlers: 4
+    tmp: "/tmp/crawler4j"

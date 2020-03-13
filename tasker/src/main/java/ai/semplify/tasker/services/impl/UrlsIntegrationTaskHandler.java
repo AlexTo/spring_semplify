@@ -4,7 +4,6 @@ import ai.semplify.commons.models.tasker.TaskStatus;
 import ai.semplify.commons.models.tasker.TaskType;
 import ai.semplify.tasker.entities.postgresql.Task;
 import ai.semplify.tasker.entities.postgresql.TaskParameter;
-import ai.semplify.tasker.exceptions.MissingParameterException;
 import ai.semplify.tasker.repositories.TaskRepository;
 import ai.semplify.tasker.services.Params;
 import ai.semplify.tasker.services.TaskHandler;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 @Transactional
 @Service(value = "UrlsIntegrationTaskHandler")
@@ -33,9 +31,9 @@ public class UrlsIntegrationTaskHandler implements TaskHandler {
                 .ifPresent(t -> {
                     try {
 
-                        var seedUrls = Utils.getParams(t, Params.seedUrl);
+                        var seedUrls = Utils.getParams(t, Params.SEED_URL);
 
-                        var depth = Utils.getOneParam(t, Params.depth);
+                        var depth = Utils.getOneParam(t, Params.DEPTH);
 
 
                         var subTasks = t.getSubTasks();
@@ -47,14 +45,14 @@ public class UrlsIntegrationTaskHandler implements TaskHandler {
 
                         t.setNumberOfSubTasks(seedUrls.size());
                         t.setNumberOfFinishedSubTasks(0);
-                        t.setTaskStatus(TaskStatus.SUBTASKS_SPAWNED.getValue());
+                        t.setTaskStatus(TaskStatus.SUBTASKS_SPAWNED);
                     } catch (Exception e) {
                         if (e.getMessage() != null) {
                             t.setError(e.getMessage());
                         } else {
                             t.setError("ERROR");
                         }
-                        t.setTaskStatus(TaskStatus.FINISHED.getValue());
+                        t.setTaskStatus(TaskStatus.FINISHED);
                     }
                 });
     }
@@ -63,16 +61,16 @@ public class UrlsIntegrationTaskHandler implements TaskHandler {
         var task = new Task();
         task.setParentTask(parentTask);
         task.setScheduled(new Date());
-        task.setType(TaskType.UrlCrawler.getValue());
+        task.setType(TaskType.URL_CRAWLER);
 
         var seedUrlParam = new TaskParameter();
         seedUrlParam.setTask(task);
-        seedUrlParam.setName(Params.seedUrl);
+        seedUrlParam.setName(Params.SEED_URL);
         seedUrlParam.setValue(seedUrl);
 
         var depthParam = new TaskParameter();
         depthParam.setTask(task);
-        depthParam.setName(Params.depth);
+        depthParam.setName(Params.DEPTH);
         depthParam.setValue(depth);
 
         var params = new ArrayList<TaskParameter>();

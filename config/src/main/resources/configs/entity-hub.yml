@@ -3,9 +3,3 @@ spring:
     job:
       enabled: false
 
-app:
-  crawler:
-    numberOfCrawlers: 4
-    proxyHost: "proxy.det.nsw.edu.au"
-    proxyPort: 80
-    tmp: "/tmp/crawler4j"

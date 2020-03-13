@@ -1,6 +1,7 @@
 package ai.semplify.tasker.services.impl;
 
 import ai.semplify.commons.feignclients.entityhub.EntityHubFeignClient;
+import ai.semplify.commons.models.entityhub.UrlAnnotationRequest;
 import ai.semplify.commons.models.tasker.TaskStatus;
 import ai.semplify.tasker.entities.postgresql.TaskResult;
 import ai.semplify.tasker.repositories.TaskRepository;
@@ -16,23 +17,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-@Service(value = "FileAnnotationTaskHandler")
-public class FileAnnotationTaskHandler implements TaskHandler {
+@Service(value = "UrlAnnotationTaskHandler")
+public class UrlAnnotationTaskHandler implements TaskHandler {
 
-    private Logger logger = LoggerFactory.getLogger(FileAnnotationTaskHandler.class);
+    private Logger logger = LoggerFactory.getLogger(UrlAnnotationTaskHandler.class);
     private TaskRepository taskRepository;
+    private TaskService taskService;
     private ObjectMapper objectMapper;
     private EntityHubFeignClient entityHubFeignClient;
-    private TaskService taskService;
 
-    public FileAnnotationTaskHandler(TaskRepository taskRepository,
-                                     ObjectMapper objectMapper,
-                                     EntityHubFeignClient entityHubFeignClient,
-                                     TaskService taskService) {
+    public UrlAnnotationTaskHandler(TaskRepository taskRepository,
+                                    TaskService taskService, ObjectMapper objectMapper,
+                                    EntityHubFeignClient entityHubFeignClient) {
         this.taskRepository = taskRepository;
+        this.taskService = taskService;
         this.objectMapper = objectMapper;
         this.entityHubFeignClient = entityHubFeignClient;
-        this.taskService = taskService;
     }
 
     @Override
@@ -40,17 +40,23 @@ public class FileAnnotationTaskHandler implements TaskHandler {
         taskRepository.findByIdAndTaskStatusIsNull(taskId)
                 .ifPresent(t -> {
                     try {
-                        var fileId = Utils.getOneParam(t, Params.FILE_ID);
-                        logger.info("Task " + taskId + " | " + t.getType() + "(FileId = " + fileId + ") started");
 
-                        var annotation = entityHubFeignClient.annotateServerFile(Long.valueOf(fileId));
+                        var url = Utils.getOneParam(t, Params.URL);
+
+                        logger.info("Task " + taskId + " | " + t.getType() + "(Url = " + url + ") started");
+
+                        var request = new UrlAnnotationRequest();
+                        request.setUrl(url);
+                        var annotation = entityHubFeignClient.annotateUrl(request);
+
                         var results = t.getResults();
                         var result = new TaskResult();
                         result.setName("annotation");
                         result.setValue(objectMapper.writeValueAsString(annotation).getBytes());
                         result.setTask(t);
                         results.add(result);
-                        logger.info("Task " + taskId + " | " + t.getType() + "(FileId = " + fileId + ") finished");
+                        logger.info("Task " + taskId + " | " + t.getType() + "(Url = " + url + ") finished");
+
                     } catch (Exception e) {
                         if (e.getMessage() != null) {
                             t.setError(e.getMessage());

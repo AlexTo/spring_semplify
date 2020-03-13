@@ -3,6 +3,7 @@ package ai.semplify.indexer.services.impl;
 
 import ai.semplify.commons.models.entityhub.CrawlRequest;
 import ai.semplify.commons.models.entityhub.CrawlResponse;
+import ai.semplify.indexer.config.ProxyConfig;
 import ai.semplify.indexer.config.CrawlerConfig;
 import ai.semplify.indexer.services.CrawlerService;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
@@ -14,6 +15,8 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.WebURL;
 import lombok.var;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -37,9 +40,12 @@ public class CrawlerServiceImpl implements CrawlerService {
 
 
     private CrawlerConfig crawlerConfig;
+    private ProxyConfig proxyConfig;
+    private Logger logger = LoggerFactory.getLogger(CrawlerServiceImpl.class);
 
-    public CrawlerServiceImpl(CrawlerConfig crawlerConfig) {
+    public CrawlerServiceImpl(CrawlerConfig crawlerConfig, ProxyConfig proxyConfig) {
         this.crawlerConfig = crawlerConfig;
+        this.proxyConfig = proxyConfig;
     }
 
     static class Crawler extends WebCrawler {
@@ -73,10 +79,10 @@ public class CrawlerServiceImpl implements CrawlerService {
         config.setMaxDepthOfCrawling(request.getDepth());
         config.setCrawlStorageFolder(crawlerConfig.getTmp());
 
-        if (crawlerConfig.getProxyHost() != null) {
-            config.setProxyHost(crawlerConfig.getProxyHost());
-            if (crawlerConfig.getProxyPort() != null) {
-                config.setProxyPort(crawlerConfig.getProxyPort());
+        if (proxyConfig.getHost() != null) {
+            config.setProxyHost(proxyConfig.getHost());
+            if (proxyConfig.getPort() != null) {
+                config.setProxyPort(proxyConfig.getPort());
             }
         }
 
@@ -94,6 +100,7 @@ public class CrawlerServiceImpl implements CrawlerService {
         controller.start(factory, crawlerConfig.getNumberOfCrawlers());
         var response = new CrawlResponse();
         response.setUrls(pages.stream().map(p -> p.getWebURL().getURL()).collect(Collectors.toList()));
+        logger.info(String.format("Found %d url(s) from %s", pages.size(), request.getUrl()));
         return response;
     }
 }

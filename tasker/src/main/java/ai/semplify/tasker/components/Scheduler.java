@@ -30,7 +30,7 @@ public class Scheduler {
 
     @Scheduled(fixedRate = 5000)
     public void broadcastPendingTasks() {
-        var pageable = PageRequest.of(rand.nextInt(2), 1);
+        var pageable = PageRequest.of(rand.nextInt(10), 1);
         var pendingTasks = taskService.findPendingTasks(pageable);
         for (var task : pendingTasks) {
             try {
