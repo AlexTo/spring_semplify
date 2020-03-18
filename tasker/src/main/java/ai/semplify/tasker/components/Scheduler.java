@@ -30,18 +30,24 @@ public class Scheduler {
 
     @Scheduled(fixedRate = 5000)
     public void broadcastPendingTasks() {
-        var pageable = PageRequest.of(rand.nextInt(10), 1);
+        var pageable = PageRequest.of(0, 20);
         var pendingTasks = taskService.findPendingTasks(pageable);
-        for (var task : pendingTasks) {
-            try {
-                var handler = context.getBean(task.getType() + "TaskHandler", TaskHandler.class);
-                handler.process(task.getId());
-            } catch (NoSuchBeanDefinitionException e) {
-                logger.error("Handler for task " + task.getType() + " not found");
-            } catch (ObjectOptimisticLockingFailureException e) {
-                logger.warn("ObjectOptimisticLockingFailureException occurred for task " + task.getId() + ", safely ignored");
-            }
+        if (pendingTasks.getIsEmpty())
+            return;
+
+        var task = pendingTasks
+                .getTasks()
+                .get(rand.nextInt(pendingTasks.getTotalElements().intValue()));
+
+        try {
+            var handler = context.getBean(task.getType() + "TaskHandler", TaskHandler.class);
+            handler.process(task.getId());
+        } catch (NoSuchBeanDefinitionException e) {
+            logger.error("Handler for task " + task.getType() + " not found");
+        } catch (ObjectOptimisticLockingFailureException e) {
+            logger.warn("ObjectOptimisticLockingFailureException occurred for task " + task.getId() + ", safely ignored");
         }
+
     }
 
 }

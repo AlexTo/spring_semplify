@@ -9,10 +9,8 @@ import java.util.Date;
 @Data
 public class File {
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String url;
 
     private String name;

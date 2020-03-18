@@ -1,4 +1,4 @@
-package ai.semplify.fileserver.repos;
+package ai.semplify.fileserver.repositories;
 
 import ai.semplify.fileserver.entities.File;
 import ai.semplify.fileserver.entities.FileInfo;

@@ -58,7 +58,7 @@ export default [
         component: Overview
       },
       {
-        path: '/data-integrator',
+        path: '/data-integrator/:tab',
         exact: true,
         component: DataIntegrator
       },

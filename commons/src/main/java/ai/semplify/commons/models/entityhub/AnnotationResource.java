@@ -8,6 +8,8 @@ import java.util.Objects;
 @Data
 public class AnnotationResource {
 
+    private Long id;
+
     private String uri;
 
     private String support;

@@ -53,10 +53,4 @@ public class FileServerController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    @GetMapping("/anon/{fileId}")
-    public ResponseEntity<Resource> anonDownload(@PathVariable("fileId") Long fileId) {
-        return download(fileId);
-    }
-
 }

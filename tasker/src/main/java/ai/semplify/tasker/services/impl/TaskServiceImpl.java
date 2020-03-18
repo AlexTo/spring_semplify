@@ -1,6 +1,7 @@
 package ai.semplify.tasker.services.impl;
 
 import ai.semplify.commons.models.tasker.Task;
+import ai.semplify.commons.models.tasker.TaskPage;
 import ai.semplify.commons.models.tasker.TaskStatus;
 import ai.semplify.tasker.mappers.TaskMapper;
 import ai.semplify.tasker.repositories.TaskRepository;
@@ -59,9 +60,21 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> findPendingTasks(Pageable pageable) {
-        var entities = taskRepository.findAllByTaskStatusIsNull(pageable);
-        return taskMapper.toModels(entities);
+    public TaskPage findPendingTasks(Pageable pageable) {
+        var entity = taskRepository.findAllByTaskStatusIsNull(pageable);
+        return taskMapper.toModel(entity);
+    }
+
+    @Override
+    public TaskPage findTopLevelTasks(Pageable pageable) {
+        var entity = taskRepository.findAllByParentTaskIsNull(pageable);
+        return taskMapper.toModel(entity);
+    }
+
+    @Override
+    public TaskPage findAll(Long parentTaskId, Pageable pageable) {
+        var entity = taskRepository.findAllByParentTask_Id(parentTaskId, pageable);
+        return taskMapper.toModel(entity);
     }
 
     @Override

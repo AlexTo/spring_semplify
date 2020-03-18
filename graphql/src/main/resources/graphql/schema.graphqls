@@ -9,6 +9,9 @@ type Query {
     thumbnail(uri: String!): Thumbnail!
     summary(uri: String!): Summary!
     suggest(query: SuggestInput!): Suggestions!
+    tasks(taskQuery: TaskQueryInput!): TaskPage!
+    fileAnnotations(fileAnnotationQuery: FileAnnotationQueryInput!): FileAnnotationPage!
+
 }
 
 type Mutation {
@@ -26,10 +29,49 @@ input TaskParameterInput {
     value: String!
 }
 
+input TaskQueryInput {
+    parentTaskId: Int
+    page: Int
+    size: Int
+}
+
+input FileAnnotationQueryInput {
+    page: Int
+    size: Int
+}
+
+type FileAnnotationPage {
+    totalElements: Int!
+    totalPages: Int!
+    isEmpty: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    tasks: [FileAnnotation!]
+}
+
+type FileAnnotation {
+    id: ID
+
+}
+
+type TaskPage {
+    totalElements: Int!
+    totalPages: Int!
+    isEmpty: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    tasks: [Task!]
+}
+
 type Task {
     id: ID
     type: String!
     description: String
+    scheduled: String
+    numberOfSubTasks: Int
+    numberOfFinishedSubTasks: Int
+    taskStatus: String
+    error: String
     parameters: [TaskParameter!]
 }
 

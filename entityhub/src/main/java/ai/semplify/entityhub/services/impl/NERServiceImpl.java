@@ -92,10 +92,10 @@ public class NERServiceImpl implements NERService {
     @Override
     public Annotation annotateText(TextAnnotationRequest textAnnotationRequest) throws IOException {
         var dbpediaAnnotation = annotateTextFromDBPedia(textAnnotationRequest);
-        var poolpartyAnnotation = annotateTextFromPoolParty(textAnnotationRequest);
+        //var poolpartyAnnotation = annotateTextFromPoolParty(textAnnotationRequest);
         var mergedResources = new ArrayList<AnnotationResource>();
         mergedResources.addAll(dbpediaAnnotation.getResources());
-        mergedResources.addAll(poolpartyAnnotation.getResources());
+        //mergedResources.addAll(poolpartyAnnotation.getResources());
         dbpediaAnnotation.setResources(mergedResources);
         return dbpediaAnnotation;
     }

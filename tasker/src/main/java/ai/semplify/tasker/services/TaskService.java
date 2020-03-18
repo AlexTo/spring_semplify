@@ -1,9 +1,9 @@
 package ai.semplify.tasker.services;
 
 import ai.semplify.commons.models.tasker.Task;
+import ai.semplify.commons.models.tasker.TaskPage;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface TaskService {
@@ -14,7 +14,11 @@ public interface TaskService {
 
     Optional<Task> findPendingTaskById(Long id);
 
-    List<Task> findPendingTasks(Pageable pageable);
+    TaskPage findPendingTasks(Pageable pageable);
+
+    TaskPage findTopLevelTasks(Pageable pageable);
+
+    TaskPage findAll(Long parentTaskId, Pageable pageable);
 
     void updateParentTask(ai.semplify.tasker.entities.postgresql.Task task);
 }

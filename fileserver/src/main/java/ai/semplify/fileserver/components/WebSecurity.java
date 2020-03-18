@@ -13,7 +13,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/anon**").permitAll()
                 .anyRequest().authenticated().and()
                 .oauth2ResourceServer().jwt();
     }

@@ -2,7 +2,7 @@ package ai.semplify.fileserver.services.impl;
 
 import ai.semplify.fileserver.mappers.FileMapper;
 import ai.semplify.commons.models.fileserver.File;
-import ai.semplify.fileserver.repos.FileRepository;
+import ai.semplify.fileserver.repositories.FileRepository;
 import ai.semplify.fileserver.services.FileService;
 import ai.semplify.fileserver.services.URLResolver;
 import lombok.var;

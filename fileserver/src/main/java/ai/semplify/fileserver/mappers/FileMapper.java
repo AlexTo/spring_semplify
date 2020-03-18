@@ -11,7 +11,7 @@ import org.mapstruct.Mappings;
 public interface FileMapper {
 
     @Mappings({
-            @Mapping(target = "url", ignore = true)
+            @Mapping(target = "url", ignore = true),
     })
     File toModel(ai.semplify.fileserver.entities.File entity);
 
