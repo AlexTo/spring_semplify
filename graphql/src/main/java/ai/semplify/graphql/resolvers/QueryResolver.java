@@ -1,31 +1,39 @@
 package ai.semplify.graphql.resolvers;
 
 import ai.semplify.commons.feignclients.entityhub.EntityHubFeignClient;
+import ai.semplify.commons.feignclients.fileserver.FileServerFeignClient;
 import ai.semplify.commons.feignclients.indexer.IndexerFeignClient;
 import ai.semplify.commons.feignclients.tasker.TaskerFeignClient;
 import ai.semplify.commons.models.entityhub.*;
+import ai.semplify.commons.models.fileserver.FileAnnotationPage;
 import ai.semplify.commons.models.indexer.Query;
 import ai.semplify.commons.models.indexer.SearchHits;
 import ai.semplify.commons.models.indexer.SuggestionRequest;
 import ai.semplify.commons.models.indexer.Suggestions;
 import ai.semplify.commons.models.tasker.TaskPage;
-import ai.semplify.commons.models.tasker.TaskQuery;
+import ai.semplify.graphql.models.FileAnnotationQueryInput;
+import ai.semplify.graphql.models.TaskQueryInput;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import lombok.var;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class QueryResolver implements GraphQLQueryResolver {
     private IndexerFeignClient indexerFeignClient;
     private EntityHubFeignClient entityHubFeignClient;
     private TaskerFeignClient taskerFeignClient;
+    private FileServerFeignClient fileServerFeignClient;
 
     public QueryResolver(IndexerFeignClient indexerFeignClient,
                          EntityHubFeignClient entityHubFeignClient,
-                         TaskerFeignClient taskerFeignClient) {
+                         TaskerFeignClient taskerFeignClient,
+                         FileServerFeignClient fileServerFeignClient) {
         this.indexerFeignClient = indexerFeignClient;
         this.entityHubFeignClient = entityHubFeignClient;
         this.taskerFeignClient = taskerFeignClient;
+        this.fileServerFeignClient = fileServerFeignClient;
     }
 
     public SearchHits search(Query query) {
@@ -50,11 +58,19 @@ public class QueryResolver implements GraphQLQueryResolver {
         return entityHubFeignClient.getSummary(request);
     }
 
-    public TaskPage tasks(TaskQuery taskQuery) {
-        return taskerFeignClient.findAll(taskQuery.getParentTaskId(), taskQuery.getPage(), taskQuery.getSize());
+    public TaskPage tasks(TaskQueryInput taskQueryInput) {
+        return taskerFeignClient.findAll(taskQueryInput.getParentTaskId(), taskQueryInput.getPage(), taskQueryInput.getSize());
     }
 
     public Suggestions suggest(SuggestionRequest request) {
         return indexerFeignClient.suggest(request);
+    }
+
+    public FileAnnotationPage fileAnnotations(FileAnnotationQueryInput fileAnnotationQueryInput) {
+        return fileServerFeignClient.findAll(fileAnnotationQueryInput.getPage(), fileAnnotationQueryInput.getSize());
+    }
+
+    public List<AnnotationResource> fileAnnotationResources(Long fileAnnotationId) {
+        return fileServerFeignClient.findAll(fileAnnotationId);
     }
 }

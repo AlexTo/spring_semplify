@@ -109,7 +109,7 @@ function SubmitFilesDialog({open, onClose, onCancel, onSubmit}) {
   };
 
   return (
-    <div>
+    <>
       <Dialog open={open} TransitionComponent={Transition} maxWidth="lg" fullWidth>
         <AppBar className={classes.appBar}>
           <Toolbar>
@@ -141,7 +141,7 @@ function SubmitFilesDialog({open, onClose, onCancel, onSubmit}) {
                           currentItem={currentItem}
                           completed={completed}
                           onCancel={handleUploadCancel}/>
-    </div>
+    </>
   )
 }
 

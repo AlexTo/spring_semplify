@@ -58,11 +58,12 @@ function TaskTable({className, ...rest}) {
 
   const {loading, error, data} = useQuery(taskQueries.tasks, {
     variables: {
-      taskQuery: {
+      taskQueryInput: {
         page: taskReducer.page,
         size: taskReducer.pageSize
       }
-    }
+    },
+    pollInterval: 500
   });
 
 
@@ -83,8 +84,7 @@ function TaskTable({className, ...rest}) {
 
       <Card>
         <CardHeader
-          action={<GenericMoreButton/>}
-          title="Tasks"/>
+          action={<GenericMoreButton/>}/>
         <Divider/>
         <CardContent className={classes.content}>
           <PerfectScrollbar>
@@ -103,7 +103,7 @@ function TaskTable({className, ...rest}) {
                   {data.tasks.tasks.map(t =>
                     <TableRow key={t.id}>
                       <TableCell>{t.type}</TableCell>
-                      <TableCell>{t.numberOfSubTasks && `${t.numberOfFinishedSubTasks}/${t.numberOfSubTasks}`}</TableCell>
+                      <TableCell>{t.numberOfSubtasks && `${t.numberOfFinishedSubtasks}/${t.numberOfSubtasks}`}</TableCell>
                       <TableCell>{t.scheduled}</TableCell>
                       <TableCell>{t.taskStatus}</TableCell>
                       <TableCell>{t.error}</TableCell>

@@ -28,6 +28,11 @@ public class FileAnnotationController {
         return ResponseEntity.ok(fileAnnotationService.create(fileAnnotation));
     }
 
+    @GetMapping("/{fileAnotationId}")
+    public ResponseEntity<FileAnnotation> findOne(@PathVariable Long fileAnnotationId) throws FileNotFoundException {
+        return ResponseEntity.ok(fileAnnotationService.findById(fileAnnotationId));
+    }
+
     @GetMapping("/")
     public ResponseEntity<FileAnnotationPage> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                       @RequestParam(required = false, defaultValue = "20") Integer size) {

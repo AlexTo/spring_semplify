@@ -1,9 +1,9 @@
-package ai.semplify.commons.models.tasker;
+package ai.semplify.graphql.models;
 
 import lombok.Data;
 
 @Data
-public class TaskQuery {
+public class TaskQueryInput {
     private Long parentTaskId;
     private Integer page;
     private Integer size;

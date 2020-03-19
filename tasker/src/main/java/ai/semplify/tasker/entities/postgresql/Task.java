@@ -52,9 +52,9 @@ public class Task implements RootAware<Task> {
 
     private String taskStatus;
 
-    private Integer numberOfSubTasks;
+    private Integer numberOfSubtasks;
 
-    private Integer numberOfFinishedSubTasks;
+    private Integer numberOfFinishedSubtasks;
 
     @OneToMany(
             cascade = CascadeType.ALL,

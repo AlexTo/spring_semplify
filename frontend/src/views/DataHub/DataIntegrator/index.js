@@ -44,14 +44,6 @@ function DataIntegrator({match, history}) {
   const [submitFilesDialogOpen, setSubmitFilesDialogOpen] = useState(false);
 
   const [createTask, {data}] = useMutation(taskQueries.createTask);
-  const {refetch} = useQuery(taskQueries.tasks, {
-    variables: {
-      taskQuery: {
-        page: taskReducer.page,
-        size: taskReducer.pageSize
-      }
-    }
-  });
 
   const handleFilesSubmit = (files) => {
     setSubmitFilesDialogOpen(false);
@@ -68,8 +60,7 @@ function DataIntegrator({match, history}) {
         }
       }
     }).then(() => {
-      refetch().then(() => {
-      });
+
     });
   };
 

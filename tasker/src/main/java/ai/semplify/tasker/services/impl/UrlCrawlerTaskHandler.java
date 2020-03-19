@@ -60,8 +60,8 @@ public class UrlCrawlerTaskHandler implements TaskHandler {
                             subTasks.add(subTask);
                         });
 
-                        t.setNumberOfSubTasks(urls.size());
-                        t.setNumberOfFinishedSubTasks(0);
+                        t.setNumberOfSubtasks(urls.size());
+                        t.setNumberOfFinishedSubtasks(0);
                         t.setTaskStatus(TaskStatus.SUBTASKS_SPAWNED);
 
                         logger.info(String.format("Task %s | %s (seedUrl = %s, depth = %s) finished",

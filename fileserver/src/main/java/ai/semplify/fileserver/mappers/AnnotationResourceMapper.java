@@ -5,6 +5,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface AnnotationResourceMapper {
     @Mappings({
@@ -16,4 +18,6 @@ public interface AnnotationResourceMapper {
             @Mapping(source = "_offset", target = "offset")
     })
     ai.semplify.commons.models.entityhub.AnnotationResource toModel(AnnotationResource entity);
+
+    List<ai.semplify.commons.models.entityhub.AnnotationResource> toModels(List<AnnotationResource> entities);
 }

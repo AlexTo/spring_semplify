@@ -4,6 +4,7 @@ import ai.semplify.commons.models.fileserver.FileAnnotationPage;
 import ai.semplify.fileserver.entities.FileAnnotation;
 import lombok.var;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.springframework.data.domain.Page;
 
@@ -13,13 +14,16 @@ import java.util.stream.Collectors;
 public interface FileAnnotationMapper {
 
     @Mappings({
-            @org.mapstruct.Mapping(target = "createdBy", ignore = true),
-            @org.mapstruct.Mapping(target = "createdDate", ignore = true),
-            @org.mapstruct.Mapping(target = "lastModifiedBy", ignore = true),
-            @org.mapstruct.Mapping(target = "lastModifiedDate", ignore = true)
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "createdDate", ignore = true),
+            @Mapping(target = "lastModifiedBy", ignore = true),
+            @Mapping(target = "lastModifiedDate", ignore = true)
     })
     FileAnnotation toEntity(ai.semplify.commons.models.fileserver.FileAnnotation fileAnnotation);
 
+    @Mappings({
+            @Mapping(target = "annotationResources", ignore = true)
+    })
     ai.semplify.commons.models.fileserver.FileAnnotation toModel(FileAnnotation entity);
 
     default FileAnnotationPage toPage(Page<FileAnnotation> entity) {

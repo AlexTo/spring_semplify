@@ -16,9 +16,9 @@ public class Task {
     @NotBlank
     private String type;
 
-    private Integer numberOfSubTasks;
+    private Integer numberOfSubtasks;
 
-    private Integer numberOfFinishedSubTasks;
+    private Integer numberOfFinishedSubtasks;
 
     private List<TaskResult> results;
 

@@ -85,8 +85,8 @@ public class TaskServiceImpl implements TaskService {
 
         taskRepository.findById(task.getParentTask().getId()).ifPresent(
                 parentTask -> {
-                    parentTask.setNumberOfFinishedSubTasks(parentTask.getNumberOfFinishedSubTasks() + 1);
-                    if (parentTask.getNumberOfSubTasks().equals(parentTask.getNumberOfFinishedSubTasks())) {
+                    parentTask.setNumberOfFinishedSubtasks(parentTask.getNumberOfFinishedSubtasks() + 1);
+                    if (parentTask.getNumberOfSubtasks().equals(parentTask.getNumberOfFinishedSubtasks())) {
                         parentTask.setTaskStatus(TaskStatus.FINISHED);
                         updateParentTask(parentTask);
                     }

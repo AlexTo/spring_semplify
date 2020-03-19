@@ -1,4 +1,4 @@
-import gql from "graphql-tag/src";
+import gql from "graphql-tag";
 
 export const FILES_INTEGRATION = "FilesIntegration";
 export const FILE_ANNOTATION = "FileAnnotation";
@@ -17,8 +17,8 @@ export const taskQueries = {
     }
   `,
   tasks: gql`
-    query tasks($taskQuery: TaskQueryInput!) {
-      tasks(taskQuery: $taskQuery) {
+    query tasks($taskQueryInput: TaskQueryInput!) {
+      tasks(taskQueryInput: $taskQueryInput) {
         totalPages
         totalElements
         hasNext
@@ -26,8 +26,8 @@ export const taskQueries = {
         tasks {
           id
           type
-          numberOfSubTasks
-          numberOfFinishedSubTasks
+          numberOfSubtasks
+          numberOfFinishedSubtasks
           scheduled
           taskStatus
           error

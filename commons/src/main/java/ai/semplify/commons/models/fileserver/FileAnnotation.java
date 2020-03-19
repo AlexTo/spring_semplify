@@ -13,7 +13,8 @@ public class FileAnnotation {
     @NotNull
     private File file;
 
-    @NotNull
+    private String status;
+
     private List<AnnotationResource> annotationResources;
 
 }

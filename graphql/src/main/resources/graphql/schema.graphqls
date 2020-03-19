@@ -9,9 +9,9 @@ type Query {
     thumbnail(uri: String!): Thumbnail!
     summary(uri: String!): Summary!
     suggest(query: SuggestInput!): Suggestions!
-    tasks(taskQuery: TaskQueryInput!): TaskPage!
-    fileAnnotations(fileAnnotationQuery: FileAnnotationQueryInput!): FileAnnotationPage!
-
+    tasks(taskQueryInput: TaskQueryInput!): TaskPage!
+    fileAnnotations(fileAnnotationQueryInput: FileAnnotationQueryInput!): FileAnnotationPage!
+    fileAnnotationResources(fileAnnotationId: Int!): [AnnotationResource!]
 }
 
 type Mutation {
@@ -46,12 +46,27 @@ type FileAnnotationPage {
     isEmpty: Boolean!
     hasNext: Boolean!
     hasPrevious: Boolean!
-    tasks: [FileAnnotation!]
+    fileAnnotations: [FileAnnotation!]
 }
 
 type FileAnnotation {
-    id: ID
+    id: ID!
+    file: File!
+    status: String!
+}
 
+type File {
+    id: ID!
+    name: String!
+    contentType: String!
+}
+
+type AnnotationResource {
+    id: ID!
+    uri: String!
+    surfaceForm: String!
+    prefLabel: String!
+    context: String!
 }
 
 type TaskPage {
@@ -64,19 +79,19 @@ type TaskPage {
 }
 
 type Task {
-    id: ID
+    id: ID!
     type: String!
     description: String
     scheduled: String
-    numberOfSubTasks: Int
-    numberOfFinishedSubTasks: Int
+    numberOfSubtasks: Int
+    numberOfFinishedSubtasks: Int
     taskStatus: String
     error: String
     parameters: [TaskParameter!]
 }
 
 type TaskParameter {
-    id: ID
+    id: ID!
     name: String!
     value: String!
 }

@@ -40,8 +40,8 @@ public class FilesIntegrationTaskHandler implements TaskHandler {
                         subTasks.add(subTask);
                     });
 
-                    t.setNumberOfSubTasks(fileIds.size());
-                    t.setNumberOfFinishedSubTasks(0);
+                    t.setNumberOfSubtasks(fileIds.size());
+                    t.setNumberOfFinishedSubtasks(0);
                     t.setTaskStatus(TaskStatus.SUBTASKS_SPAWNED);
                 });
     }

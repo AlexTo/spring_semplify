@@ -25,8 +25,11 @@ public class FileAnnotation {
     @OneToOne
     private File file;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<AnnotationResource> annotationResources;
+
+    @NotNull
+    private String status;
 
     @NotNull
     @CreatedDate

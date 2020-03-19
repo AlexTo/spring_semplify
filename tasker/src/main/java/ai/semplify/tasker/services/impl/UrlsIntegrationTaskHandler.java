@@ -43,8 +43,8 @@ public class UrlsIntegrationTaskHandler implements TaskHandler {
                             subTasks.add(subTask);
                         });
 
-                        t.setNumberOfSubTasks(seedUrls.size());
-                        t.setNumberOfFinishedSubTasks(0);
+                        t.setNumberOfSubtasks(seedUrls.size());
+                        t.setNumberOfFinishedSubtasks(0);
                         t.setTaskStatus(TaskStatus.SUBTASKS_SPAWNED);
                     } catch (Exception e) {
                         if (e.getMessage() != null) {
