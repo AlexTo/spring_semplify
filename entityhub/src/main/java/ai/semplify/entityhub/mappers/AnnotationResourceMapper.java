@@ -13,7 +13,8 @@ public interface AnnotationResourceMapper {
     @Mappings({
             @Mapping(target = "source", ignore = true),
             @Mapping(target = "prefLabel", ignore = true),
-            @Mapping(target = "context", ignore = true)
+            @Mapping(target = "context", ignore = true),
+            @Mapping(target = "id", ignore = true)
     })
     AnnotationResource fromDBPediaAnnotationResource(DBPediaAnnotationResource dbpediaAnnotationResource);
 }

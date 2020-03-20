@@ -16,6 +16,7 @@ type Query {
 
 type Mutation {
     createTask(task: TaskInput!): Task
+    updateFileAnnotation(fileAnnotation: FileAnnotationInput!): FileAnnotation!
 }
 
 input TaskInput {
@@ -55,6 +56,20 @@ type FileAnnotation {
     status: String!
 }
 
+input FileAnnotationInput {
+    id: ID
+    status: String!
+    annotationResources: [AnnotationResourceInput!]
+}
+
+input AnnotationResourceInput {
+    id: ID
+    uri: String!
+    surfaceForm: String
+    prefLabel: String
+    context: String
+    source: String
+}
 type File {
     id: ID!
     name: String!

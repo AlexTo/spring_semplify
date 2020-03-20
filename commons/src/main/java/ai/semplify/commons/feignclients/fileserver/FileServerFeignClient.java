@@ -37,4 +37,8 @@ public interface FileServerFeignClient {
 
     @GetMapping("/file-annotation-resources/")
     List<AnnotationResource> findAll(@RequestParam Long fileAnnotationId);
+
+    @PutMapping("/{fileAnnotationId}")
+    FileAnnotation update(@PathVariable("fileAnnotationId") Long fileAnnotationId,
+                          @Valid @RequestBody FileAnnotation fileAnnotation);
 }

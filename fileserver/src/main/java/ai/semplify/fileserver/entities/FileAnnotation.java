@@ -44,4 +44,7 @@ public class FileAnnotation {
 
     @LastModifiedBy
     private String lastModifiedBy;
+
+    @Version
+    private Long version;
 }
