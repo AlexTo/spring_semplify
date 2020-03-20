@@ -40,4 +40,6 @@ public class FileAnnotationController {
         var result = fileAnnotationService.findAll(pageable);
         return ResponseEntity.ok(result);
     }
+
+    public ResponseEntity<FileAnnotation> update(@Valid )
 }

@@ -25,7 +25,7 @@ public class SubjectItemReader implements ItemReader<List<Subject>> {
 
     @Override
     public List<Subject> read() throws InterruptedException {
-        Thread.sleep(200);
+        Thread.sleep(500);
         var query = "SELECT DISTINCT ?s WHERE { ?s ?p ?o } " +
                 "LIMIT " + size +
                 " OFFSET " + page * size;

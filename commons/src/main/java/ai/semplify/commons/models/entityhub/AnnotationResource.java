@@ -3,6 +3,7 @@ package ai.semplify.commons.models.entityhub;
 import lombok.Data;
 import lombok.var;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Data
@@ -10,6 +11,7 @@ public class AnnotationResource {
 
     private Long id;
 
+    @NotNull
     private String uri;
 
     private String support;

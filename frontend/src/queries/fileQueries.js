@@ -28,6 +28,7 @@ export const fileQueries = {
         surfaceForm
         prefLabel
         context
+        source
       }
     }
   `

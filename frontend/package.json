@@ -70,7 +70,6 @@
     "prop-types": "^15.7.2",
     "react": "^16.13.0",
     "react-app-polyfill": "^1.0.6",
-    "react-beautiful-dnd": "^13.0.0",
     "react-big-calendar": "^0.24.0",
     "react-chartjs-2": "^2.9.0",
     "react-dom": "^16.13.0",

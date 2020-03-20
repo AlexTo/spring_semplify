@@ -54,10 +54,11 @@ function FileTable({className, ...rest}) {
   const dispatch = useDispatch();
 
   const [fileAnnotationId, setFileAnnotationId] = useState(null);
+  const [fileName, setFileName] = useState(null);
   const [fileReviewDialogOpen, setFileReviewDialogOpen] = useState(false);
   const fileAnnotationReducer = useSelector(state => state.fileAnnotationReducer);
 
-  const {loading, error, data} = useQuery(fileQueries.fileAnnotations, {
+  const {loading, error, data, startPolling, stopPolling} = useQuery(fileQueries.fileAnnotations, {
     variables: {
       fileAnnotationQueryInput: {
         page: fileAnnotationReducer.page,
@@ -66,6 +67,14 @@ function FileTable({className, ...rest}) {
     },
     pollInterval: 500
   });
+
+  useEffect(() => {
+    if (fileReviewDialogOpen) {
+      stopPolling();
+    } else {
+      startPolling(3000);
+    }
+  }, [fileReviewDialogOpen]);
 
   useEffect(() => {
     if (!fileAnnotationId)
@@ -81,8 +90,9 @@ function FileTable({className, ...rest}) {
     dispatch(fileAnnotationActions.setPageSize(event.target.value));
   };
 
-  const handleReview = (fileAnnotationId) => {
+  const handleReview = (fileAnnotationId, fileName) => {
     setFileAnnotationId(fileAnnotationId);
+    setFileName(fileName)
   };
 
   if (loading || error) return (<></>);
@@ -104,7 +114,7 @@ function FileTable({className, ...rest}) {
                   <TableRow>
                     <TableCell>File Name</TableCell>
                     <TableCell>Status</TableCell>
-                    <TableCell>Actions</TableCell>
+                    <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -122,7 +132,7 @@ function FileTable({className, ...rest}) {
                         <Button
                           color="primary"
                           size="small"
-                          variant="outlined" onClick={() => handleReview(a.id)}>
+                          variant="outlined" onClick={() => handleReview(a.id, a.file.name)}>
                           Review
                         </Button>
                       </TableCell>
@@ -146,8 +156,9 @@ function FileTable({className, ...rest}) {
       </Card>
       <FileReviewDialog open={fileReviewDialogOpen}
                         onClose={() => setFileReviewDialogOpen(false)}
-                        onCancel={() => setFileReviewDialogOpen(false)}
-                        fileAnnotationId={fileAnnotationId}/>
+                        onApprove={(annotations) => console.log(annotations)}
+                        fileAnnotationId={fileAnnotationId}
+                        fileName={fileName}/>
     </div>
   )
 }

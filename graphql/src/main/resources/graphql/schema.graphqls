@@ -67,6 +67,7 @@ type AnnotationResource {
     surfaceForm: String!
     prefLabel: String!
     context: String!
+    source: String
 }
 
 type TaskPage {
