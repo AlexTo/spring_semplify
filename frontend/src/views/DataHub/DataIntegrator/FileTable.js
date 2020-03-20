@@ -1,9 +1,9 @@
 import React, {useEffect, useReducer, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {makeStyles} from "@material-ui/styles";
-import {useQuery} from "@apollo/react-hooks";
+import {useMutation, useQuery} from "@apollo/react-hooks";
 import {fileQueries} from "../../../queries/fileQueries";
-import {fileAnnotationActions} from "../../../actions";
+import {FILE_ANNOTATION_STATUS_PENDING_REVIEW, fileAnnotationActions} from "../../../actions";
 import clsx from "clsx";
 import {
   Card, CardActions,
@@ -45,8 +45,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const statusColors = {
-  "Pending Review": colors.orange[600],
-  "Reviewed": colors.green[600]
+  FILE_ANNOTATION_STATUS_PENDING_REVIEW: colors.orange[600],
+  FILE_ANNOTATION_STATUS_REVIEWED: colors.green[600]
 };
 
 function FileTable({className, ...rest}) {
@@ -57,6 +57,8 @@ function FileTable({className, ...rest}) {
   const [fileName, setFileName] = useState(null);
   const [fileReviewDialogOpen, setFileReviewDialogOpen] = useState(false);
   const fileAnnotationReducer = useSelector(state => state.fileAnnotationReducer);
+
+  const [updateFileAnnotation, {}] = useMutation(fileQueries.updateFileAnnotation);
 
   const {loading, error, data, startPolling, stopPolling} = useQuery(fileQueries.fileAnnotations, {
     variables: {
@@ -95,6 +97,16 @@ function FileTable({className, ...rest}) {
     setFileName(fileName)
   };
 
+  const handleApprove = (fileAnnotation) => {
+    updateFileAnnotation({
+      variables: {
+        fileAnnotationInput: fileAnnotation
+      }
+    }).then(() => {
+
+    });
+  };
+
   if (loading || error) return (<></>);
 
   return (
@@ -129,12 +141,12 @@ function FileTable({className, ...rest}) {
                         </Label>
                       </TableCell>
                       <TableCell>
-                        <Button
+                        {a.status === FILE_ANNOTATION_STATUS_PENDING_REVIEW && <Button
                           color="primary"
                           size="small"
                           variant="outlined" onClick={() => handleReview(a.id, a.file.name)}>
                           Review
-                        </Button>
+                        </Button>}
                       </TableCell>
                     </TableRow>
                   )}
@@ -156,7 +168,7 @@ function FileTable({className, ...rest}) {
       </Card>
       <FileReviewDialog open={fileReviewDialogOpen}
                         onClose={() => setFileReviewDialogOpen(false)}
-                        onApprove={(annotations) => console.log(annotations)}
+                        onApprove={handleApprove}
                         fileAnnotationId={fileAnnotationId}
                         fileName={fileName}/>
     </div>

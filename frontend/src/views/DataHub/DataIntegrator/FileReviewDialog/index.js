@@ -16,7 +16,7 @@ import {useKeycloak} from "@react-keycloak/web";
 import {useQuery} from "@apollo/react-hooks";
 import {fileQueries} from "../../../../queries/fileQueries";
 import Link from "@material-ui/core/Link";
-import {entityActions} from "../../../../actions";
+import {entityActions, FILE_ANNOTATION_STATUS_REVIEWED} from "../../../../actions";
 import Highlighter from "react-highlight-words";
 import {useDispatch} from "react-redux";
 import Grid from "@material-ui/core/Grid";
@@ -56,7 +56,6 @@ function FileReviewDialog({open, onClose, onApprove, fileAnnotationId, fileName,
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
   const classes = useStyles();
-  const {keycloak} = useKeycloak();
   const dispatch = useDispatch();
 
   const [allAnnotations, setAllAnnotations] = useState([]);
@@ -119,8 +118,9 @@ function FileReviewDialog({open, onClose, onApprove, fileAnnotationId, fileName,
       }
     });
     onApprove({
-      fileAnnotationId,
-      approvedAnnotations
+      id: fileAnnotationId,
+      status: FILE_ANNOTATION_STATUS_REVIEWED,
+      annotationResources: approvedAnnotations
     })
   };
 

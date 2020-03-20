@@ -16,7 +16,7 @@ type Query {
 
 type Mutation {
     createTask(task: TaskInput!): Task
-    updateFileAnnotation(fileAnnotation: FileAnnotationInput!): FileAnnotation!
+    updateFileAnnotation(fileAnnotationInput: FileAnnotationInput!): FileAnnotation!
 }
 
 input TaskInput {

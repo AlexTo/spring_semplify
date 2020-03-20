@@ -43,7 +43,7 @@ function DataIntegrator({match, history}) {
 
   const [submitFilesDialogOpen, setSubmitFilesDialogOpen] = useState(false);
 
-  const [createTask, {data}] = useMutation(taskQueries.createTask);
+  const [createTask, {}] = useMutation(taskQueries.createTask);
 
   const handleFilesSubmit = (files) => {
     setSubmitFilesDialogOpen(false);
