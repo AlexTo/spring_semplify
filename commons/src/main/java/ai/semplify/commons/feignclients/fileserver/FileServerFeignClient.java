@@ -6,6 +6,7 @@ import ai.semplify.commons.models.entityhub.AnnotationResource;
 import ai.semplify.commons.models.fileserver.File;
 import ai.semplify.commons.models.fileserver.FileAnnotation;
 import ai.semplify.commons.models.fileserver.FileAnnotationPage;
+import ai.semplify.commons.models.fileserver.FileAnnotationUpdate;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public interface FileServerFeignClient {
     @GetMapping("/file-annotation-resources/")
     List<AnnotationResource> findAll(@RequestParam Long fileAnnotationId);
 
-    @PutMapping("/{fileAnnotationId}")
+    @PutMapping("/file-annotations/{fileAnnotationId}")
     FileAnnotation update(@PathVariable("fileAnnotationId") Long fileAnnotationId,
-                          @Valid @RequestBody FileAnnotation fileAnnotation);
+                          @Valid @RequestBody FileAnnotationUpdate fileAnnotation);
 }

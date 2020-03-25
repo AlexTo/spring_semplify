@@ -1,8 +1,8 @@
 package ai.semplify.fileserver.controllers;
 
 import ai.semplify.commons.models.fileserver.FileAnnotation;
+import ai.semplify.commons.models.fileserver.FileAnnotationUpdate;
 import ai.semplify.commons.models.fileserver.FileAnnotationPage;
-import ai.semplify.commons.models.tasker.TaskPage;
 import ai.semplify.fileserver.exceptions.FileAnnotationNotFoundException;
 import ai.semplify.fileserver.exceptions.FileNotFoundException;
 import ai.semplify.fileserver.services.FileAnnotationService;
@@ -44,7 +44,7 @@ public class FileAnnotationController {
 
     @PutMapping("/{fileAnnotationId}")
     public ResponseEntity<FileAnnotation> update(@PathVariable("fileAnnotationId") Long fileAnnotationId,
-                                                 @Valid @RequestBody FileAnnotation fileAnnotation) throws FileAnnotationNotFoundException {
+                                                 @Valid @RequestBody FileAnnotationUpdate fileAnnotation) throws FileAnnotationNotFoundException {
         return ResponseEntity.ok(fileAnnotationService.update(fileAnnotationId, fileAnnotation));
     }
 }

@@ -4,6 +4,7 @@ import ai.semplify.commons.models.entityhub.AnnotationResource;
 import ai.semplify.commons.models.fileserver.FileAnnotation;
 import ai.semplify.commons.models.fileserver.FileAnnotationPage;
 import ai.semplify.commons.models.fileserver.FileAnnotationStatus;
+import ai.semplify.commons.models.fileserver.FileAnnotationUpdate;
 import ai.semplify.fileserver.exceptions.FileAnnotationNotFoundException;
 import ai.semplify.fileserver.exceptions.FileNotFoundException;
 import ai.semplify.fileserver.mappers.AnnotationResourceMapper;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class FileAnnotationServiceImpl implements FileAnnotationService {
 
     private FileRepository fileRepository;
@@ -77,10 +77,11 @@ public class FileAnnotationServiceImpl implements FileAnnotationService {
     }
 
     @Override
-    public FileAnnotation update(Long fileAnnotationId, FileAnnotation fileAnnotation) throws FileAnnotationNotFoundException {
+    public FileAnnotation update(Long fileAnnotationId, FileAnnotationUpdate fileAnnotation)
+            throws FileAnnotationNotFoundException {
         var entity = fileAnnotationRepository.findById(fileAnnotationId).orElseThrow(FileAnnotationNotFoundException::new);
 
-        if (entity.getStatus().equalsIgnoreCase(FileAnnotationStatus.PENDING_REVIEW)) {
+        if (!entity.getStatus().equalsIgnoreCase(FileAnnotationStatus.PENDING_REVIEW)) {
             return fileAnnotationMapper.toModel(entity);
         }
 
@@ -104,7 +105,7 @@ public class FileAnnotationServiceImpl implements FileAnnotationService {
                 .filter(a -> !keptAnnotationResourceIds.contains(a.getId()))
                 .collect(Collectors.toList());
 
-        annotationResourceRepository.deleteAll(removedAnnotationResources);
+
 
         var newAnnotationResources = fileAnnotation.getAnnotationResources() == null
                 ? new ArrayList<ai.semplify.commons.entities.AnnotationResource>()
@@ -119,6 +120,13 @@ public class FileAnnotationServiceImpl implements FileAnnotationService {
         newAnnotationResources.addAll(keptAnnotationResources);
 
         entity.setAnnotationResources(newAnnotationResources);
+
+        entity.setStatus(FileAnnotationStatus.REVIEWED);
+
+        entity = fileAnnotationRepository.save(entity);
+
+        if (!removedAnnotationResources.isEmpty())
+            annotationResourceRepository.deleteAll(removedAnnotationResources);
 
         return fileAnnotationMapper.toModel(entity);
     }

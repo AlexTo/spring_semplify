@@ -103,7 +103,7 @@ function FileTable({className, ...rest}) {
         fileAnnotationInput: fileAnnotation
       }
     }).then(() => {
-
+      setFileReviewDialogOpen(false);
     });
   };
 

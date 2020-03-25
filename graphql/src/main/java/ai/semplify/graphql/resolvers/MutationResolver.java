@@ -3,6 +3,7 @@ package ai.semplify.graphql.resolvers;
 import ai.semplify.commons.feignclients.fileserver.FileServerFeignClient;
 import ai.semplify.commons.feignclients.tasker.TaskerFeignClient;
 import ai.semplify.commons.models.fileserver.FileAnnotation;
+import ai.semplify.commons.models.fileserver.FileAnnotationUpdate;
 import ai.semplify.commons.models.tasker.Task;
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ public class MutationResolver implements GraphQLMutationResolver {
         return taskerFeignClient.create(task);
     }
 
-    public FileAnnotation updateFileAnnotation(FileAnnotation fileAnnotation) {
+    public FileAnnotation updateFileAnnotation(FileAnnotationUpdate fileAnnotation) {
         return fileServerFeignClient.update(fileAnnotation.getId(), fileAnnotation);
     }
 }
