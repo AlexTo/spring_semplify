@@ -34,7 +34,7 @@
     </modules>
     <properties>
         <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
-        <commons-io.version>2.6</commons-io.version>
+        <commons-io.version>2.7</commons-io.version>
     </properties>
 
     <dependencies>
